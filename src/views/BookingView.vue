@@ -24,113 +24,111 @@ const selectTime = (time: string) => {
 </script>
 
 <template>
-  <div class="animate-in fade-in duration-700 bg-background-dark min-h-screen text-white py-12 px-4 md:px-10 lg:px-20">
-    <div class="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
-      
+  <div class="booking-view animate-in fade-in">
+    <div class="booking-container">
       <!-- Left Column: Mission Builder -->
-      <div class="lg:col-span-8 flex flex-col gap-12">
-        
+      <div class="booking-main">
         <!-- Header & Progress -->
-        <div class="flex flex-col gap-8">
-          <div class="flex flex-col gap-3">
-            <h1 class="text-5xl font-black tracking-tight leading-tight">New Mission Request</h1>
-            <p class="text-text-secondary text-lg">Configure your drone operation requirements below.</p>
+        <div class="booking-header">
+          <div class="booking-title-section">
+            <h1 class="booking-title">New Mission Request</h1>
+            <p class="booking-subtitle">Configure your drone operation requirements below.</p>
           </div>
           
-          <div class="flex flex-col gap-5 pt-4">
-            <div class="flex justify-between items-end">
-              <p class="text-lg font-bold text-primary">Configuration in progress</p>
-              <p class="text-sm font-black text-text-secondary uppercase tracking-widest">Step 3 of 5</p>
+          <div class="progress-section">
+            <div class="progress-header">
+              <p class="progress-status">Configuration in progress</p>
+              <p class="progress-step">Step 3 of 5</p>
             </div>
-            <div class="rounded-full h-2.5 bg-surface-highlight overflow-hidden">
-              <div class="h-full bg-primary rounded-full shadow-[0_0_15px_rgba(25,127,230,0.5)] transition-all duration-1000" style="width: 60%"></div>
+            <div class="progress-bar">
+              <div class="progress-bar-fill" style="width: 60%"></div>
             </div>
-            <div class="flex justify-between text-[11px] font-black text-text-secondary uppercase tracking-[0.2em]">
-              <span class="text-green-500">Profile</span>
-              <span class="text-green-500">Location</span>
-              <span class="text-primary border-b-2 border-primary pb-1">Equipment</span>
-              <span>Billing</span>
+            <div class="progress-steps">
+              <span class="progress-step-item progress-step-complete">Profile</span>
+              <span class="progress-step-item progress-step-complete">Location</span>
+              <span class="progress-step-item progress-step-active">Equipment</span>
+              <span class="progress-step-item">Billing</span>
             </div>
           </div>
         </div>
 
         <!-- Step 1: Profile -->
-        <section class="flex flex-col gap-6">
-          <div class="flex items-center gap-4 pb-4 border-b border-surface-highlight">
-            <span class="flex items-center justify-center size-10 rounded-full bg-primary/20 text-primary font-black text-lg shadow-inner">1</span>
-            <h2 class="text-2xl font-bold tracking-tight">Mission Profile</h2>
-            <span class="material-symbols-outlined text-green-500 ml-auto text-3xl">check_circle</span>
+        <section class="booking-step">
+          <div class="step-header">
+            <span class="step-number step-number-complete">1</span>
+            <h2 class="step-title">Mission Profile</h2>
+            <span class="material-symbols-outlined step-check">check_circle</span>
           </div>
-          <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+          <div class="profile-grid">
             <div 
               v-for="(p, i) in profiles" 
               :key="i" 
               @click="selectProfile(p)"
-              :class="`group relative cursor-pointer overflow-hidden rounded-2xl border-2 transition-all duration-300 ${p.active ? 'border-primary ring-4 ring-primary/20 scale-105 shadow-2xl shadow-primary/30' : 'border-transparent hover:border-primary/50 grayscale hover:grayscale-0'}`"
+              :class="['profile-card', { 'profile-card-active': p.active }]"
             >
-              <div v-if="p.active" class="absolute top-3 right-3 z-20 bg-primary text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow-lg animate-pulse">Selected</div>
-              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10"></div>
-              <img class="h-40 w-full object-cover group-hover:scale-110 transition-transform duration-700" :src="p.img" :alt="p.label" />
-              <p class="absolute bottom-4 left-4 z-20 font-black text-white text-base tracking-tight">{{ p.label }}</p>
+              <div v-if="p.active" class="profile-badge">Selected</div>
+              <div class="profile-gradient"></div>
+              <img class="profile-image" :src="p.img" :alt="p.label" />
+              <p class="profile-label">{{ p.label }}</p>
             </div>
           </div>
         </section>
 
         <!-- Step 2: Location -->
-        <section class="flex flex-col gap-6">
-          <div class="flex items-center gap-4 pb-4 border-b border-surface-highlight">
-            <span class="flex items-center justify-center size-10 rounded-full bg-primary/20 text-primary font-black text-lg shadow-inner">2</span>
-            <h2 class="text-2xl font-bold tracking-tight">Flight Zone & Schedule</h2>
-            <span class="material-symbols-outlined text-green-500 ml-auto text-3xl">check_circle</span>
+        <section class="booking-step">
+          <div class="step-header">
+            <span class="step-number step-number-complete">2</span>
+            <h2 class="step-title">Flight Zone & Schedule</h2>
+            <span class="material-symbols-outlined step-check">check_circle</span>
           </div>
-          <div class="grid md:grid-cols-2 gap-10">
-            <div class="flex flex-col gap-6">
-              <div class="flex flex-col gap-3">
-                <label class="text-xs font-black text-text-secondary uppercase tracking-widest">Target Location</label>
-                <div class="relative">
-                  <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary text-2xl font-light">search</span>
+          <div class="location-grid">
+            <div class="location-section">
+              <div class="form-group">
+                <label class="form-label">Target Location</label>
+                <div class="input-wrapper">
+                  <span class="material-symbols-outlined input-icon">search</span>
                   <input 
                     v-model="bookingStore.location"
-                    class="w-full bg-surface-highlight/50 border-none rounded-2xl py-4 pl-12 pr-5 text-base font-medium focus:ring-4 focus:ring-primary/20 text-white placeholder-slate-500 shadow-inner" 
+                    class="form-input"
                     type="text" 
                   />
                 </div>
               </div>
-              <div class="relative h-48 w-full rounded-2xl overflow-hidden group shadow-2xl">
-                <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-                  <span class="material-symbols-outlined text-5xl text-primary drop-shadow-2xl animate-bounce">location_on</span>
+              <div class="map-container">
+                <div class="map-overlay">
+                  <span class="material-symbols-outlined map-icon">location_on</span>
                 </div>
-                <img class="h-full w-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLxjNCNxIp8Zr2CGxtzTMeEkDbWe2yd2kvpWoNtCj7KIKBrVvdyVqjkLD5tpOcEZ7kFU8mQ_60O8CQ4zDDPGKHXzqJ0jKadTWffYTTgFZ2R7km1tfJpM1UuNA-nFxxxQZe_yLTZC4h3Dc7ejsIX52n-bxAypKaOzkaXJvlV69ppJuNtKohKYA1E8cu4q8bgTqS0VCBv6YTV_ZJoE7LiSlOklNFP78lWZNpPMN-EbyHgXTuWIaPd_88OfSoJW5Cs01qFKiFHOszMo0P" alt="Map View" />
+                <img class="map-image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLxjNCNxIp8Zr2CGxtzTMeEkDbWe2yd2kvpWoNtCj7KIKBrVvdyVqjkLD5tpOcEZ7kFU8mQ_60O8CQ4zDDPGKHXzqJ0jKadTWffYTTgFZ2R7km1tfJpM1UuNA-nFxxxQZe_yLTZC4h3Dc7ejsIX52n-bxAypKaOzkaXJvlV69ppJuNtKohKYA1E8cu4q8bgTqS0VCBv6YTV_ZJoE7LiSlOklNFP78lWZNpPMN-EbyHgXTuWIaPd_88OfSoJW5Cs01qFKiFHOszMo0P" alt="Map View" />
               </div>
             </div>
             
-            <div class="flex flex-col gap-6">
-              <div class="flex flex-col gap-3">
-                <label class="text-xs font-black text-text-secondary uppercase tracking-widest">Mission Date</label>
-                <div class="relative">
-                  <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary text-2xl font-light">calendar_month</span>
+            <div class="schedule-section">
+              <div class="form-group">
+                <label class="form-label">Mission Date</label>
+                <div class="input-wrapper">
+                  <span class="material-symbols-outlined input-icon">calendar_month</span>
                   <input 
                     v-model="bookingStore.missionDate"
-                    class="w-full bg-surface-highlight/50 border-none rounded-2xl py-4 pl-12 pr-5 text-base font-medium focus:ring-4 focus:ring-primary/20 text-white shadow-inner [color-scheme:dark]" 
+                    class="form-input"
                     type="date" 
                   />
                 </div>
               </div>
-              <div class="flex flex-col gap-3">
-                <label class="text-xs font-black text-text-secondary uppercase tracking-widest">Start Time</label>
-                <div class="grid grid-cols-3 gap-3">
+              <div class="form-group">
+                <label class="form-label">Start Time</label>
+                <div class="time-slots">
                   <button 
                     v-for="time in timeSlots" 
                     :key="time"
                     @click="selectTime(time)"
-                    :class="`py-3 px-2 text-sm font-bold rounded-xl transition-all shadow-lg ${time === bookingStore.startTime ? 'bg-primary text-white ring-4 ring-primary/20' : 'bg-surface-highlight text-text-secondary hover:bg-[#324a61]'}`"
+                    :class="['time-slot', { 'time-slot-active': time === bookingStore.startTime }]"
                   >
                     {{ time }}
                   </button>
                 </div>
               </div>
-              <div class="flex items-center gap-3 text-sm text-text-secondary mt-2 bg-primary/5 p-3 rounded-xl border border-primary/10">
-                <span class="material-symbols-outlined text-primary text-xl">cloud_done</span>
+              <div class="weather-info">
+                <span class="material-symbols-outlined weather-icon">cloud_done</span>
                 <span>Forecast: Clear Sky (72°F)</span>
               </div>
             </div>
@@ -138,145 +136,1164 @@ const selectTime = (time: string) => {
         </section>
 
         <!-- Step 3: Equipment -->
-        <section class="flex flex-col gap-8">
-          <div class="flex items-center gap-4 pb-4 border-b border-surface-highlight">
-            <span class="flex items-center justify-center size-10 rounded-full bg-primary text-white font-black text-lg shadow-lg">3</span>
-            <h2 class="text-2xl font-bold tracking-tight">Drone Selection</h2>
+        <section class="booking-step">
+          <div class="step-header">
+            <span class="step-number step-number-active">3</span>
+            <h2 class="step-title">Drone Selection</h2>
           </div>
           
-          <div class="relative flex flex-col md:flex-row bg-surface-highlight/40 rounded-[2rem] overflow-hidden border border-primary/40 shadow-2xl group hover:border-primary transition-all duration-500">
-            <div class="absolute top-0 left-0 bg-primary text-white text-[10px] font-black px-4 py-1.5 rounded-br-2xl z-20 flex items-center gap-2 uppercase tracking-widest shadow-xl">
-              <span class="material-symbols-outlined text-sm font-light">auto_awesome</span> AI Recommended
+          <div class="drone-selection-card">
+            <div class="drone-selection-badge">
+              <span class="material-symbols-outlined">auto_awesome</span> AI Recommended
             </div>
-            <div class="md:w-2/5 h-64 md:h-auto relative bg-black/40 overflow-hidden">
-              <img class="h-full w-full object-cover mix-blend-overlay opacity-80 group-hover:scale-110 transition-transform duration-1000" :src="bookingStore.selectedDrone.imageUrl" :alt="bookingStore.selectedDrone.name" />
-              <div class="absolute inset-0 bg-gradient-to-r from-transparent to-surface-highlight/40"></div>
+            <div class="drone-selection-image-wrapper">
+              <img class="drone-selection-image" :src="bookingStore.selectedDrone.imageUrl" :alt="bookingStore.selectedDrone.name" />
+              <div class="drone-selection-gradient"></div>
             </div>
-            <div class="md:w-3/5 p-10 flex flex-col justify-between gap-6 relative">
-              <div class="absolute top-4 right-4 text-xs font-black text-primary/30 group-hover:text-primary transition-colors">BEST PERFORMANCE</div>
-              <div>
-                <div class="flex justify-between items-start mb-4">
-                  <h3 class="text-3xl font-black tracking-tight">{{ bookingStore.selectedDrone.name }}</h3>
-                  <div class="text-right">
-                    <p class="text-3xl font-black text-primary">${{ bookingStore.selectedDrone.price }}</p>
-                    <p class="text-xs font-bold text-text-secondary uppercase tracking-widest">per day</p>
+            <div class="drone-selection-content">
+              <div class="drone-selection-badge-text">BEST PERFORMANCE</div>
+              <div class="drone-selection-info">
+                <div class="drone-selection-header">
+                  <h3 class="drone-selection-name">{{ bookingStore.selectedDrone.name }}</h3>
+                  <div class="drone-selection-price">
+                    <p class="drone-price">${{ bookingStore.selectedDrone.price }}</p>
+                    <p class="drone-price-label">per day</p>
                   </div>
                 </div>
-                <p class="text-base text-text-secondary leading-relaxed">Perfect for cinematic wedding shots with 5.1K Apple ProRes recording and omnidirectional obstacle sensing.</p>
+                <p class="drone-selection-description">Perfect for cinematic wedding shots with 5.1K Apple ProRes recording and omnidirectional obstacle sensing.</p>
               </div>
-              <div class="flex flex-wrap gap-3">
+              <div class="drone-selection-stats">
                 <span 
                   v-for="(s, i) in bookingStore.selectedDrone.stats" 
                   :key="i" 
-                  class="px-4 py-2 rounded-xl bg-background-dark/80 text-[11px] font-black uppercase tracking-wider text-text-secondary border border-white/5 shadow-inner"
+                  class="drone-stat-badge"
                 >
                   {{ s.value }} {{ s.label }}
                 </span>
               </div>
-              <div class="flex items-center gap-4 pt-4">
-                <button class="flex-1 bg-primary hover:bg-blue-600 text-white font-black py-4 px-6 rounded-2xl transition-all shadow-xl shadow-primary/30 flex items-center justify-center gap-3 active:scale-95 group/sel">
+              <div class="drone-selection-actions">
+                <button class="drone-select-button">
                   Selected
-                  <span class="material-symbols-outlined text-xl group-hover/sel:rotate-12 transition-transform">check_circle</span>
+                  <span class="material-symbols-outlined drone-select-icon">check_circle</span>
                 </button>
-                <button class="p-4 rounded-2xl border-2 border-slate-600 hover:bg-white/10 transition-all text-text-secondary">
-                  <span class="material-symbols-outlined text-2xl font-light">info</span>
+                <button class="drone-info-button">
+                  <span class="material-symbols-outlined">info</span>
                 </button>
               </div>
             </div>
           </div>
 
-          <button class="flex items-center justify-between w-full text-left px-8 py-5 rounded-2xl bg-surface-highlight/30 hover:bg-surface-highlight transition-all border border-white/5 group shadow-lg">
-            <span class="text-sm font-black text-text-secondary uppercase tracking-widest group-hover:text-white transition-colors">View 2 Alternative Drones</span>
-            <span class="material-symbols-outlined text-text-secondary group-hover:translate-y-1 transition-all">expand_more</span>
+          <button class="alternatives-button">
+            <span class="alternatives-text">View 2 Alternative Drones</span>
+            <span class="material-symbols-outlined alternatives-icon">expand_more</span>
           </button>
         </section>
 
         <!-- Step 4: Billing Preview -->
-        <section class="flex flex-col gap-8 opacity-40 grayscale pointer-events-none">
-          <div class="flex items-center gap-4 pb-4 border-b border-surface-highlight">
-            <span class="flex items-center justify-center size-10 rounded-full border-2 border-slate-600 text-text-secondary font-black text-lg">4</span>
-            <h2 class="text-2xl font-bold tracking-tight text-text-secondary">Secure Payment</h2>
+        <section class="booking-step booking-step-disabled">
+          <div class="step-header">
+            <span class="step-number step-number-disabled">4</span>
+            <h2 class="step-title step-title-disabled">Secure Payment</h2>
           </div>
-          <div class="p-10 rounded-[2rem] bg-surface-highlight/20 border border-white/5 shadow-inner">
-             <div class="h-32 bg-slate-800/50 rounded-2xl flex items-center justify-center">
-               <span class="text-slate-600 font-black uppercase tracking-[0.3em]">Module Locked</span>
+          <div class="billing-placeholder">
+             <div class="billing-locked">
+               <span class="billing-locked-text">Module Locked</span>
              </div>
           </div>
         </section>
       </div>
 
       <!-- Right Column: Sticky Summary -->
-      <div class="lg:col-span-4 relative">
-        <div class="sticky top-28 flex flex-col gap-8">
-          <div class="bg-surface-highlight rounded-[2.5rem] p-10 shadow-2xl border border-white/5 relative overflow-hidden group">
-            <div class="absolute top-0 left-0 w-full h-2 bg-primary"></div>
-            <h3 class="text-2xl font-black mb-10 flex items-center gap-4">
-              <div class="p-3 rounded-2xl bg-primary/10">
-                <span class="material-symbols-outlined text-primary text-3xl font-light">receipt_long</span>
-              </div>
-              Mission Estimate
-            </h3>
-            
-            <div class="flex flex-col gap-6 mb-10 border-b border-white/10 pb-8">
-              <div class="flex justify-between items-center">
-                <span class="text-text-secondary font-medium">Operator Fee (4h)</span>
-                <span class="font-bold text-lg">$320.00</span>
-              </div>
-              <div class="flex justify-between items-center">
-                <span class="text-text-secondary font-medium">Equipment Rental</span>
-                <span class="font-bold text-lg">${{ bookingStore.selectedDrone.price?.toFixed(2) || '0.00' }}</span>
-              </div>
-              <div class="flex justify-between items-center">
-                <span class="text-text-secondary font-medium">Insurance</span>
-                <span class="font-bold text-lg">$85.00</span>
-              </div>
-              <div class="flex justify-between items-center text-primary">
-                <span class="font-bold flex items-center gap-2">
-                  <span class="material-symbols-outlined text-sm">confirmation_number</span>
-                  Platform Discount
-                </span>
-                <span class="font-black text-lg">-$50.00</span>
-              </div>
+      <div class="booking-sidebar">
+        <div class="summary-card">
+          <div class="summary-header-bar"></div>
+          <h3 class="summary-title">
+            <div class="summary-icon-wrapper">
+              <span class="material-symbols-outlined summary-icon">receipt_long</span>
             </div>
-
-            <div class="flex justify-between items-end mb-10">
-              <div class="flex flex-col">
-                <span class="text-[10px] text-text-secondary font-black uppercase tracking-[0.2em]">Total Cost</span>
-                <span class="text-xs text-primary font-bold">USD (Estimated)</span>
-              </div>
-              <span class="text-5xl font-black tracking-tight text-white">${{ bookingStore.totalCost.toFixed(2) }}</span>
+            Mission Estimate
+          </h3>
+          
+          <div class="summary-items">
+            <div class="summary-item">
+              <span class="summary-item-label">Operator Fee (4h)</span>
+              <span class="summary-item-value">$320.00</span>
             </div>
-
-            <button class="w-full bg-primary hover:bg-blue-600 text-white font-black py-5 rounded-[1.5rem] shadow-2xl shadow-primary/30 transition-all hover:scale-105 active:scale-95 flex justify-center items-center gap-3">
-              Pay & Reserve Operator
-              <span class="material-symbols-outlined text-2xl font-light">arrow_forward</span>
-            </button>
-            
-            <p class="text-center text-[10px] text-text-secondary mt-6 font-bold uppercase tracking-widest">
-              Protected by 256-bit SSL encryption
-            </p>
+            <div class="summary-item">
+              <span class="summary-item-label">Equipment Rental</span>
+              <span class="summary-item-value">${{ bookingStore.selectedDrone.price?.toFixed(2) || '0.00' }}</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-item-label">Insurance</span>
+              <span class="summary-item-value">$85.00</span>
+            </div>
+            <div class="summary-item summary-item-discount">
+              <span class="summary-item-label">
+                <span class="material-symbols-outlined">confirmation_number</span>
+                Platform Discount
+              </span>
+              <span class="summary-item-value">-$50.00</span>
+            </div>
           </div>
 
-          <!-- Operator Card -->
-          <div class="bg-surface-highlight/30 backdrop-blur-md rounded-[2rem] p-6 flex items-center gap-5 border border-white/5 hover:border-primary/30 transition-all cursor-pointer group shadow-xl">
-            <div class="relative">
-              <img class="size-16 rounded-2xl object-cover shadow-lg group-hover:scale-110 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8LSI_BSq-qiFSeRdTgjvPDSeuOkR56rJ_QZskcT8M2Pe5f7JtRExRnrZUcPOxwu3GT476adSZ8j262sr496l9EpjPj8LRrvgyjZQwCZIsstum0lXukjE0wxLpMG8W8_cXVXIRuiH-fR3FmDLUMcK3Gi89f12EVpdQCtJJGckD3CfIR4woPSmEB526vrzP12yXwBDRI2alxTVKUJPtwnplaFRPYW4x9NzIGS6hl6VImeH3DiF7YM-df4f31rYmFdI9kOhE4qOl5rA4" alt="Operator" />
-              <div class="absolute -bottom-1 -right-1 size-5 bg-green-500 rounded-full border-4 border-background-dark"></div>
+          <div class="summary-total">
+            <div class="summary-total-label">
+              <span class="summary-total-text">Total Cost</span>
+              <span class="summary-total-currency">USD (Estimated)</span>
             </div>
-            <div class="flex flex-col">
-              <span class="text-base font-black tracking-tight">Alex M.</span>
-              <div class="flex items-center gap-1.5">
-                <span class="text-xs text-text-secondary font-bold">Drone Expert</span>
-                <div class="flex items-center gap-0.5 text-yellow-500">
-                  <span class="material-symbols-outlined text-xs fill-1">star</span>
-                  <span class="text-[10px] font-black">4.9</span>
-                </div>
+            <span class="summary-total-amount">${{ bookingStore.totalCost.toFixed(2) }}</span>
+          </div>
+
+          <button class="summary-button">
+            Pay & Reserve Operator
+            <span class="material-symbols-outlined summary-button-icon">arrow_forward</span>
+          </button>
+          
+          <p class="summary-security">
+            Protected by 256-bit SSL encryption
+          </p>
+        </div>
+
+        <!-- Operator Card -->
+        <div class="operator-card">
+          <div class="operator-avatar-wrapper">
+            <img class="operator-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8LSI_BSq-qiFSeRdTgjvPDSeuOkR56rJ_QZskcT8M2Pe5f7JtRExRnrZUcPOxwu3GT476adSZ8j262sr496l9EpjPj8LRrvgyjZQwCZIsstum0lXukjE0wxLpMG8W8_cXVXIRuiH-fR3FmDLUMcK3Gi89f12EVpdQCtJJGckD3CfIR4woPSmEB526vrzP12yXwBDRI2alxTVKUJPtwnplaFRPYW4x9NzIGS6hl6VImeH3DiF7YM-df4f31rYmFdI9kOhE4qOl5rA4" alt="Operator" />
+            <div class="operator-status"></div>
+          </div>
+          <div class="operator-info">
+            <span class="operator-name">Alex M.</span>
+            <div class="operator-details">
+              <span class="operator-role">Drone Expert</span>
+              <div class="operator-rating">
+                <span class="material-symbols-outlined operator-star">star</span>
+                <span class="operator-rating-value">4.9</span>
               </div>
             </div>
-            <span class="material-symbols-outlined ml-auto text-text-secondary group-hover:text-primary transition-colors">chevron_right</span>
           </div>
+          <span class="material-symbols-outlined operator-arrow">chevron_right</span>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+@import '../assets/variables.css';
+
+.booking-view {
+  animation-duration: 0.7s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
+  background-color: var(--color-background-dark);
+  min-height: 100vh;
+  color: var(--color-white);
+  padding: 3rem 1rem;
+}
+
+@media (min-width: 768px) {
+  .booking-view {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .booking-view {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+}
+
+.booking-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+}
+
+@media (min-width: 1024px) {
+  .booking-container {
+    grid-template-columns: repeat(12, 1fr);
+    gap: 5rem;
+  }
+}
+
+.booking-main {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+@media (min-width: 1024px) {
+  .booking-main {
+    grid-column: span 8;
+  }
+}
+
+.booking-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.booking-title-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.booking-title {
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.booking-subtitle {
+  color: var(--color-text-secondary);
+  font-size: 1.125rem;
+  margin: 0;
+}
+
+.progress-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding-top: 1rem;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.progress-status {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: 0;
+}
+
+.progress-step {
+  font-size: 0.875rem;
+  font-weight: 900;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0;
+}
+
+.progress-bar {
+  border-radius: 9999px;
+  height: 0.625rem;
+  background-color: var(--color-surface-highlight);
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: var(--color-primary);
+  border-radius: 9999px;
+  box-shadow: 0 0 15px rgba(25, 127, 230, 0.5);
+  transition: all 1s;
+}
+
+.progress-steps {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.6875rem;
+  font-weight: 900;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.progress-step-item {
+  color: var(--color-text-secondary);
+}
+
+.progress-step-complete {
+  color: #10b981;
+}
+
+.progress-step-active {
+  color: var(--color-primary);
+  border-bottom: 2px solid var(--color-primary);
+  padding-bottom: 0.25rem;
+}
+
+.booking-step {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.booking-step-disabled {
+  opacity: 0.4;
+  filter: grayscale(100%);
+  pointer-events: none;
+}
+
+.step-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-surface-highlight);
+}
+
+.step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  background-color: rgba(25, 127, 230, 0.2);
+  color: var(--color-primary);
+  font-weight: 900;
+  font-size: 1.125rem;
+  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+}
+
+.step-number-active {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.step-number-disabled {
+  border: 2px solid var(--color-slate-600);
+  background-color: transparent;
+  color: var(--color-text-secondary);
+}
+
+.step-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+.step-title-disabled {
+  color: var(--color-text-secondary);
+}
+
+.step-check {
+  color: #10b981;
+  margin-left: auto;
+  font-size: 1.875rem;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .profile-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.profile-card {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: var(--radius-2xl);
+  border: 2px solid transparent;
+  transition: all 0.3s;
+  filter: grayscale(100%);
+}
+
+.profile-card:hover {
+  border-color: rgba(25, 127, 230, 0.5);
+  filter: grayscale(0);
+}
+
+.profile-card-active {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(25, 127, 230, 0.2), 0 25px 50px -12px rgba(25, 127, 230, 0.3);
+  transform: scale(1.05);
+  filter: grayscale(0);
+}
+
+.profile-badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 20;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  font-size: 0.625rem;
+  font-weight: 900;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  box-shadow: var(--shadow-lg);
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.profile-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.2), transparent);
+  z-index: 10;
+}
+
+.profile-image {
+  height: 10rem;
+  width: 100%;
+  object-fit: cover;
+  transition: transform 0.7s;
+}
+
+.profile-card:hover .profile-image {
+  transform: scale(1.1);
+}
+
+.profile-label {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 20;
+  font-weight: 900;
+  color: var(--color-white);
+  font-size: 1rem;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+.location-grid {
+  display: grid;
+  gap: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .location-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.location-section,
+.schedule-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.form-label {
+  font-size: 0.75rem;
+  font-weight: 900;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-primary);
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+
+.form-input {
+  width: 100%;
+  background-color: rgba(36, 58, 71, 0.5);
+  border: none;
+  border-radius: var(--radius-2xl);
+  padding: 1rem 1.25rem 1rem 3rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-white);
+  transition: all var(--transition-base);
+  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+}
+
+.form-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(25, 127, 230, 0.2), inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+}
+
+.form-input::placeholder {
+  color: var(--color-slate-500);
+}
+
+.map-container {
+  position: relative;
+  height: 12rem;
+  width: 100%;
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-2xl);
+}
+
+.map-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.map-icon {
+  font-size: 3rem;
+  color: var(--color-primary);
+  filter: drop-shadow(0 25px 50px -12px rgba(0, 0, 0, 0.25));
+  animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-25%);
+  }
+}
+
+.map-image {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  opacity: 0.6;
+  transition: opacity 0.7s, transform 0.7s;
+  transform: scale(1.1);
+}
+
+.map-container:hover .map-image {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.time-slots {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.time-slot {
+  padding: 0.75rem 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  border-radius: var(--radius-xl);
+  border: none;
+  background-color: var(--color-surface-highlight);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-lg);
+}
+
+.time-slot:hover {
+  background-color: #324a61;
+}
+
+.time-slot-active {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  box-shadow: 0 0 0 4px rgba(25, 127, 230, 0.2);
+}
+
+.weather-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin-top: 0.5rem;
+  background-color: rgba(25, 127, 230, 0.05);
+  padding: 0.75rem;
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(25, 127, 230, 0.1);
+}
+
+.weather-icon {
+  color: var(--color-primary);
+  font-size: 1.25rem;
+}
+
+.drone-selection-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(36, 58, 71, 0.4);
+  border-radius: 2rem;
+  overflow: hidden;
+  border: 1px solid rgba(25, 127, 230, 0.4);
+  box-shadow: var(--shadow-2xl);
+  transition: all 0.5s;
+}
+
+.drone-selection-card:hover {
+  border-color: var(--color-primary);
+}
+
+@media (min-width: 768px) {
+  .drone-selection-card {
+    flex-direction: row;
+  }
+}
+
+.drone-selection-badge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  font-size: 0.625rem;
+  font-weight: 900;
+  padding: 0.375rem 1rem;
+  border-bottom-right-radius: 2rem;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  box-shadow: var(--shadow-xl);
+}
+
+.drone-selection-badge .material-symbols-outlined {
+  font-size: 0.875rem;
+  font-weight: 300;
+}
+
+.drone-selection-image-wrapper {
+  width: 100%;
+  height: 16rem;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .drone-selection-image-wrapper {
+    width: 40%;
+    height: auto;
+  }
+}
+
+.drone-selection-image {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  mix-blend-mode: overlay;
+  opacity: 0.8;
+  transition: transform 1s;
+}
+
+.drone-selection-card:hover .drone-selection-image {
+  transform: scale(1.1);
+}
+
+.drone-selection-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, transparent, rgba(36, 58, 71, 0.4));
+}
+
+.drone-selection-content {
+  width: 100%;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.5rem;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .drone-selection-content {
+    width: 60%;
+  }
+}
+
+.drone-selection-badge-text {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 0.75rem;
+  font-weight: 900;
+  color: rgba(25, 127, 230, 0.3);
+  transition: color var(--transition-base);
+}
+
+.drone-selection-card:hover .drone-selection-badge-text {
+  color: var(--color-primary);
+}
+
+.drone-selection-info {
+  flex: 1;
+}
+
+.drone-selection-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.drone-selection-name {
+  font-size: 1.875rem;
+  font-weight: 900;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+.drone-selection-price {
+  text-align: right;
+}
+
+.drone-price {
+  font-size: 1.875rem;
+  font-weight: 900;
+  color: var(--color-primary);
+  margin: 0;
+}
+
+.drone-price-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0;
+}
+
+.drone-selection-description {
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  line-height: 1.75;
+  margin: 0;
+}
+
+.drone-selection-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.drone-stat-badge {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-xl);
+  background-color: rgba(17, 26, 34, 0.8);
+  font-size: 0.6875rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+}
+
+.drone-selection-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 1rem;
+}
+
+.drone-select-button {
+  flex: 1;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  font-weight: 900;
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius-2xl);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  box-shadow: 0 20px 25px -5px rgba(25, 127, 230, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.drone-select-button:hover {
+  background-color: #1566c4;
+}
+
+.drone-select-button:active {
+  transform: scale(0.95);
+}
+
+.drone-select-icon {
+  font-size: 1.25rem;
+  transition: transform var(--transition-base);
+}
+
+.drone-select-button:hover .drone-select-icon {
+  transform: rotate(12deg);
+}
+
+.drone-info-button {
+  padding: 1rem;
+  border-radius: var(--radius-2xl);
+  border: 2px solid var(--color-slate-600);
+  background: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.drone-info-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.drone-info-button .material-symbols-outlined {
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+
+.alternatives-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  text-align: left;
+  padding: 1.25rem 2rem;
+  border-radius: var(--radius-2xl);
+  background-color: rgba(36, 58, 71, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-lg);
+}
+
+.alternatives-button:hover {
+  background-color: var(--color-surface-highlight);
+}
+
+.alternatives-text {
+  font-size: 0.875rem;
+  font-weight: 900;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: color var(--transition-base);
+}
+
+.alternatives-button:hover .alternatives-text {
+  color: var(--color-white);
+}
+
+.alternatives-icon {
+  color: var(--color-text-secondary);
+  transition: all var(--transition-base);
+}
+
+.alternatives-button:hover .alternatives-icon {
+  transform: translateY(0.25rem);
+}
+
+.billing-placeholder {
+  padding: 2.5rem;
+  border-radius: 2rem;
+  background-color: rgba(36, 58, 71, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+}
+
+.billing-locked {
+  height: 8rem;
+  background-color: rgba(30, 41, 59, 0.5);
+  border-radius: var(--radius-2xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.billing-locked-text {
+  color: var(--color-slate-600);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+}
+
+.booking-sidebar {
+  position: relative;
+}
+
+@media (min-width: 1024px) {
+  .booking-sidebar {
+    grid-column: span 4;
+  }
+}
+
+.summary-card {
+  position: sticky;
+  top: 7rem;
+  background-color: var(--color-surface-highlight);
+  border-radius: 2.5rem;
+  padding: 2.5rem;
+  box-shadow: var(--shadow-2xl);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.summary-header-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0.5rem;
+  background-color: var(--color-primary);
+}
+
+.summary-title {
+  font-size: 1.5rem;
+  font-weight: 900;
+  margin-bottom: 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0;
+}
+
+.summary-icon-wrapper {
+  padding: 0.75rem;
+  border-radius: var(--radius-2xl);
+  background-color: rgba(25, 127, 230, 0.1);
+}
+
+.summary-icon {
+  color: var(--color-primary);
+  font-size: 1.875rem;
+  font-weight: 300;
+}
+
+.summary-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.summary-item-label {
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summary-item-label .material-symbols-outlined {
+  font-size: 0.875rem;
+}
+
+.summary-item-value {
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
+.summary-item-discount {
+  color: var(--color-primary);
+}
+
+.summary-item-discount .summary-item-value {
+  font-weight: 900;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2.5rem;
+}
+
+.summary-total-label {
+  display: flex;
+  flex-direction: column;
+}
+
+.summary-total-text {
+  font-size: 0.625rem;
+  color: var(--color-text-secondary);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.summary-total-currency {
+  font-size: 0.75rem;
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.summary-total-amount {
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: -0.025em;
+  color: var(--color-white);
+}
+
+.summary-button {
+  width: 100%;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  font-weight: 900;
+  padding: 1.25rem;
+  border-radius: 1.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  box-shadow: 0 25px 50px -12px rgba(25, 127, 230, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.summary-button:hover {
+  background-color: #1566c4;
+  transform: scale(1.05);
+}
+
+.summary-button:active {
+  transform: scale(0.95);
+}
+
+.summary-button-icon {
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+
+.summary-security {
+  text-align: center;
+  font-size: 0.625rem;
+  color: var(--color-text-secondary);
+  margin-top: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0;
+}
+
+.operator-card {
+  background-color: rgba(36, 58, 71, 0.3);
+  backdrop-filter: blur(12px);
+  border-radius: 2rem;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-xl);
+}
+
+.operator-card:hover {
+  border-color: rgba(25, 127, 230, 0.3);
+}
+
+.operator-avatar-wrapper {
+  position: relative;
+}
+
+.operator-avatar {
+  width: 4rem;
+  height: 4rem;
+  border-radius: var(--radius-2xl);
+  object-fit: cover;
+  box-shadow: var(--shadow-lg);
+  transition: transform 0.5s;
+}
+
+.operator-card:hover .operator-avatar {
+  transform: scale(1.1);
+}
+
+.operator-status {
+  position: absolute;
+  bottom: -0.25rem;
+  right: -0.25rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  background-color: #10b981;
+  border-radius: 9999px;
+  border: 4px solid var(--color-background-dark);
+}
+
+.operator-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.operator-name {
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: -0.025em;
+}
+
+.operator-details {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.operator-role {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  font-weight: 700;
+}
+
+.operator-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+  color: #eab308;
+}
+
+.operator-star {
+  font-size: 0.75rem;
+  fill: 1;
+}
+
+.operator-rating-value {
+  font-size: 0.625rem;
+  font-weight: 900;
+}
+
+.operator-arrow {
+  margin-left: auto;
+  color: var(--color-text-secondary);
+  transition: color var(--transition-base);
+}
+
+.operator-card:hover .operator-arrow {
+  color: var(--color-primary);
+}
+</style>

@@ -39,19 +39,19 @@ const handleSubmit = () => {
 </script>
 
 <template>
-  <div class="animate-in slide-in-from-bottom-4 duration-700 bg-background-dark min-h-screen text-white">
+  <div class="contact-view animate-in slide-in-from-bottom-4">
     <!-- Hero Section -->
-    <section class="px-4 py-12 lg:px-40 lg:py-16">
-      <div class="mx-auto max-w-[1000px]">
+    <section class="contact-hero">
+      <div class="contact-hero-container">
         <div 
-          class="relative overflow-hidden rounded-3xl bg-cover bg-center bg-no-repeat min-h-[360px] flex flex-col items-center justify-center text-center p-12 gap-6 shadow-2xl border border-white/5"
+          class="contact-hero-card"
           :style="{ backgroundImage: `linear-gradient(rgba(17, 26, 34, 0.7) 0%, rgba(17, 26, 34, 0.9) 100%), url('https://lh3.googleusercontent.com/aida-public/AB6AXuBVYHEUUbs1tVGwVXjkSsflO4WRhnv07B_CbqC96EXXMdTtpY-TCOcUhfLoHAz2FR-FqVXrhv05bKpx2lE3lU4m4Ue1uPoYmBTEPeI0pXmW8MfMzXD3BBtZyfHswZI3wN3C-sLNxRW_N2nTQokI5W06_7inHWUSdHvIeXrbqJy-4an41_kGT71wlZHF4aD_lUE8oFPcOY4Q-nHaoSRXlam1MrxoCC3eOsksvmBafBMyJAnr4apC0zEV6virnVr23Xa2frYt64Zil4dE')` }"
         >
-          <div class="flex flex-col gap-4 max-w-2xl">
-            <h1 class="text-4xl lg:text-6xl font-black leading-tight tracking-tight">
-              Ready to Capture the Sky? <br/><span class="text-primary">Let's Talk.</span>
+          <div class="contact-hero-content">
+            <h1 class="contact-hero-title">
+              Ready to Capture the Sky? <br/><span class="contact-hero-title-accent">Let's Talk.</span>
             </h1>
-            <p class="text-slate-400 text-lg lg:text-xl font-normal leading-relaxed">
+            <p class="contact-hero-description">
               Fill out the form below to get a detailed quote for your next aerial imagery project.
             </p>
           </div>
@@ -60,147 +60,146 @@ const handleSubmit = () => {
     </section>
 
     <!-- Main Grid -->
-    <section class="px-4 pb-24 lg:px-40">
-      <div class="mx-auto max-w-[1000px] grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-        
+    <section class="contact-main">
+      <div class="contact-grid">
         <!-- Left Column: Info -->
-        <div class="lg:col-span-5 flex flex-col gap-10">
-          <div>
-            <h2 class="text-2xl font-bold leading-tight tracking-tight mb-8 flex items-center gap-3">
-              <div class="w-8 h-1 bg-primary rounded-full"></div>
+        <div class="contact-info">
+          <div class="contact-info-section">
+            <h2 class="contact-info-title">
+              <div class="contact-info-title-bar"></div>
               Contact Information
             </h2>
             
-            <div class="flex flex-col gap-5">
+            <div class="contact-info-list">
               <div 
                 v-for="(item, i) in contactInfo" 
                 :key="i" 
-                class="flex items-center gap-5 p-5 rounded-2xl bg-surface-dark border border-surface-highlight/40 hover:border-primary/50 transition-all group"
+                class="contact-info-item"
               >
-                <div class="flex items-center justify-center rounded-xl bg-surface-highlight text-primary shrink-0 size-14 group-hover:bg-primary group-hover:text-white transition-all shadow-inner">
-                  <span class="material-symbols-outlined text-2xl">{{ item.icon }}</span>
+                <div class="contact-info-icon-wrapper">
+                  <span class="material-symbols-outlined contact-info-icon">{{ item.icon }}</span>
                 </div>
-                <div class="flex flex-col">
-                  <span class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">{{ item.label }}</span>
-                  <p class="text-lg font-medium truncate">{{ item.value }}</p>
+                <div class="contact-info-details">
+                  <span class="contact-info-label">{{ item.label }}</span>
+                  <p class="contact-info-value">{{ item.value }}</p>
                 </div>
               </div>
             </div>
           </div>
 
           <!-- Map Placeholder -->
-          <div class="rounded-2xl overflow-hidden border border-surface-highlight/50 h-56 relative group shadow-2xl">
-            <div class="absolute inset-0 bg-slate-900/30 group-hover:bg-transparent transition-colors z-10"></div>
+          <div class="contact-map">
+            <div class="contact-map-overlay"></div>
             <img 
-              class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-700 scale-110 group-hover:scale-100" 
+              class="contact-map-image"
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtnILhmVYX9l3HU8EvjnQ6TziVkvrSDEMMoe3KAxhg4BXoRHiUuzZy2Uu011Ew6QEOQY0Rlz9GolcVuhL3LvhTEUxr4KVZ0FaehEr5KWxxAmX7W-BmsizUwA8lk4lcFz_yyjBfKDJkGP07x--GqVnXQiGTnNQyuE_Bq0PDZVuMM7u_nPY5v7VQiA7dvQjUaSkcYDiUApj-nrSIuEV0CMoEWdbaU8kIdH1kE5ZoL2ERibOWLO8D4M3ZhVfAE_eu4xtqGbqAZMnY1DP8"
               alt="Portland Map"
             />
-            <div class="absolute bottom-4 left-4 z-20 bg-surface-dark/90 backdrop-blur-md px-4 py-1.5 rounded-lg text-xs font-bold border border-white/10 shadow-lg">
+            <div class="contact-map-badge">
               Service Radius: 100mi
             </div>
           </div>
 
-          <div class="flex gap-4">
-            <button class="flex-1 flex items-center justify-center gap-3 py-4 rounded-xl bg-surface-dark hover:bg-surface-highlight transition-all border border-surface-highlight/50 shadow-lg">
-              <span class="material-symbols-outlined text-xl text-primary">photo_camera</span>
-              <span class="text-sm font-bold">Instagram</span>
+          <div class="contact-social">
+            <button class="contact-social-button">
+              <span class="material-symbols-outlined contact-social-icon">photo_camera</span>
+              <span class="contact-social-text">Instagram</span>
             </button>
-            <button class="flex-1 flex items-center justify-center gap-3 py-4 rounded-xl bg-surface-dark hover:bg-surface-highlight transition-all border border-surface-highlight/50 shadow-lg">
-              <span class="material-symbols-outlined text-xl text-primary">work</span>
-              <span class="text-sm font-bold">LinkedIn</span>
+            <button class="contact-social-button">
+              <span class="material-symbols-outlined contact-social-icon">work</span>
+              <span class="contact-social-text">LinkedIn</span>
             </button>
           </div>
         </div>
 
         <!-- Right Column: Form -->
-        <div class="lg:col-span-7">
-          <div class="bg-surface-dark rounded-[2rem] p-8 lg:p-12 border border-surface-highlight shadow-2xl relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-[60px] rounded-full"></div>
-            <h2 class="text-3xl font-bold mb-3 relative z-10">Request a Quote</h2>
-            <p class="text-slate-400 text-base mb-10 relative z-10">Details help us fly safer and smarter. Tell us about your mission.</p>
+        <div class="contact-form-wrapper">
+          <div class="contact-form-card">
+            <div class="contact-form-glow"></div>
+            <h2 class="contact-form-title">Request a Quote</h2>
+            <p class="contact-form-subtitle">Details help us fly safer and smarter. Tell us about your mission.</p>
             
-            <form @submit.prevent="handleSubmit" class="flex flex-col gap-6 relative z-10">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="flex flex-col gap-2">
-                  <label class="text-sm font-bold text-slate-300 uppercase tracking-widest">Your Name</label>
+            <form @submit.prevent="handleSubmit" class="contact-form">
+              <div class="form-row">
+                <div class="form-field">
+                  <label class="form-label">Your Name</label>
                   <input 
                     v-model="formData.name"
-                    class="h-14 w-full rounded-xl bg-background-dark border border-surface-highlight px-5 text-base text-white placeholder-slate-500 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all shadow-inner" 
+                    class="form-input"
                     placeholder="John Doe" 
                     type="text" 
                   />
                 </div>
-                <div class="flex flex-col gap-2">
-                  <label class="text-sm font-bold text-slate-300 uppercase tracking-widest">Company Name</label>
+                <div class="form-field">
+                  <label class="form-label">Company Name</label>
                   <input 
                     v-model="formData.company"
-                    class="h-14 w-full rounded-xl bg-background-dark border border-surface-highlight px-5 text-base text-white placeholder-slate-500 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all shadow-inner" 
+                    class="form-input"
                     placeholder="Sky Corp (Optional)" 
                     type="text" 
                   />
                 </div>
               </div>
 
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="flex flex-col gap-2">
-                  <label class="text-sm font-bold text-slate-300 uppercase tracking-widest">Email Address</label>
+              <div class="form-row">
+                <div class="form-field">
+                  <label class="form-label">Email Address</label>
                   <input 
                     v-model="formData.email"
-                    class="h-14 w-full rounded-xl bg-background-dark border border-surface-highlight px-5 text-base text-white placeholder-slate-500 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all shadow-inner" 
+                    class="form-input"
                     placeholder="john@example.com" 
                     type="email" 
                   />
                 </div>
-                <div class="flex flex-col gap-2">
-                  <label class="text-sm font-bold text-slate-300 uppercase tracking-widest">Project Type</label>
-                  <div class="relative">
+                <div class="form-field">
+                  <label class="form-label">Project Type</label>
+                  <div class="select-wrapper">
                     <select 
                       v-model="formData.projectType"
-                      class="h-14 w-full appearance-none rounded-xl bg-background-dark border border-surface-highlight px-5 text-base text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all cursor-pointer shadow-inner"
+                      class="form-select"
                     >
                       <option v-for="type in projectTypes" :key="type" :value="type">{{ type }}</option>
                     </select>
-                    <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
+                    <span class="material-symbols-outlined select-arrow">expand_more</span>
                   </div>
                 </div>
               </div>
 
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="flex flex-col gap-2">
-                  <label class="text-sm font-bold text-slate-300 uppercase tracking-widest">Project Date</label>
+              <div class="form-row">
+                <div class="form-field">
+                  <label class="form-label">Project Date</label>
                   <input 
                     v-model="formData.projectDate"
-                    class="h-14 w-full rounded-xl bg-background-dark border border-surface-highlight px-5 text-base text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all shadow-inner [color-scheme:dark]" 
+                    class="form-input"
                     type="date" 
                   />
                 </div>
-                <div class="flex flex-col gap-2">
-                  <label class="text-sm font-bold text-slate-300 uppercase tracking-widest">Project Location</label>
-                  <div class="relative">
+                <div class="form-field">
+                  <label class="form-label">Project Location</label>
+                  <div class="input-wrapper-location">
                     <input 
                       v-model="formData.location"
-                      class="h-14 w-full rounded-xl bg-background-dark border border-surface-highlight pl-12 pr-5 text-base text-white placeholder-slate-500 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all shadow-inner" 
+                      class="form-input form-input-location"
                       placeholder="City or Coordinates" 
                       type="text" 
                     />
-                    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary text-xl font-light pointer-events-none">location_on</span>
+                    <span class="material-symbols-outlined input-icon-location">location_on</span>
                   </div>
                 </div>
               </div>
 
-              <div class="flex flex-col gap-2">
-                <label class="text-sm font-bold text-slate-300 uppercase tracking-widest">Project Description</label>
+              <div class="form-field form-field-full">
+                <label class="form-label">Project Description</label>
                 <textarea 
                   v-model="formData.description"
-                  class="h-40 w-full resize-none rounded-xl bg-background-dark border border-surface-highlight p-5 text-base text-white placeholder-slate-500 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all shadow-inner" 
+                  class="form-textarea"
                   placeholder="Describe the shots you need, specific requirements, or hazards..."
                 ></textarea>
               </div>
 
-              <button type="submit" class="mt-4 flex h-16 w-full cursor-pointer items-center justify-center gap-3 rounded-xl bg-primary hover:bg-blue-600 px-8 text-lg font-bold text-white transition-all shadow-2xl shadow-primary/30 hover:scale-[1.01] active:scale-[0.98]">
-                <span class="truncate">Send Request</span>
-                <span class="material-symbols-outlined text-2xl font-light">send</span>
+              <button type="submit" class="form-submit">
+                <span class="form-submit-text">Send Request</span>
+                <span class="material-symbols-outlined form-submit-icon">send</span>
               </button>
             </form>
           </div>
@@ -209,20 +208,20 @@ const handleSubmit = () => {
     </section>
 
     <!-- FAQ Section -->
-    <section class="px-4 pb-24 lg:px-40">
-      <div class="mx-auto max-w-[1000px]">
-        <h3 class="text-2xl font-bold text-white mb-10 pl-4 border-l-4 border-primary">Frequently Asked Questions</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <section class="contact-faq">
+      <div class="contact-faq-container">
+        <h3 class="contact-faq-title">Frequently Asked Questions</h3>
+        <div class="contact-faq-grid">
           <details 
             v-for="(faq, idx) in faqs" 
             :key="idx" 
-            class="group bg-surface-dark rounded-2xl border border-surface-highlight/50 transition-all overflow-hidden shadow-lg"
+            class="faq-item"
           >
-            <summary class="flex cursor-pointer list-none items-center justify-between p-6 font-bold text-white hover:bg-surface-highlight/30 transition-colors">
-              <span class="text-lg">{{ faq.q }}</span>
-              <span class="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
+            <summary class="faq-question">
+              <span class="faq-question-text">{{ faq.q }}</span>
+              <span class="material-symbols-outlined faq-arrow">expand_more</span>
             </summary>
-            <div class="px-6 pb-6 text-slate-400 leading-relaxed text-base">
+            <div class="faq-answer">
               {{ faq.a }}
             </div>
           </details>
@@ -231,3 +230,591 @@ const handleSubmit = () => {
     </section>
   </div>
 </template>
+
+<style scoped>
+@import '../assets/variables.css';
+
+.contact-view {
+  animation-duration: 0.7s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
+  background-color: var(--color-background-dark);
+  min-height: 100vh;
+  color: var(--color-white);
+}
+
+/* Hero Section */
+.contact-hero {
+  padding: 3rem 1rem;
+}
+
+@media (min-width: 1024px) {
+  .contact-hero {
+    padding: 4rem 10rem;
+  }
+}
+
+.contact-hero-container {
+  margin: 0 auto;
+  max-width: 1000px;
+}
+
+.contact-hero-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem;
+  gap: 1.5rem;
+  box-shadow: var(--shadow-2xl);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.contact-hero-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 42rem;
+}
+
+.contact-hero-title {
+  font-size: 2.25rem;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+@media (min-width: 1024px) {
+  .contact-hero-title {
+    font-size: 3.75rem;
+  }
+}
+
+.contact-hero-title-accent {
+  color: var(--color-primary);
+}
+
+.contact-hero-description {
+  color: var(--color-slate-400);
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.75;
+}
+
+@media (min-width: 1024px) {
+  .contact-hero-description {
+    font-size: 1.25rem;
+  }
+}
+
+/* Main Grid */
+.contact-main {
+  padding: 0 1rem 6rem;
+}
+
+@media (min-width: 1024px) {
+  .contact-main {
+    padding-left: 10rem;
+    padding-right: 10rem;
+  }
+}
+
+.contact-grid {
+  margin: 0 auto;
+  max-width: 1000px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+}
+
+@media (min-width: 1024px) {
+  .contact-grid {
+    grid-template-columns: repeat(12, 1fr);
+    gap: 4rem;
+  }
+}
+
+/* Contact Info */
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+@media (min-width: 1024px) {
+  .contact-info {
+    grid-column: span 5;
+  }
+}
+
+.contact-info-section {
+  flex: 1;
+}
+
+.contact-info-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0;
+}
+
+.contact-info-title-bar {
+  width: 2rem;
+  height: 0.25rem;
+  background-color: var(--color-primary);
+  border-radius: 9999px;
+}
+
+.contact-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.contact-info-item {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.25rem;
+  border-radius: var(--radius-2xl);
+  background-color: var(--color-surface-dark);
+  border: 1px solid rgba(36, 58, 71, 0.4);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.contact-info-item:hover {
+  border-color: rgba(25, 127, 230, 0.5);
+}
+
+.contact-info-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-xl);
+  background-color: var(--color-surface-highlight);
+  color: var(--color-primary);
+  flex-shrink: 0;
+  width: 3.5rem;
+  height: 3.5rem;
+  transition: all var(--transition-base);
+  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+}
+
+.contact-info-item:hover .contact-info-icon-wrapper {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.contact-info-icon {
+  font-size: 1.5rem;
+}
+
+.contact-info-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-info-label {
+  font-size: 0.75rem;
+  color: var(--color-slate-400);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.contact-info-value {
+  font-size: 1.125rem;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0;
+}
+
+.contact-map {
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  border: 1px solid rgba(36, 58, 71, 0.5);
+  height: 14rem;
+  position: relative;
+  box-shadow: var(--shadow-2xl);
+}
+
+.contact-map-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.3);
+  z-index: 10;
+  transition: background-color var(--transition-base);
+}
+
+.contact-map:hover .contact-map-overlay {
+  background-color: transparent;
+}
+
+.contact-map-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.8;
+  transition: all 0.7s;
+  transform: scale(1.1);
+}
+
+.contact-map:hover .contact-map-image {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.contact-map-badge {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 20;
+  background-color: rgba(26, 38, 50, 0.9);
+  backdrop-filter: blur(12px);
+  padding: 0.375rem 1rem;
+  border-radius: var(--radius-lg);
+  font-size: 0.75rem;
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--shadow-lg);
+}
+
+.contact-social {
+  display: flex;
+  gap: 1rem;
+}
+
+.contact-social-button {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: var(--radius-xl);
+  background-color: var(--color-surface-dark);
+  border: 1px solid rgba(36, 58, 71, 0.5);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-lg);
+}
+
+.contact-social-button:hover {
+  background-color: var(--color-surface-highlight);
+}
+
+.contact-social-icon {
+  font-size: 1.25rem;
+  color: var(--color-primary);
+}
+
+.contact-social-text {
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+/* Contact Form */
+.contact-form-wrapper {
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .contact-form-wrapper {
+    grid-column: span 7;
+  }
+}
+
+.contact-form-card {
+  background-color: var(--color-surface-dark);
+  border-radius: 2rem;
+  padding: 2rem;
+  border: 1px solid var(--color-surface-highlight);
+  box-shadow: var(--shadow-2xl);
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 1024px) {
+  .contact-form-card {
+    padding: 3rem;
+  }
+}
+
+.contact-form-glow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8rem;
+  height: 8rem;
+  background-color: rgba(25, 127, 230, 0.1);
+  filter: blur(60px);
+  border-radius: 9999px;
+}
+
+.contact-form-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  position: relative;
+  z-index: 10;
+  margin-top: 0;
+}
+
+.contact-form-subtitle {
+  color: var(--color-slate-400);
+  font-size: 1rem;
+  margin-bottom: 2.5rem;
+  position: relative;
+  z-index: 10;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: relative;
+  z-index: 10;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .form-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-field-full {
+  grid-column: 1 / -1;
+}
+
+.form-label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: rgb(203, 213, 225);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  height: 3.5rem;
+  width: 100%;
+  border-radius: var(--radius-xl);
+  background-color: var(--color-background-dark);
+  border: 1px solid var(--color-surface-highlight);
+  padding: 0 1.25rem;
+  font-size: 1rem;
+  color: var(--color-white);
+  transition: all var(--transition-base);
+  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(25, 127, 230, 0.2), inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+}
+
+.form-input::placeholder {
+  color: var(--color-slate-500);
+}
+
+.form-textarea {
+  height: 10rem;
+  resize: none;
+  padding: 1.25rem;
+}
+
+.select-wrapper {
+  position: relative;
+}
+
+.form-select {
+  appearance: none;
+  cursor: pointer;
+  padding-right: 2.5rem;
+}
+
+.select-arrow {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-slate-400);
+  pointer-events: none;
+}
+
+.input-wrapper-location {
+  position: relative;
+}
+
+.form-input-location {
+  padding-left: 3rem;
+}
+
+.input-icon-location {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-primary);
+  font-size: 1.25rem;
+  font-weight: 300;
+  pointer-events: none;
+}
+
+.form-submit {
+  margin-top: 1rem;
+  display: flex;
+  height: 4rem;
+  width: 100%;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  border-radius: var(--radius-xl);
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  padding: 0 2rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+  border: none;
+  transition: all var(--transition-base);
+  box-shadow: 0 25px 50px -12px rgba(25, 127, 230, 0.3);
+}
+
+.form-submit:hover {
+  background-color: #1566c4;
+  transform: scale(1.01);
+}
+
+.form-submit:active {
+  transform: scale(0.98);
+}
+
+.form-submit-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.form-submit-icon {
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+
+/* FAQ Section */
+.contact-faq {
+  padding: 0 1rem 6rem;
+}
+
+@media (min-width: 1024px) {
+  .contact-faq {
+    padding-left: 10rem;
+    padding-right: 10rem;
+  }
+}
+
+.contact-faq-container {
+  margin: 0 auto;
+  max-width: 1000px;
+}
+
+.contact-faq-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-white);
+  margin-bottom: 2.5rem;
+  padding-left: 1rem;
+  border-left: 4px solid var(--color-primary);
+  margin-top: 0;
+}
+
+.contact-faq-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .contact-faq-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.faq-item {
+  background-color: var(--color-surface-dark);
+  border-radius: var(--radius-2xl);
+  border: 1px solid rgba(36, 58, 71, 0.5);
+  transition: all var(--transition-base);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+.faq-question {
+  display: flex;
+  cursor: pointer;
+  list-style: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  font-weight: 700;
+  color: var(--color-white);
+  transition: background-color var(--transition-base);
+}
+
+.faq-question:hover {
+  background-color: rgba(36, 58, 71, 0.3);
+}
+
+.faq-question-text {
+  font-size: 1.125rem;
+}
+
+.faq-arrow {
+  transition: transform var(--transition-base);
+}
+
+.faq-item[open] .faq-arrow {
+  transform: rotate(180deg);
+}
+
+.faq-answer {
+  padding: 0 1.5rem 1.5rem;
+  color: var(--color-slate-400);
+  line-height: 1.75;
+  font-size: 1rem;
+}
+</style>

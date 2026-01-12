@@ -21,37 +21,34 @@ const navigateToContact = () => {
 </script>
 
 <template>
-  <div class="animate-in fade-in duration-700">
+  <div class="home-view animate-in fade-in">
     <!-- Hero Section -->
-    <section class="relative w-full overflow-hidden bg-background-dark">
-      <div class="px-4 md:px-10 lg:px-40 flex flex-1 justify-center py-5 lg:py-16">
-        <div class="layout-content-container flex flex-col max-w-[1200px] flex-1">
-          <div class="relative flex min-h-[560px] flex-col gap-6 overflow-hidden rounded-2xl items-center justify-center p-8 text-center">
+    <section class="hero-section">
+      <div class="hero-container">
+        <div class="hero-content-wrapper">
+          <div class="hero-card">
             <div 
-              class="absolute inset-0 z-0 w-full h-full bg-cover bg-center transition-transform duration-1000 scale-105" 
+              class="hero-background" 
               :style="{ 
                 backgroundImage: `linear-gradient(rgba(17, 25, 33, 0.4) 0%, rgba(17, 25, 33, 0.9) 100%), url('https://lh3.googleusercontent.com/aida-public/AB6AXuDNdc3ICjXIuZ_gSh5Kn5Qga8N-S9huscNY0KGS3r-8mA1raMKnQ8L27zXZkuXfMQMAb6ryCqgaLih3l7k_qvD7xsZPpCXa7DeYHKbSSDqFrn9o0GXolMJYJEdIgYLVBCWQ7Dj7UkgZNuuunrDGsUhke154HTPpuQBzf4jjHEgFL9lEuLB5VJQOA-BpZ_rS_4adF86ylNYSFsi2BjcGN3sybjkLxsgDr_ASBTrjO_lLyCyO3N59PCbdB9yS03R2w17l8vno4YFioAMx')` 
               }"
             ></div>
-            <div class="relative z-10 flex flex-col gap-4 max-w-[850px] items-center">
-              <span class="px-3 py-1 rounded-full bg-primary/20 text-primary text-xs font-bold uppercase tracking-wider border border-primary/30 backdrop-blur-sm mb-4">
+            <div class="hero-content">
+              <span class="hero-badge">
                 Available Globally
               </span>
-              <h1 class="text-white text-5xl md:text-6xl lg:text-7xl font-black leading-tight tracking-[-0.033em] uppercase drop-shadow-2xl">
+              <h1 class="hero-title">
                 Elevate Your Perspective
               </h1>
-              <p class="text-slate-200 text-lg md:text-xl font-normal leading-relaxed max-w-2xl mx-auto drop-shadow-md">
+              <p class="hero-description">
                 Professional Drone Operators on Demand. From high-speed FPV to cinematic 8K, we capture the shots others can't.
               </p>
-              <div class="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-                <button 
-                  @click="navigateToBooking"
-                  class="flex min-w-[180px] cursor-pointer items-center justify-center rounded-xl h-14 px-8 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-blue-600 hover:scale-105 transition-all shadow-xl shadow-primary/30"
-                >
+              <div class="hero-buttons">
+                <button @click="navigateToBooking" class="hero-button-primary">
                   Book a Pilot
                 </button>
-                <button class="flex min-w-[180px] cursor-pointer items-center justify-center rounded-xl h-14 px-8 bg-white/10 backdrop-blur-md border border-white/20 text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-white/20 transition-all">
-                  <span class="material-symbols-outlined mr-2 text-xl">play_circle</span>
+                <button class="hero-button-secondary">
+                  <span class="material-symbols-outlined hero-button-icon">play_circle</span>
                   Watch Reel
                 </button>
               </div>
@@ -62,78 +59,73 @@ const navigateToContact = () => {
     </section>
 
     <!-- Stats Section -->
-    <section class="w-full bg-white dark:bg-[#111921] border-y border-slate-200 dark:border-[#243647]">
-      <div class="px-4 md:px-40 flex justify-center py-12">
-        <div class="max-w-[1200px] w-full">
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div v-for="(stat, idx) in stats" :key="idx" class="flex flex-col gap-1 items-center md:items-start group cursor-default">
-              <div class="flex items-center gap-2 text-primary mb-1 group-hover:scale-110 transition-transform">
-                <span class="material-symbols-outlined">{{ stat.icon }}</span>
-                <p class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-widest">{{ stat.label }}</p>
-              </div>
-              <p class="text-slate-900 dark:text-white tracking-tight text-3xl md:text-4xl font-bold">{{ stat.value }}</p>
+    <section class="stats-section">
+      <div class="stats-container">
+        <div class="stats-grid">
+          <div v-for="(stat, idx) in stats" :key="idx" class="stat-item">
+            <div class="stat-header">
+              <span class="material-symbols-outlined stat-icon">{{ stat.icon }}</span>
+              <p class="stat-label">{{ stat.label }}</p>
             </div>
+            <p class="stat-value">{{ stat.value }}</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Services Grid -->
-    <section class="w-full bg-slate-50 dark:bg-[#0d1218] py-24">
-      <div class="px-4 md:px-10 lg:px-40 flex flex-1 justify-center">
-        <div class="flex flex-col max-w-[1200px] flex-1">
-          <div class="flex flex-col md:flex-row justify-between items-end gap-6 mb-16 px-4">
-            <div class="flex flex-col gap-4 max-w-[700px]">
-              <span class="text-primary font-bold tracking-widest uppercase text-sm">Our Expertise</span>
-              <h2 class="text-slate-900 dark:text-white text-4xl md:text-5xl font-bold leading-tight tracking-tight">
+    <section class="services-section">
+      <div class="services-container">
+        <div class="services-wrapper">
+          <div class="services-header">
+            <div class="services-header-content">
+              <span class="services-badge">Our Expertise</span>
+              <h2 class="services-title">
                 Specialized Aerial Solutions
               </h2>
-              <p class="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">
+              <p class="services-description">
                 We don't just fly drones; we capture data and art. Choose the service that fits your project needs.
               </p>
             </div>
-            <button class="flex items-center gap-2 text-primary font-bold hover:translate-x-1 transition-transform group">
-              View All Services <span class="material-symbols-outlined text-sm group-hover:ml-1 transition-all">arrow_forward</span>
+            <button class="services-view-all">
+              View All Services <span class="material-symbols-outlined services-arrow">arrow_forward</span>
             </button>
           </div>
           
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4">
-            <div v-for="service in SERVICES" :key="service.id" class="group relative overflow-hidden rounded-2xl bg-white dark:bg-[#1a2632] border border-slate-200 dark:border-[#243647] hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 flex flex-col">
-              <div class="aspect-[16/10] w-full overflow-hidden">
+          <div class="services-grid">
+            <div v-for="service in SERVICES" :key="service.id" class="service-card">
+              <div class="service-image-wrapper">
                 <div 
-                  class="h-full w-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110" 
+                  class="service-image" 
                   :style="{ backgroundImage: `url('${service.imageUrl}')` }"
                 ></div>
               </div>
-              <div class="p-8 flex-1 flex flex-col">
-                <div class="mb-4 flex items-center gap-3">
-                  <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
-                    <span class="material-symbols-outlined text-xl">{{ service.icon }}</span>
+              <div class="service-content">
+                <div class="service-header">
+                  <div class="service-icon-wrapper">
+                    <span class="material-symbols-outlined service-icon">{{ service.icon }}</span>
                   </div>
-                  <h3 class="text-xl font-bold text-slate-900 dark:text-white">{{ service.title }}</h3>
+                  <h3 class="service-title">{{ service.title }}</h3>
                 </div>
-                <p class="text-slate-600 dark:text-[#93adc8] text-sm leading-relaxed mb-6">
+                <p class="service-description">
                   {{ service.description }}
                 </p>
-                <button class="mt-auto text-sm font-bold text-primary flex items-center gap-1 group/btn">
-                  Learn more <span class="material-symbols-outlined text-xs group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+                <button class="service-link">
+                  Learn more <span class="material-symbols-outlined service-link-icon">arrow_forward</span>
                 </button>
               </div>
             </div>
               
             <!-- Custom Project Card -->
-            <div class="group relative overflow-hidden rounded-2xl bg-primary flex flex-col justify-center items-center text-center p-10 transition-all duration-500 hover:scale-[1.02] shadow-xl shadow-primary/20">
-              <div class="flex h-20 w-20 mb-6 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-md border border-white/10 group-hover:scale-110 transition-transform">
-                <span class="material-symbols-outlined text-4xl font-light">add</span>
+            <div class="custom-project-card">
+              <div class="custom-project-icon-wrapper">
+                <span class="material-symbols-outlined custom-project-icon">add</span>
               </div>
-              <h3 class="text-2xl font-bold text-white mb-3">Custom Project?</h3>
-              <p class="text-white/80 text-sm mb-8 max-w-[220px]">
+              <h3 class="custom-project-title">Custom Project?</h3>
+              <p class="custom-project-description">
                 Have a specific vision? Our pilots are ready for any challenge.
               </p>
-              <button 
-                @click="navigateToContact"
-                class="bg-white text-primary px-8 py-3 rounded-xl font-bold hover:bg-white/90 transition-colors shadow-lg"
-              >
+              <button @click="navigateToContact" class="custom-project-button">
                 Contact Us
               </button>
             </div>
@@ -143,47 +135,47 @@ const navigateToContact = () => {
     </section>
 
     <!-- Fleet Section -->
-    <section class="w-full bg-white dark:bg-[#111921] py-24 border-t border-slate-200 dark:border-[#243647]">
-      <div class="px-4 md:px-10 lg:px-40 flex justify-center">
-        <div class="max-w-[1200px] w-full">
-          <div class="flex justify-between items-center mb-12 px-4">
-            <h2 class="text-slate-900 dark:text-white text-4xl font-bold tracking-tight">Our Fleet</h2>
-            <div class="flex gap-3">
-              <button class="h-12 w-12 flex items-center justify-center rounded-full border border-slate-300 dark:border-[#344d65] hover:bg-primary hover:text-white hover:border-primary transition-all text-slate-600 dark:text-white">
+    <section class="fleet-section">
+      <div class="fleet-container">
+        <div class="fleet-wrapper">
+          <div class="fleet-header">
+            <h2 class="fleet-title">Our Fleet</h2>
+            <div class="fleet-controls">
+              <button class="fleet-control-button">
                 <span class="material-symbols-outlined">arrow_back</span>
               </button>
-              <button class="h-12 w-12 flex items-center justify-center rounded-full border border-slate-300 dark:border-[#344d65] hover:bg-primary hover:text-white hover:border-primary transition-all text-slate-600 dark:text-white">
+              <button class="fleet-control-button">
                 <span class="material-symbols-outlined">arrow_forward</span>
               </button>
             </div>
           </div>
           
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4">
-            <div v-for="drone in FLEET" :key="drone.id" class="group bg-slate-50 dark:bg-[#1a2632] rounded-2xl border border-slate-200 dark:border-[#243647] overflow-hidden flex flex-col hover:border-primary/40 transition-all duration-300 hover:shadow-xl">
-              <div class="h-56 w-full p-8 flex items-center justify-center bg-slate-100 dark:bg-[#141e28] relative overflow-hidden">
+          <div class="fleet-grid">
+            <div v-for="drone in FLEET" :key="drone.id" class="drone-card">
+              <div class="drone-image-wrapper">
                 <img 
                   :alt="drone.name" 
-                  class="h-full object-contain drop-shadow-2xl z-10 group-hover:scale-110 transition-transform duration-500" 
+                  class="drone-image" 
                   :src="drone.imageUrl" 
                 />
-                <div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div class="drone-image-overlay"></div>
               </div>
-              <div class="p-8 flex-1 flex flex-col">
-                <div class="flex justify-between items-start mb-4">
-                  <h3 class="text-2xl font-bold text-slate-900 dark:text-white">{{ drone.name }}</h3>
-                  <span class="bg-primary/20 text-primary text-[10px] font-black px-2.5 py-1 rounded-md tracking-widest">{{ drone.category }}</span>
+              <div class="drone-content">
+                <div class="drone-header">
+                  <h3 class="drone-name">{{ drone.name }}</h3>
+                  <span class="drone-category">{{ drone.category }}</span>
                 </div>
-                <p class="text-slate-500 dark:text-[#93adc8] text-sm mb-8 leading-relaxed">
+                <p class="drone-description">
                   {{ drone.description }}
                 </p>
-                <div class="mt-auto space-y-5">
-                  <div v-for="(stat, sIdx) in drone.stats" :key="sIdx" class="space-y-2">
-                    <div class="flex justify-between text-sm">
-                      <span class="text-slate-500 dark:text-slate-400 font-medium">{{ stat.label }}</span>
-                      <span class="font-mono font-bold text-slate-900 dark:text-white">{{ stat.value }}</span>
+                <div class="drone-stats">
+                  <div v-for="(stat, sIdx) in drone.stats" :key="sIdx" class="drone-stat">
+                    <div class="drone-stat-header">
+                      <span class="drone-stat-label">{{ stat.label }}</span>
+                      <span class="drone-stat-value">{{ stat.value }}</span>
                     </div>
-                    <div class="w-full bg-slate-200 dark:bg-[#243647] h-2 rounded-full overflow-hidden">
-                      <div class="bg-primary h-full rounded-full group-hover:bg-blue-400 transition-all" :style="{ width: `${stat.percentage}%` }"></div>
+                    <div class="drone-stat-bar">
+                      <div class="drone-stat-bar-fill" :style="{ width: `${stat.percentage}%` }"></div>
                     </div>
                   </div>
                 </div>
@@ -195,38 +187,34 @@ const navigateToContact = () => {
     </section>
 
     <!-- CTA Section -->
-    <section class="w-full py-24 px-4">
-      <div class="max-w-[1200px] mx-auto rounded-[2rem] overflow-hidden relative bg-[#111921] shadow-2xl">
+    <section class="cta-section">
+      <div class="cta-card">
         <div 
-          class="absolute inset-0 opacity-40 bg-cover bg-center" 
+          class="cta-background" 
           :style="{ backgroundImage: `url('https://lh3.googleusercontent.com/aida-public/AB6AXuBkgzl3uIauXoBkmGxdHer8zA_CB_Or6-SoBt3dgI0QRCKImeUHXwITNl7v6bFY49gi_cF68n-921rZPEr-Nb3OAQwEKRtLyNshyvzh2KUhXAGyKsk2krtWfcI0ih22xclY7kuhNWHD5L7WWHUJ0JU0C3f5Uk9Q51W5N5DGOxLOGludReUrLNA3PyRjmJFRSUSmgwLR1WsZlQY7MUDFQQW6dsr9SXW6HYCu2m-sJU8k6mFqD7uhXbjBre9z705dUhlo2vVF2cE45xtX')` }"
         ></div>
-        <div class="absolute inset-0 bg-gradient-to-r from-[#111921] via-[#111921]/90 to-transparent"></div>
-        <div class="relative z-10 p-12 md:p-20 flex flex-col md:flex-row items-center justify-between gap-12">
-          <div class="max-w-xl text-center md:text-left">
-            <h2 class="text-white text-4xl md:text-5xl font-bold mb-6 tracking-tight">Ready to fly?</h2>
-            <p class="text-slate-300 text-lg md:text-xl mb-10 leading-relaxed">
+        <div class="cta-gradient"></div>
+        <div class="cta-content">
+          <div class="cta-text">
+            <h2 class="cta-title">Ready to fly?</h2>
+            <p class="cta-description">
               Get a quote for your project within 24 hours. Our pilots are licensed, insured, and ready to deploy globally.
             </p>
-            <div class="flex flex-col sm:flex-row gap-5 justify-center md:justify-start">
-              <button 
-                @click="navigateToBooking"
-                class="bg-primary hover:bg-blue-600 text-white font-bold py-4 px-10 rounded-xl transition-all shadow-xl shadow-primary/30 hover:scale-105"
-              >
+            <div class="cta-buttons">
+              <button @click="navigateToBooking" class="cta-button-primary">
                 Get a Quote
               </button>
-              <button 
-                @click="navigateToContact"
-                class="bg-transparent border-2 border-white/30 text-white font-bold py-4 px-10 rounded-xl hover:bg-white/10 transition-all backdrop-blur-sm"
-              >
+              <button @click="navigateToContact" class="cta-button-secondary">
                 Contact Sales
               </button>
             </div>
           </div>
           
-          <div class="hidden lg:flex h-44 w-44 rounded-full border-2 border-primary/20 items-center justify-center animate-pulse group">
-            <div class="h-32 w-32 rounded-full border-4 border-primary/40 flex items-center justify-center transition-transform group-hover:scale-110">
-              <span class="material-symbols-outlined text-5xl text-primary font-light">near_me</span>
+          <div class="cta-visual">
+            <div class="cta-circle-outer">
+              <div class="cta-circle-inner">
+                <span class="material-symbols-outlined cta-icon">near_me</span>
+              </div>
             </div>
           </div>
         </div>
@@ -234,3 +222,1145 @@ const navigateToContact = () => {
     </section>
   </div>
 </template>
+
+<style scoped>
+@import '../assets/variables.css';
+
+.home-view {
+  animation-duration: 0.7s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
+}
+
+/* Hero Section */
+.hero-section {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--color-background-dark);
+}
+
+.hero-container {
+  padding: 1.25rem 1rem;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .hero-container {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-container {
+    padding: 4rem 10rem;
+  }
+}
+
+.hero-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 1200px;
+  flex: 1;
+}
+
+.hero-card {
+  position: relative;
+  display: flex;
+  min-height: 560px;
+  flex-direction: column;
+  gap: 1.5rem;
+  overflow: hidden;
+  border-radius: var(--radius-2xl);
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+.hero-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: transform 1s;
+  transform: scale(1.05);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 850px;
+  align-items: center;
+}
+
+.hero-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  background-color: rgba(25, 127, 230, 0.2);
+  color: var(--color-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid rgba(25, 127, 230, 0.3);
+  backdrop-filter: blur(4px);
+  margin-bottom: 1rem;
+}
+
+.hero-title {
+  color: var(--color-white);
+  font-size: 3rem;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -0.033em;
+  text-transform: uppercase;
+  filter: drop-shadow(0 25px 50px -12px rgba(0, 0, 0, 0.25));
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .hero-title {
+    font-size: 3.75rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-title {
+    font-size: 4.5rem;
+  }
+}
+
+.hero-description {
+  color: rgb(226, 232, 240);
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.75;
+  max-width: 42rem;
+  margin: 0 auto;
+  filter: drop-shadow(0 4px 6px -1px rgba(0, 0, 0, 0.1));
+}
+
+@media (min-width: 768px) {
+  .hero-description {
+    font-size: 1.25rem;
+  }
+}
+
+.hero-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+@media (min-width: 640px) {
+  .hero-buttons {
+    flex-direction: row;
+  }
+}
+
+.hero-button-primary {
+  display: flex;
+  min-width: 180px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-xl);
+  height: 3.5rem;
+  padding: 0 2rem;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: 0.015em;
+  border: none;
+  transition: all var(--transition-base);
+  box-shadow: 0 20px 25px -5px rgba(25, 127, 230, 0.3);
+}
+
+.hero-button-primary:hover {
+  background-color: #1566c4;
+  transform: scale(1.05);
+}
+
+.hero-button-secondary {
+  display: flex;
+  min-width: 180px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-xl);
+  height: 3.5rem;
+  padding: 0 2rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--color-white);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: 0.015em;
+  transition: all var(--transition-base);
+}
+
+.hero-button-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.hero-button-icon {
+  margin-right: 0.5rem;
+  font-size: 1.25rem;
+}
+
+/* Stats Section */
+.stats-section {
+  width: 100%;
+  background-color: var(--color-white);
+  border-top: 1px solid var(--color-slate-200);
+  border-bottom: 1px solid var(--color-slate-200);
+}
+
+@media (prefers-color-scheme: dark) {
+  .stats-section {
+    background-color: var(--color-dark-surface);
+    border-top-color: var(--color-dark-border);
+    border-bottom-color: var(--color-dark-border);
+  }
+}
+
+.stats-container {
+  padding: 3rem 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .stats-container {
+    padding-left: 10rem;
+    padding-right: 10rem;
+  }
+}
+
+.stats-grid {
+  max-width: 1200px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  align-items: center;
+  cursor: default;
+}
+
+@media (min-width: 768px) {
+  .stat-item {
+    align-items: flex-start;
+  }
+}
+
+.stat-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-primary);
+  margin-bottom: 0.25rem;
+  transition: transform var(--transition-base);
+}
+
+.stat-item:hover .stat-header {
+  transform: scale(1.1);
+}
+
+.stat-icon {
+  font-size: 1.5rem;
+}
+
+.stat-label {
+  color: var(--color-slate-500);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .stat-label {
+    color: var(--color-slate-400);
+  }
+}
+
+.stat-value {
+  color: var(--color-slate-900);
+  letter-spacing: -0.025em;
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .stat-value {
+    font-size: 2.25rem;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .stat-value {
+    color: var(--color-white);
+  }
+}
+
+/* Services Section */
+.services-section {
+  width: 100%;
+  background-color: var(--color-slate-50);
+  padding: 6rem 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .services-section {
+    background-color: var(--color-dark-bg);
+  }
+}
+
+.services-container {
+  padding: 0 1rem;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .services-container {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .services-container {
+    padding-left: 10rem;
+    padding-right: 10rem;
+  }
+}
+
+.services-wrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 1200px;
+  flex: 1;
+}
+
+.services-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+  padding: 0 1rem;
+}
+
+@media (min-width: 768px) {
+  .services-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+}
+
+.services-header-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 700px;
+}
+
+.services-badge {
+  color: var(--color-primary);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+}
+
+.services-title {
+  color: var(--color-slate-900);
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .services-title {
+    font-size: 3rem;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .services-title {
+    color: var(--color-white);
+  }
+}
+
+.services-description {
+  color: var(--color-slate-600);
+  font-size: 1.125rem;
+  line-height: 1.75;
+}
+
+@media (prefers-color-scheme: dark) {
+  .services-description {
+    color: var(--color-slate-400);
+  }
+}
+
+.services-view-all {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-primary);
+  font-weight: 700;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform var(--transition-base);
+}
+
+.services-view-all:hover {
+  transform: translateX(0.25rem);
+}
+
+.services-arrow {
+  font-size: 0.875rem;
+  transition: all var(--transition-base);
+}
+
+.services-view-all:hover .services-arrow {
+  margin-left: 0.25rem;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  padding: 0 1rem;
+}
+
+@media (min-width: 768px) {
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .services-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.service-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-2xl);
+  background-color: var(--color-white);
+  border: 1px solid var(--color-slate-200);
+  transition: all 0.5s;
+  display: flex;
+  flex-direction: column;
+}
+
+.service-card:hover {
+  border-color: rgba(25, 127, 230, 0.5);
+  box-shadow: 0 25px 50px -12px rgba(25, 127, 230, 0.05);
+}
+
+@media (prefers-color-scheme: dark) {
+  .service-card {
+    background-color: var(--color-dark-surface-alt);
+    border-color: var(--color-dark-border);
+  }
+}
+
+.service-image-wrapper {
+  aspect-ratio: 16 / 10;
+  width: 100%;
+  overflow: hidden;
+}
+
+.service-image {
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.7s;
+}
+
+.service-card:hover .service-image {
+  transform: scale(1.1);
+}
+
+.service-content {
+  padding: 2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.service-header {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.service-icon-wrapper {
+  display: flex;
+  height: 2.5rem;
+  width: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-xl);
+  background-color: rgba(25, 127, 230, 0.1);
+  color: var(--color-primary);
+  transition: all var(--transition-base);
+}
+
+.service-card:hover .service-icon-wrapper {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.service-icon {
+  font-size: 1.25rem;
+}
+
+.service-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-slate-900);
+  margin: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .service-title {
+    color: var(--color-white);
+  }
+}
+
+.service-description {
+  color: var(--color-slate-600);
+  font-size: 0.875rem;
+  line-height: 1.75;
+  margin-bottom: 1.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .service-description {
+    color: var(--color-text-secondary);
+  }
+}
+
+.service-link {
+  margin-top: auto;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.service-link-icon {
+  font-size: 0.75rem;
+  transition: transform var(--transition-base);
+}
+
+.service-link:hover .service-link-icon {
+  transform: translateX(0.25rem);
+}
+
+.custom-project-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-2xl);
+  background-color: var(--color-primary);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2.5rem;
+  transition: all 0.5s;
+  box-shadow: 0 20px 25px -5px rgba(25, 127, 230, 0.2);
+}
+
+.custom-project-card:hover {
+  transform: scale(1.02);
+}
+
+.custom-project-icon-wrapper {
+  display: flex;
+  height: 5rem;
+  width: 5rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: var(--color-white);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform var(--transition-base);
+}
+
+.custom-project-card:hover .custom-project-icon-wrapper {
+  transform: scale(1.1);
+}
+
+.custom-project-icon {
+  font-size: 2.25rem;
+  font-weight: 300;
+}
+
+.custom-project-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-white);
+  margin-bottom: 0.75rem;
+  margin-top: 0;
+}
+
+.custom-project-description {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.875rem;
+  margin-bottom: 2rem;
+  max-width: 220px;
+}
+
+.custom-project-button {
+  background-color: var(--color-white);
+  color: var(--color-primary);
+  padding: 0.75rem 2rem;
+  border-radius: var(--radius-xl);
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--transition-base);
+  box-shadow: var(--shadow-lg);
+}
+
+.custom-project-button:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+/* Fleet Section */
+.fleet-section {
+  width: 100%;
+  background-color: var(--color-white);
+  padding: 6rem 0;
+  border-top: 1px solid var(--color-slate-200);
+}
+
+@media (prefers-color-scheme: dark) {
+  .fleet-section {
+    background-color: var(--color-dark-surface);
+    border-top-color: var(--color-dark-border);
+  }
+}
+
+.fleet-container {
+  padding: 0 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .fleet-container {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .fleet-container {
+    padding-left: 10rem;
+    padding-right: 10rem;
+  }
+}
+
+.fleet-wrapper {
+  max-width: 1200px;
+  width: 100%;
+}
+
+.fleet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+  padding: 0 1rem;
+}
+
+.fleet-title {
+  color: var(--color-slate-900);
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .fleet-title {
+    color: var(--color-white);
+  }
+}
+
+.fleet-controls {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.fleet-control-button {
+  height: 3rem;
+  width: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid var(--color-slate-300);
+  background: none;
+  color: var(--color-slate-600);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.fleet-control-button:hover {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border-color: var(--color-primary);
+}
+
+@media (prefers-color-scheme: dark) {
+  .fleet-control-button {
+    border-color: var(--color-dark-border-alt);
+    color: var(--color-white);
+  }
+}
+
+.fleet-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  padding: 0 1rem;
+}
+
+@media (min-width: 768px) {
+  .fleet-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .fleet-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.drone-card {
+  background-color: var(--color-slate-50);
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--color-slate-200);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s;
+}
+
+.drone-card:hover {
+  border-color: rgba(25, 127, 230, 0.4);
+  box-shadow: var(--shadow-xl);
+}
+
+@media (prefers-color-scheme: dark) {
+  .drone-card {
+    background-color: var(--color-dark-surface-alt);
+    border-color: var(--color-dark-border);
+  }
+}
+
+.drone-image-wrapper {
+  height: 14rem;
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-slate-100);
+  position: relative;
+  overflow: hidden;
+}
+
+@media (prefers-color-scheme: dark) {
+  .drone-image-wrapper {
+    background-color: #141e28;
+  }
+}
+
+.drone-image {
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 25px 50px -12px rgba(0, 0, 0, 0.25));
+  z-index: 10;
+  transition: transform 0.5s;
+}
+
+.drone-card:hover .drone-image {
+  transform: scale(1.1);
+}
+
+.drone-image-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(25, 127, 230, 0.05);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.drone-card:hover .drone-image-overlay {
+  opacity: 1;
+}
+
+.drone-content {
+  padding: 2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.drone-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.drone-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-slate-900);
+  margin: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .drone-name {
+    color: var(--color-white);
+  }
+}
+
+.drone-category {
+  background-color: rgba(25, 127, 230, 0.2);
+  color: var(--color-primary);
+  font-size: 0.625rem;
+  font-weight: 900;
+  padding: 0.25rem 0.625rem;
+  border-radius: var(--radius-md);
+  letter-spacing: 0.1em;
+}
+
+.drone-description {
+  color: var(--color-slate-500);
+  font-size: 0.875rem;
+  margin-bottom: 2rem;
+  line-height: 1.75;
+}
+
+@media (prefers-color-scheme: dark) {
+  .drone-description {
+    color: var(--color-text-secondary);
+  }
+}
+
+.drone-stats {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.drone-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.drone-stat-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+}
+
+.drone-stat-label {
+  color: var(--color-slate-500);
+  font-weight: 500;
+}
+
+@media (prefers-color-scheme: dark) {
+  .drone-stat-label {
+    color: var(--color-slate-400);
+  }
+}
+
+.drone-stat-value {
+  font-family: ui-monospace, monospace;
+  font-weight: 700;
+  color: var(--color-slate-900);
+}
+
+@media (prefers-color-scheme: dark) {
+  .drone-stat-value {
+    color: var(--color-white);
+  }
+}
+
+.drone-stat-bar {
+  width: 100%;
+  background-color: var(--color-slate-200);
+  height: 0.5rem;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+@media (prefers-color-scheme: dark) {
+  .drone-stat-bar {
+    background-color: var(--color-dark-border);
+  }
+}
+
+.drone-stat-bar-fill {
+  background-color: var(--color-primary);
+  height: 100%;
+  border-radius: 9999px;
+  transition: all var(--transition-base);
+}
+
+.drone-card:hover .drone-stat-bar-fill {
+  background-color: #60a5fa;
+}
+
+/* CTA Section */
+.cta-section {
+  background-color: var(--color-dark-bg);
+  width: 100%;
+  padding: 6rem 1rem;
+  border-top: 1px solid var(--color-dark-border);
+}
+
+.cta-card {
+  max-width: 1200px;
+  margin: 0 auto;
+  border-radius: 2rem;
+  overflow: hidden;
+  position: relative;
+  background-color: var(--color-dark-surface);
+  box-shadow: var(--shadow-2xl);
+}
+
+.cta-background {
+  position: absolute;
+  inset: 0;
+  opacity: 0.4;
+  background-size: cover;
+  background-position: center;
+}
+
+.cta-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, var(--color-dark-surface), rgba(17, 25, 33, 0.9), transparent);
+}
+
+.cta-content {
+  position: relative;
+  z-index: 10;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+}
+
+@media (min-width: 768px) {
+  .cta-content {
+    padding: 5rem;
+    flex-direction: row;
+  }
+}
+
+.cta-text {
+  max-width: 36rem;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .cta-text {
+    text-align: left;
+  }
+}
+
+.cta-title {
+  color: var(--color-white);
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin-bottom: 1.5rem;
+  margin-top: 0;
+}
+
+@media (min-width: 768px) {
+  .cta-title {
+    font-size: 3rem;
+  }
+}
+
+.cta-description {
+  color: rgb(203, 213, 225);
+  font-size: 1.125rem;
+  margin-bottom: 2.5rem;
+  line-height: 1.75;
+}
+
+@media (min-width: 768px) {
+  .cta-description {
+    font-size: 1.25rem;
+  }
+}
+
+.cta-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  justify-content: center;
+}
+
+@media (min-width: 640px) {
+  .cta-buttons {
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 768px) {
+  .cta-buttons {
+    justify-content: flex-start;
+  }
+}
+
+.cta-button-primary {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  font-weight: 700;
+  padding: 1rem 2.5rem;
+  border-radius: var(--radius-xl);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  box-shadow: 0 20px 25px -5px rgba(25, 127, 230, 0.3);
+}
+
+.cta-button-primary:hover {
+  background-color: #1566c4;
+  transform: scale(1.05);
+}
+
+.cta-button-secondary {
+  background-color: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: var(--color-white);
+  font-weight: 700;
+  padding: 1rem 2.5rem;
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  backdrop-filter: blur(4px);
+}
+
+.cta-button-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.cta-visual {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .cta-visual {
+    display: flex;
+    height: 11rem;
+    width: 11rem;
+    border-radius: 9999px;
+    border: 2px solid rgba(25, 127, 230, 0.2);
+    align-items: center;
+    justify-content: center;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.cta-circle-outer {
+  height: 8rem;
+  width: 8rem;
+  border-radius: 9999px;
+  border: 4px solid rgba(25, 127, 230, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--transition-base);
+}
+
+.cta-visual:hover .cta-circle-outer {
+  transform: scale(1.1);
+}
+
+.cta-icon {
+  font-size: 3rem;
+  color: var(--color-primary);
+  font-weight: 300;
+}
+</style>

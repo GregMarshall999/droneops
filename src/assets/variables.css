@@ -1,0 +1,86 @@
+:root {
+  /* Colors */
+  --color-primary: #197FE6;
+  --color-primary-hover: #1566c4;
+  --color-background-dark: #111a22;
+  --color-surface-dark: #1a2632;
+  --color-surface-highlight: #243647;
+  --color-text-secondary: #93adc8;
+  
+  /* Slate colors */
+  --color-slate-50: #f8fafc;
+  --color-slate-100: #f1f5f9;
+  --color-slate-200: #e2e8f0;
+  --color-slate-300: #cbd5e1;
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #64748b;
+  --color-slate-600: #475569;
+  --color-slate-900: #0f172a;
+  
+  /* White/Black */
+  --color-white: #ffffff;
+  --color-black: #000000;
+  
+  /* Dark mode colors */
+  --color-dark-bg: #0d1218;
+  --color-dark-surface: #111921;
+  --color-dark-surface-alt: #1a2632;
+  --color-dark-border: #243647;
+  --color-dark-border-alt: #344d65;
+  
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  --spacing-3xl: 4rem;
+  
+  /* Border radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 2rem;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  
+  /* Transitions */
+  --transition-fast: 150ms ease-in-out;
+  --transition-base: 300ms ease-in-out;
+  --transition-slow: 500ms ease-in-out;
+  --transition-slower: 700ms ease-in-out;
+  
+  /* Z-index */
+  --z-base: 0;
+  --z-dropdown: 10;
+  --z-sticky: 50;
+  --z-modal: 100;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: var(--color-dark-bg);
+    --color-surface: var(--color-dark-surface);
+    --color-text: var(--color-white);
+    --color-border: var(--color-dark-border);
+  }
+}
+
+/* Light mode */
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-bg: var(--color-white);
+    --color-surface: var(--color-slate-50);
+    --color-text: var(--color-slate-900);
+    --color-border: var(--color-slate-200);
+  }
+}
