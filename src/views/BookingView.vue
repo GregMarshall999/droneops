@@ -1,25 +1,47 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useBookingStore } from '../stores/booking';
 import { FLEET } from '../constants';
 
+const { t } = useI18n();
 const bookingStore = useBookingStore();
 
-const profiles = ref([
-  { label: 'Real Estate', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAqHDSL1oR_Pt2CeucE6eNBKkf298PyYkVLk1to-jZEyenfAQ02pnte_SHHRE3K_o7tesckZUtyxXx9NiV3_WQGi-6SDIinOl0uX1UMLICMdf6cX8P9mAWNe03HGBOGaUcZHRdjbhDcdL2HAXt90elEvaoItNGI25Ku_NaDjpjd_OevWtRusjM6vnFul1C0EhTIIaR5OfVtSkMeIrrhxa7CczKM3xRclru1nI6Z2Hk2JdX1JOj-OZiUlJzX-8t9lJZ0-mXRlZEL75Vf', active: false },
-  { label: 'Wedding & Events', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBcKdxBw3GKgBaLtrn0gXPvp2P4pozeXvrJ8DUT7qH5JnafJLV9rx5ISmMTu4gYCYzhSOqfQ8otzD40x0Cw2H6TnytnAG3xMfKyTVylrM6awwFCOHlETD6_AqsupDG80WkgAQKFKtLc-S-Gpan3mujxjKOowhjW6slxGHSbw8Kln7CZ3TmEZ8ICUnVWl2Z1LRlUsjM3N4EuwdvfA1t5znd89L-8gI2ndpoGmKHFLpzbhG8_poWG6EUI573qBwrpEyd0vbWqMVZYN7pU', active: true },
-  { label: 'Industrial Survey', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAnFiSx3dwEDvogC5IUsH-YdACwhFkFtOx9zm_dZFYF8ExNeiGg0mEFRhNKdGN19wVMJbF_Af_KSInV20nBWeDsQ1W4tcDjv-sHJKhnrVlfJULVEP96azLiW8fCVJczW2zY3Btx2qiCjLaJz6QtLekUteaRv6P2yYXCE05aNG-U48mzo-rtao3vsdvhhE8erOxeOemUs_faauQe2n4IMnGNHudZwn_-gr58YS2PGXGgoU9arLxNVXemXeIotT6Rj4PYWiQNMv0r9l6C', active: false }
+const profiles = computed(() => [
+  { label: t('booking.profile.realEstate'), labelKey: 'realEstate', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAqHDSL1oR_Pt2CeucE6eNBKkf298PyYkVLk1to-jZEyenfAQ02pnte_SHHRE3K_o7tesckZUtyxXx9NiV3_WQGi-6SDIinOl0uX1UMLICMdf6cX8P9mAWNe03HGBOGaUcZHRdjbhDcdL2HAXt90elEvaoItNGI25Ku_NaDjpjd_OevWtRusjM6vnFul1C0EhTIIaR5OfVtSkMeIrrhxa7CczKM3xRclru1nI6Z2Hk2JdX1JOj-OZiUlJzX-8t9lJZ0-mXRlZEL75Vf', active: false },
+  { label: t('booking.profile.weddingEvents'), labelKey: 'weddingEvents', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBcKdxBw3GKgBaLtrn0gXPvp2P4pozeXvrJ8DUT7qH5JnafJLV9rx5ISmMTu4gYCYzhSOqfQ8otzD40x0Cw2H6TnytnAG3xMfKyTVylrM6awwFCOHlETD6_AqsupDG80WkgAQKFKtLc-S-Gpan3mujxjKOowhjW6slxGHSbw8Kln7CZ3TmEZ8ICUnVWl2Z1LRlUsjM3N4EuwdvfA1t5znd89L-8gI2ndpoGmKHFLpzbhG8_poWG6EUI573qBwrpEyd0vbWqMVZYN7pU', active: true },
+  { label: t('booking.profile.industrialSurvey'), labelKey: 'industrialSurvey', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAnFiSx3dwEDvogC5IUsH-YdACwhFkFtOx9zm_dZFYF8ExNeiGg0mEFRhNKdGN19wVMJbF_Af_KSInV20nBWeDsQ1W4tcDjv-sHJKhnrVlfJULVEP96azLiW8fCVJczW2zY3Btx2qiCjLaJz6QtLekUteaRv6P2yYXCE05aNG-U48mzo-rtao3vsdvhhE8erOxeOemUs_faauQe2n4IMnGNHudZwn_-gr58YS2PGXGgoU9arLxNVXemXeIotT6Rj4PYWiQNMv0r9l6C', active: false }
 ]);
 
 const timeSlots = ['09:00 AM', '01:00 PM', '04:00 PM'];
 
 const selectProfile = (profile: typeof profiles.value[0]) => {
   bookingStore.setSelectedProfile(profile.label);
-  profiles.value.forEach(p => p.active = p.label === profile.label);
+  profiles.value.forEach(p => p.active = p.labelKey === profile.labelKey);
 };
 
 const selectTime = (time: string) => {
   bookingStore.setStartTime(time);
+};
+
+const getStatLabel = (label: string) => {
+  const labelMap: Record<string, string> = {
+    'Flight Time': 'booking.stats.flightTime',
+    'Resolution': 'booking.stats.resolution',
+    'Speed': 'booking.stats.speed',
+    'Agility': 'booking.stats.agility',
+    'Payload': 'booking.stats.payload'
+  };
+  return t(labelMap[label] || label);
+};
+
+const getDroneKey = (id: string) => {
+  const keyMap: Record<string, string> = {
+    'mavic-3': 'mavic3',
+    'fpv-x8': 'fpvX8',
+    'matrice-300': 'matrice300'
+  };
+  return keyMap[id] || id;
 };
 </script>
 
@@ -31,23 +53,23 @@ const selectTime = (time: string) => {
         <!-- Header & Progress -->
         <div class="booking-header">
           <div class="booking-title-section">
-            <h1 class="booking-title">New Mission Request</h1>
-            <p class="booking-subtitle">Configure your drone operation requirements below.</p>
+            <h1 class="booking-title">{{ t('booking.title') }}</h1>
+            <p class="booking-subtitle">{{ t('booking.subtitle') }}</p>
           </div>
           
           <div class="progress-section">
             <div class="progress-header">
-              <p class="progress-status">Configuration in progress</p>
-              <p class="progress-step">Step 3 of 5</p>
+              <p class="progress-status">{{ t('booking.progress.status') }}</p>
+              <p class="progress-step">{{ t('booking.progress.step', { current: 3, total: 5 }) }}</p>
             </div>
             <div class="progress-bar">
               <div class="progress-bar-fill" style="width: 60%"></div>
             </div>
             <div class="progress-steps">
-              <span class="progress-step-item progress-step-complete">Profile</span>
-              <span class="progress-step-item progress-step-complete">Location</span>
-              <span class="progress-step-item progress-step-active">Equipment</span>
-              <span class="progress-step-item">Billing</span>
+              <span class="progress-step-item progress-step-complete">{{ t('booking.progress.steps.profile') }}</span>
+              <span class="progress-step-item progress-step-complete">{{ t('booking.progress.steps.location') }}</span>
+              <span class="progress-step-item progress-step-active">{{ t('booking.progress.steps.equipment') }}</span>
+              <span class="progress-step-item">{{ t('booking.progress.steps.billing') }}</span>
             </div>
           </div>
         </div>
@@ -56,7 +78,7 @@ const selectTime = (time: string) => {
         <section class="booking-step">
           <div class="step-header">
             <span class="step-number step-number-complete">1</span>
-            <h2 class="step-title">Mission Profile</h2>
+            <h2 class="step-title">{{ t('booking.profile.title') }}</h2>
             <span class="material-symbols-outlined step-check">check_circle</span>
           </div>
           <div class="profile-grid">
@@ -66,7 +88,7 @@ const selectTime = (time: string) => {
               @click="selectProfile(p)"
               :class="['profile-card', { 'profile-card-active': p.active }]"
             >
-              <div v-if="p.active" class="profile-badge">Selected</div>
+              <div v-if="p.active" class="profile-badge">{{ t('common.selected') }}</div>
               <div class="profile-gradient"></div>
               <img class="profile-image" :src="p.img" :alt="p.label" />
               <p class="profile-label">{{ p.label }}</p>
@@ -78,13 +100,13 @@ const selectTime = (time: string) => {
         <section class="booking-step">
           <div class="step-header">
             <span class="step-number step-number-complete">2</span>
-            <h2 class="step-title">Flight Zone & Schedule</h2>
+            <h2 class="step-title">{{ t('booking.location.title') }}</h2>
             <span class="material-symbols-outlined step-check">check_circle</span>
           </div>
           <div class="location-grid">
             <div class="location-section">
               <div class="form-group">
-                <label class="form-label">Target Location</label>
+                <label class="form-label">{{ t('booking.location.targetLocation') }}</label>
                 <div class="input-wrapper">
                   <span class="material-symbols-outlined input-icon">search</span>
                   <input 
@@ -104,7 +126,7 @@ const selectTime = (time: string) => {
             
             <div class="schedule-section">
               <div class="form-group">
-                <label class="form-label">Mission Date</label>
+                <label class="form-label">{{ t('booking.location.missionDate') }}</label>
                 <div class="input-wrapper">
                   <span class="material-symbols-outlined input-icon">calendar_month</span>
                   <input 
@@ -115,7 +137,7 @@ const selectTime = (time: string) => {
                 </div>
               </div>
               <div class="form-group">
-                <label class="form-label">Start Time</label>
+                <label class="form-label">{{ t('booking.location.startTime') }}</label>
                 <div class="time-slots">
                   <button 
                     v-for="time in timeSlots" 
@@ -129,7 +151,7 @@ const selectTime = (time: string) => {
               </div>
               <div class="weather-info">
                 <span class="material-symbols-outlined weather-icon">cloud_done</span>
-                <span>Forecast: Clear Sky (72°F)</span>
+                <span>{{ t('booking.location.forecast') }}</span>
               </div>
             </div>
           </div>
@@ -139,28 +161,28 @@ const selectTime = (time: string) => {
         <section class="booking-step">
           <div class="step-header">
             <span class="step-number step-number-active">3</span>
-            <h2 class="step-title">Drone Selection</h2>
+            <h2 class="step-title">{{ t('booking.equipment.title') }}</h2>
           </div>
           
           <div class="drone-selection-card">
             <div class="drone-selection-badge">
-              <span class="material-symbols-outlined">auto_awesome</span> AI Recommended
+              <span class="material-symbols-outlined">auto_awesome</span> {{ t('booking.equipment.aiRecommended') }}
             </div>
             <div class="drone-selection-image-wrapper">
               <img class="drone-selection-image" :src="bookingStore.selectedDrone.imageUrl" :alt="bookingStore.selectedDrone.name" />
               <div class="drone-selection-gradient"></div>
             </div>
             <div class="drone-selection-content">
-              <div class="drone-selection-badge-text">BEST PERFORMANCE</div>
+              <div class="drone-selection-badge-text">{{ t('booking.equipment.bestPerformance') }}</div>
               <div class="drone-selection-info">
                 <div class="drone-selection-header">
-                  <h3 class="drone-selection-name">{{ bookingStore.selectedDrone.name }}</h3>
+                  <h3 class="drone-selection-name">{{ t(`fleet.${getDroneKey(bookingStore.selectedDrone.id)}.name`) }}</h3>
                   <div class="drone-selection-price">
                     <p class="drone-price">${{ bookingStore.selectedDrone.price }}</p>
-                    <p class="drone-price-label">per day</p>
+                    <p class="drone-price-label">{{ t('common.perDay') }}</p>
                   </div>
                 </div>
-                <p class="drone-selection-description">Perfect for cinematic wedding shots with 5.1K Apple ProRes recording and omnidirectional obstacle sensing.</p>
+                <p class="drone-selection-description">{{ t('booking.equipment.description') }}</p>
               </div>
               <div class="drone-selection-stats">
                 <span 
@@ -168,12 +190,12 @@ const selectTime = (time: string) => {
                   :key="i" 
                   class="drone-stat-badge"
                 >
-                  {{ s.value }} {{ s.label }}
+                  {{ s.value }} {{ getStatLabel(s.label) }}
                 </span>
               </div>
               <div class="drone-selection-actions">
                 <button class="drone-select-button">
-                  Selected
+                  {{ t('common.selected') }}
                   <span class="material-symbols-outlined drone-select-icon">check_circle</span>
                 </button>
                 <button class="drone-info-button">
@@ -184,7 +206,7 @@ const selectTime = (time: string) => {
           </div>
 
           <button class="alternatives-button">
-            <span class="alternatives-text">View 2 Alternative Drones</span>
+            <span class="alternatives-text">{{ t('booking.equipment.viewAlternatives', { count: 2 }) }}</span>
             <span class="material-symbols-outlined alternatives-icon">expand_more</span>
           </button>
         </section>
@@ -193,11 +215,11 @@ const selectTime = (time: string) => {
         <section class="booking-step booking-step-disabled">
           <div class="step-header">
             <span class="step-number step-number-disabled">4</span>
-            <h2 class="step-title step-title-disabled">Secure Payment</h2>
+            <h2 class="step-title step-title-disabled">{{ t('booking.billing.title') }}</h2>
           </div>
           <div class="billing-placeholder">
              <div class="billing-locked">
-               <span class="billing-locked-text">Module Locked</span>
+               <span class="billing-locked-text">{{ t('booking.billing.moduleLocked') }}</span>
              </div>
           </div>
         </section>
@@ -211,26 +233,26 @@ const selectTime = (time: string) => {
             <div class="summary-icon-wrapper">
               <span class="material-symbols-outlined summary-icon">receipt_long</span>
             </div>
-            Mission Estimate
+            {{ t('booking.summary.title') }}
           </h3>
           
           <div class="summary-items">
             <div class="summary-item">
-              <span class="summary-item-label">Operator Fee (4h)</span>
+              <span class="summary-item-label">{{ t('booking.summary.operatorFee') }}</span>
               <span class="summary-item-value">$320.00</span>
             </div>
             <div class="summary-item">
-              <span class="summary-item-label">Equipment Rental</span>
+              <span class="summary-item-label">{{ t('booking.summary.equipmentRental') }}</span>
               <span class="summary-item-value">${{ bookingStore.selectedDrone.price?.toFixed(2) || '0.00' }}</span>
             </div>
             <div class="summary-item">
-              <span class="summary-item-label">Insurance</span>
+              <span class="summary-item-label">{{ t('booking.summary.insurance') }}</span>
               <span class="summary-item-value">$85.00</span>
             </div>
             <div class="summary-item summary-item-discount">
               <span class="summary-item-label">
                 <span class="material-symbols-outlined">confirmation_number</span>
-                Platform Discount
+                {{ t('booking.summary.platformDiscount') }}
               </span>
               <span class="summary-item-value">-$50.00</span>
             </div>
@@ -238,19 +260,19 @@ const selectTime = (time: string) => {
 
           <div class="summary-total">
             <div class="summary-total-label">
-              <span class="summary-total-text">Total Cost</span>
-              <span class="summary-total-currency">USD (Estimated)</span>
+              <span class="summary-total-text">{{ t('booking.summary.totalCost') }}</span>
+              <span class="summary-total-currency">{{ t('booking.summary.currency') }}</span>
             </div>
             <span class="summary-total-amount">${{ bookingStore.totalCost.toFixed(2) }}</span>
           </div>
 
           <button class="summary-button">
-            Pay & Reserve Operator
+            {{ t('booking.summary.payReserve') }}
             <span class="material-symbols-outlined summary-button-icon">arrow_forward</span>
           </button>
           
           <p class="summary-security">
-            Protected by 256-bit SSL encryption
+            {{ t('booking.summary.security') }}
           </p>
         </div>
 
@@ -263,7 +285,7 @@ const selectTime = (time: string) => {
           <div class="operator-info">
             <span class="operator-name">Alex M.</span>
             <div class="operator-details">
-              <span class="operator-role">Drone Expert</span>
+              <span class="operator-role">{{ t('booking.operator.role') }}</span>
               <div class="operator-rating">
                 <span class="material-symbols-outlined operator-star">star</span>
                 <span class="operator-rating-value">4.9</span>

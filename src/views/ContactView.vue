@@ -1,35 +1,45 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed, watchEffect } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-const contactInfo = [
-  { icon: 'call', label: 'Direct Line', value: '+1 (555) 012-3456' },
-  { icon: 'mail', label: 'Email Inquiry', value: 'pilot@droneops.com' },
-  { icon: 'location_on', label: 'Base of Ops', value: 'Portland, OR (Serving PNW)' }
-];
+const { t } = useI18n();
 
-const faqs = [
-  { q: 'Do you fly in bad weather?', a: 'No. For safety and equipment integrity, we do not fly in heavy rain, snow, or high winds (above 20mph). We can reschedule for free if conditions are unsafe.' },
-  { q: 'Are you licensed and insured?', a: 'Yes. All pilots hold valid FAA Part 107 certificates. We carry $1M liability insurance for all commercial operations.' },
-  { q: 'What is your turnaround time?', a: 'Edited images within 24-48 hours. Video projects typically take 3-5 business days depending on complexity.' },
-  { q: 'Do I need to be present?', a: 'Not always, as long as we have access and a shot list. However, being on-site is recommended for creative direction.' }
-];
+const contactInfo = computed(() => [
+  { icon: 'call', label: t('contact.info.directLine'), value: '+1 (555) 012-3456' },
+  { icon: 'mail', label: t('contact.info.emailInquiry'), value: 'pilot@droneops.com' },
+  { icon: 'location_on', label: t('contact.info.baseOfOps'), value: 'Portland, OR (Serving PNW)' }
+]);
 
-const projectTypes = [
-  'Real Estate Photography',
-  'Technical Inspection',
-  'Event Coverage',
-  'Cinematography',
-  'Other'
-];
+const faqs = computed(() => [
+  { q: t('contact.faq.questions.weather.q'), a: t('contact.faq.questions.weather.a') },
+  { q: t('contact.faq.questions.licensed.q'), a: t('contact.faq.questions.licensed.a') },
+  { q: t('contact.faq.questions.turnaround.q'), a: t('contact.faq.questions.turnaround.a') },
+  { q: t('contact.faq.questions.present.q'), a: t('contact.faq.questions.present.a') }
+]);
+
+const projectTypes = computed(() => [
+  t('contact.projectTypes.realEstatePhotography'),
+  t('contact.projectTypes.technicalInspection'),
+  t('contact.projectTypes.eventCoverage'),
+  t('contact.projectTypes.cinematography'),
+  t('contact.projectTypes.other')
+]);
 
 const formData = ref({
   name: '',
   company: '',
   email: '',
-  projectType: 'Real Estate Photography',
+  projectType: '',
   projectDate: '',
   location: '',
   description: ''
+});
+
+// Initialize projectType when projectTypes are available
+watchEffect(() => {
+  if (projectTypes.value.length > 0 && !formData.value.projectType) {
+    formData.value.projectType = projectTypes.value[0];
+  }
 });
 
 const handleSubmit = () => {
@@ -49,10 +59,10 @@ const handleSubmit = () => {
         >
           <div class="contact-hero-content">
             <h1 class="contact-hero-title">
-              Ready to Capture the Sky? <br/><span class="contact-hero-title-accent">Let's Talk.</span>
+              {{ t('contact.hero.title') }} <br/><span class="contact-hero-title-accent">{{ t('contact.hero.titleAccent') }}</span>
             </h1>
             <p class="contact-hero-description">
-              Fill out the form below to get a detailed quote for your next aerial imagery project.
+              {{ t('contact.hero.description') }}
             </p>
           </div>
         </div>
@@ -67,7 +77,7 @@ const handleSubmit = () => {
           <div class="contact-info-section">
             <h2 class="contact-info-title">
               <div class="contact-info-title-bar"></div>
-              Contact Information
+              {{ t('contact.info.title') }}
             </h2>
             
             <div class="contact-info-list">
@@ -96,7 +106,7 @@ const handleSubmit = () => {
               alt="Portland Map"
             />
             <div class="contact-map-badge">
-              Service Radius: 100mi
+              {{ t('contact.info.serviceRadius') }}
             </div>
           </div>
 
@@ -116,26 +126,26 @@ const handleSubmit = () => {
         <div class="contact-form-wrapper">
           <div class="contact-form-card">
             <div class="contact-form-glow"></div>
-            <h2 class="contact-form-title">Request a Quote</h2>
-            <p class="contact-form-subtitle">Details help us fly safer and smarter. Tell us about your mission.</p>
+            <h2 class="contact-form-title">{{ t('contact.form.title') }}</h2>
+            <p class="contact-form-subtitle">{{ t('contact.form.subtitle') }}</p>
             
             <form @submit.prevent="handleSubmit" class="contact-form">
               <div class="form-row">
                 <div class="form-field">
-                  <label class="form-label">Your Name</label>
+                  <label class="form-label">{{ t('contact.form.yourName') }}</label>
                   <input 
                     v-model="formData.name"
                     class="form-input"
-                    placeholder="John Doe" 
+                    :placeholder="t('contact.form.namePlaceholder')" 
                     type="text" 
                   />
                 </div>
                 <div class="form-field">
-                  <label class="form-label">Company Name</label>
+                  <label class="form-label">{{ t('contact.form.companyName') }}</label>
                   <input 
                     v-model="formData.company"
                     class="form-input"
-                    placeholder="Sky Corp (Optional)" 
+                    :placeholder="t('contact.form.companyPlaceholder')" 
                     type="text" 
                   />
                 </div>
@@ -143,16 +153,16 @@ const handleSubmit = () => {
 
               <div class="form-row">
                 <div class="form-field">
-                  <label class="form-label">Email Address</label>
+                  <label class="form-label">{{ t('contact.form.email') }}</label>
                   <input 
                     v-model="formData.email"
                     class="form-input"
-                    placeholder="john@example.com" 
+                    :placeholder="t('contact.form.emailPlaceholder')" 
                     type="email" 
                   />
                 </div>
                 <div class="form-field">
-                  <label class="form-label">Project Type</label>
+                  <label class="form-label">{{ t('contact.form.projectType') }}</label>
                   <div class="select-wrapper">
                     <select 
                       v-model="formData.projectType"
@@ -167,7 +177,7 @@ const handleSubmit = () => {
 
               <div class="form-row">
                 <div class="form-field">
-                  <label class="form-label">Project Date</label>
+                  <label class="form-label">{{ t('contact.form.projectDate') }}</label>
                   <input 
                     v-model="formData.projectDate"
                     class="form-input"
@@ -175,12 +185,12 @@ const handleSubmit = () => {
                   />
                 </div>
                 <div class="form-field">
-                  <label class="form-label">Project Location</label>
+                  <label class="form-label">{{ t('contact.form.location') }}</label>
                   <div class="input-wrapper-location">
                     <input 
                       v-model="formData.location"
                       class="form-input form-input-location"
-                      placeholder="City or Coordinates" 
+                      :placeholder="t('contact.form.locationPlaceholder')" 
                       type="text" 
                     />
                     <span class="material-symbols-outlined input-icon-location">location_on</span>
@@ -189,16 +199,16 @@ const handleSubmit = () => {
               </div>
 
               <div class="form-field form-field-full">
-                <label class="form-label">Project Description</label>
+                <label class="form-label">{{ t('contact.form.description') }}</label>
                 <textarea 
                   v-model="formData.description"
                   class="form-textarea"
-                  placeholder="Describe the shots you need, specific requirements, or hazards..."
+                  :placeholder="t('contact.form.descriptionPlaceholder')"
                 ></textarea>
               </div>
 
               <button type="submit" class="form-submit">
-                <span class="form-submit-text">Send Request</span>
+                <span class="form-submit-text">{{ t('contact.form.submit') }}</span>
                 <span class="material-symbols-outlined form-submit-icon">send</span>
               </button>
             </form>
@@ -210,7 +220,7 @@ const handleSubmit = () => {
     <!-- FAQ Section -->
     <section class="contact-faq">
       <div class="contact-faq-container">
-        <h3 class="contact-faq-title">Frequently Asked Questions</h3>
+        <h3 class="contact-faq-title">{{ t('contact.faq.title') }}</h3>
         <div class="contact-faq-grid">
           <details 
             v-for="(faq, idx) in faqs" 

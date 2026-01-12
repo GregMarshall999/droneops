@@ -1,0 +1,227 @@
+{
+  "common": {
+    "bookPilot": "Book a Pilot",
+    "contact": "Contact",
+    "learnMore": "Learn more",
+    "viewAll": "View All",
+    "contactUs": "Contact Us",
+    "watchReel": "Watch Reel",
+    "getQuote": "Get a Quote",
+    "contactSales": "Contact Sales",
+    "selected": "Selected",
+    "perDay": "per day"
+  },
+  "layout": {
+    "nav": {
+      "services": "Services",
+      "fleet": "Fleet",
+      "work": "Work",
+      "contact": "Contact"
+    },
+    "footer": {
+      "description": "Premier drone operator network for cinema, survey, and inspection.",
+      "company": "Company",
+      "services": "Services",
+      "legal": "Legal",
+      "aboutUs": "About Us",
+      "careers": "Careers",
+      "blog": "Blog",
+      "realEstate": "Real Estate",
+      "events": "Events",
+      "inspections": "Inspections",
+      "mapping": "Mapping",
+      "privacyPolicy": "Privacy Policy",
+      "termsOfService": "Terms of Service",
+      "flightRegulations": "Flight Regulations",
+      "copyright": "© 2023 DroneOps Inc. All rights reserved."
+    }
+  },
+  "home": {
+    "hero": {
+      "badge": "Available Globally",
+      "title": "Elevate Your Perspective",
+      "description": "Professional Drone Operators on Demand. From high-speed FPV to cinematic 8K, we capture the shots others can't."
+    },
+    "stats": {
+      "hoursFlown": "Hours Flown",
+      "projects": "Projects",
+      "safetyRating": "Safety Rating",
+      "countries": "Countries"
+    },
+    "services": {
+      "badge": "Our Expertise",
+      "title": "Specialized Aerial Solutions",
+      "description": "We don't just fly drones; we capture data and art. Choose the service that fits your project needs.",
+      "viewAllServices": "View All Services",
+      "customProject": {
+        "title": "Custom Project?",
+        "description": "Have a specific vision? Our pilots are ready for any challenge."
+      }
+    },
+    "fleet": {
+      "title": "Our Fleet"
+    },
+    "cta": {
+      "title": "Ready to fly?",
+      "description": "Get a quote for your project within 24 hours. Our pilots are licensed, insured, and ready to deploy globally."
+    }
+  },
+  "booking": {
+    "title": "New Mission Request",
+    "subtitle": "Configure your drone operation requirements below.",
+    "progress": {
+      "status": "Configuration in progress",
+      "step": "Step {current} of {total}",
+      "steps": {
+        "profile": "Profile",
+        "location": "Location",
+        "equipment": "Equipment",
+        "billing": "Billing"
+      }
+    },
+    "profile": {
+      "title": "Mission Profile",
+      "realEstate": "Real Estate",
+      "weddingEvents": "Wedding & Events",
+      "industrialSurvey": "Industrial Survey"
+    },
+    "location": {
+      "title": "Flight Zone & Schedule",
+      "targetLocation": "Target Location",
+      "missionDate": "Mission Date",
+      "startTime": "Start Time",
+      "forecast": "Forecast: Clear Sky (72°F)"
+    },
+    "equipment": {
+      "title": "Drone Selection",
+      "aiRecommended": "AI Recommended",
+      "bestPerformance": "BEST PERFORMANCE",
+      "description": "Perfect for cinematic wedding shots with 5.1K Apple ProRes recording and omnidirectional obstacle sensing.",
+      "selected": "Selected",
+      "viewAlternatives": "View {count} Alternative Drones"
+    },
+    "billing": {
+      "title": "Secure Payment",
+      "moduleLocked": "Module Locked"
+    },
+    "summary": {
+      "title": "Mission Estimate",
+      "operatorFee": "Operator Fee (4h)",
+      "equipmentRental": "Equipment Rental",
+      "insurance": "Insurance",
+      "platformDiscount": "Platform Discount",
+      "totalCost": "Total Cost",
+      "currency": "USD (Estimated)",
+      "payReserve": "Pay & Reserve Operator",
+      "security": "Protected by 256-bit SSL encryption"
+    },
+    "operator": {
+      "role": "Drone Expert"
+    },
+    "stats": {
+      "flightTime": "Flight Time",
+      "resolution": "Resolution",
+      "speed": "Speed",
+      "agility": "Agility",
+      "payload": "Payload"
+    }
+  },
+  "contact": {
+    "hero": {
+      "title": "Ready to Capture the Sky?",
+      "titleAccent": "Let's Talk.",
+      "description": "Fill out the form below to get a detailed quote for your next aerial imagery project."
+    },
+    "info": {
+      "title": "Contact Information",
+      "directLine": "Direct Line",
+      "emailInquiry": "Email Inquiry",
+      "baseOfOps": "Base of Ops",
+      "serviceRadius": "Service Radius: 100mi"
+    },
+    "form": {
+      "title": "Request a Quote",
+      "subtitle": "Details help us fly safer and smarter. Tell us about your mission.",
+      "yourName": "Your Name",
+      "namePlaceholder": "John Doe",
+      "companyName": "Company Name",
+      "companyPlaceholder": "Sky Corp (Optional)",
+      "email": "Email Address",
+      "emailPlaceholder": "john@example.com",
+      "projectType": "Project Type",
+      "projectDate": "Project Date",
+      "location": "Location",
+      "locationPlaceholder": "Portland, OR",
+      "description": "Project Description",
+      "descriptionPlaceholder": "Tell us about your vision...",
+      "submit": "Submit Request"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "questions": {
+        "weather": {
+          "q": "Do you fly in bad weather?",
+          "a": "No. For safety and equipment integrity, we do not fly in heavy rain, snow, or high winds (above 20mph). We can reschedule for free if conditions are unsafe."
+        },
+        "licensed": {
+          "q": "Are you licensed and insured?",
+          "a": "Yes. All pilots hold valid FAA Part 107 certificates. We carry $1M liability insurance for all commercial operations."
+        },
+        "turnaround": {
+          "q": "What is your turnaround time?",
+          "a": "Edited images within 24-48 hours. Video projects typically take 3-5 business days depending on complexity."
+        },
+        "present": {
+          "q": "Do I need to be present?",
+          "a": "Not always, as long as we have access and a shot list. However, being on-site is recommended for creative direction."
+        }
+      }
+    },
+    "projectTypes": {
+      "realEstatePhotography": "Real Estate Photography",
+      "technicalInspection": "Technical Inspection",
+      "eventCoverage": "Event Coverage",
+      "cinematography": "Cinematography",
+      "other": "Other"
+    }
+  },
+  "services": {
+    "events": {
+      "title": "Events & Festivals",
+      "description": "Cinematic live coverage for large-scale festivals, concerts, and private events."
+    },
+    "realEstate": {
+      "title": "Real Estate",
+      "description": "4K aerial tours and photography for premium residential and commercial listings."
+    },
+    "3dScans": {
+      "title": "3D Scans",
+      "description": "High-precision photogrammetry, LIDAR, and architectural mapping for surveying."
+    },
+    "fpv": {
+      "title": "Sports FPV",
+      "description": "High-speed FPV tracking for motorsports, cycling, and dynamic action shots."
+    },
+    "social": {
+      "title": "Social Media",
+      "description": "Optimized vertical 9:16 content for TikTok, Reels, and high-engagement social campaigns."
+    }
+  },
+  "fleet": {
+    "mavic3": {
+      "name": "Mavic 3 Cine",
+      "category": "CINEMA",
+      "description": "Compact 5.1K Apple ProRes powerhouse for versatile filmmaking."
+    },
+    "fpvX8": {
+      "name": "Custom FPV X8",
+      "category": "SPEED",
+      "description": "Heavy-lift cinema FPV rig capable of carrying RED Komodo cameras at 90mph."
+    },
+    "matrice300": {
+      "name": "Matrice 300 RTK",
+      "category": "SURVEY",
+      "description": "The industry standard for inspection, mapping, and photogrammetry."
+    }
+  }
+}

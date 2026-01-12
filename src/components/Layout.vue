@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+import LanguageSwitcher from './LanguageSwitcher.vue';
 
 const route = useRoute();
+const { t } = useI18n();
 </script>
 
 <template>
@@ -19,13 +22,14 @@ const route = useRoute();
       </router-link>
       <div class="header-nav">
         <div class="nav-links">
-          <router-link to="/" :class="['nav-link', { 'nav-link-active': route.name === 'home' }]">Services</router-link>
-          <router-link to="/" class="nav-link">Fleet</router-link>
-          <router-link to="/" class="nav-link">Work</router-link>
-          <router-link to="/contact" :class="['nav-link', { 'nav-link-active': route.name === 'contact' }]">Contact</router-link>
+          <router-link to="/" :class="['nav-link', { 'nav-link-active': route.name === 'home' }]">{{ t('layout.nav.services') }}</router-link>
+          <router-link to="/" class="nav-link">{{ t('layout.nav.fleet') }}</router-link>
+          <router-link to="/" class="nav-link">{{ t('layout.nav.work') }}</router-link>
+          <router-link to="/contact" :class="['nav-link', { 'nav-link-active': route.name === 'contact' }]">{{ t('layout.nav.contact') }}</router-link>
         </div>
+        <LanguageSwitcher />
         <router-link to="/booking" class="book-button">
-          <span class="book-button-text">Book a Pilot</span>
+          <span class="book-button-text">{{ t('common.bookPilot') }}</span>
         </router-link>
       </div>
     </header>
@@ -48,37 +52,37 @@ const route = useRoute();
             <span class="footer-logo-text">DroneOps</span>
           </div>
           <p class="footer-description">
-            Premier drone operator network for cinema, survey, and inspection.
+            {{ t('layout.footer.description') }}
           </p>
         </div>
         <div class="footer-col">
-          <h4 class="footer-heading">Company</h4>
+          <h4 class="footer-heading">{{ t('layout.footer.company') }}</h4>
           <ul class="footer-list">
-            <li><button class="footer-link">About Us</button></li>
-            <li><button class="footer-link">Careers</button></li>
-            <li><button class="footer-link">Blog</button></li>
+            <li><button class="footer-link">{{ t('layout.footer.aboutUs') }}</button></li>
+            <li><button class="footer-link">{{ t('layout.footer.careers') }}</button></li>
+            <li><button class="footer-link">{{ t('layout.footer.blog') }}</button></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h4 class="footer-heading">Services</h4>
+          <h4 class="footer-heading">{{ t('layout.footer.services') }}</h4>
           <ul class="footer-list">
-            <li><button class="footer-link">Real Estate</button></li>
-            <li><button class="footer-link">Events</button></li>
-            <li><button class="footer-link">Inspections</button></li>
-            <li><button class="footer-link">Mapping</button></li>
+            <li><button class="footer-link">{{ t('layout.footer.realEstate') }}</button></li>
+            <li><button class="footer-link">{{ t('layout.footer.events') }}</button></li>
+            <li><button class="footer-link">{{ t('layout.footer.inspections') }}</button></li>
+            <li><button class="footer-link">{{ t('layout.footer.mapping') }}</button></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h4 class="footer-heading">Legal</h4>
+          <h4 class="footer-heading">{{ t('layout.footer.legal') }}</h4>
           <ul class="footer-list">
-            <li><button class="footer-link">Privacy Policy</button></li>
-            <li><button class="footer-link">Terms of Service</button></li>
-            <li><button class="footer-link">Flight Regulations</button></li>
+            <li><button class="footer-link">{{ t('layout.footer.privacyPolicy') }}</button></li>
+            <li><button class="footer-link">{{ t('layout.footer.termsOfService') }}</button></li>
+            <li><button class="footer-link">{{ t('layout.footer.flightRegulations') }}</button></li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>© 2023 DroneOps Inc. All rights reserved.</p>
+        <p>{{ t('layout.footer.copyright') }}</p>
         <div class="footer-social">
           <span class="material-symbols-outlined social-icon">thumb_up</span>
           <span class="material-symbols-outlined social-icon">share</span>
@@ -164,7 +168,8 @@ const route = useRoute();
   display: flex;
   flex: 1;
   justify-content: flex-end;
-  gap: 2rem;
+  align-items: center;
+  gap: 1rem;
 }
 
 .nav-links {

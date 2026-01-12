@@ -1,0 +1,227 @@
+{
+  "common": {
+    "bookPilot": "Réserver un Pilote",
+    "contact": "Contact",
+    "learnMore": "En savoir plus",
+    "viewAll": "Voir tout",
+    "contactUs": "Nous Contacter",
+    "watchReel": "Voir la Bande-annonce",
+    "getQuote": "Obtenir un Devis",
+    "contactSales": "Contacter les Ventes",
+    "selected": "Sélectionné",
+    "perDay": "par jour"
+  },
+  "layout": {
+    "nav": {
+      "services": "Services",
+      "fleet": "Flotte",
+      "work": "Réalisations",
+      "contact": "Contact"
+    },
+    "footer": {
+      "description": "Réseau de premier plan d'opérateurs de drones pour le cinéma, l'arpentage et l'inspection.",
+      "company": "Entreprise",
+      "services": "Services",
+      "legal": "Légal",
+      "aboutUs": "À Propos",
+      "careers": "Carrières",
+      "blog": "Blog",
+      "realEstate": "Immobilier",
+      "events": "Événements",
+      "inspections": "Inspections",
+      "mapping": "Cartographie",
+      "privacyPolicy": "Politique de Confidentialité",
+      "termsOfService": "Conditions d'Utilisation",
+      "flightRegulations": "Règlementations de Vol",
+      "copyright": "© 2023 DroneOps Inc. Tous droits réservés."
+    }
+  },
+  "home": {
+    "hero": {
+      "badge": "Disponible Mondialement",
+      "title": "Élevez Votre Perspective",
+      "description": "Opérateurs de Drones Professionnels à la Demande. Du FPV haute vitesse au 8K cinématique, nous capturons les plans que d'autres ne peuvent pas."
+    },
+    "stats": {
+      "hoursFlown": "Heures de Vol",
+      "projects": "Projets",
+      "safetyRating": "Note de Sécurité",
+      "countries": "Pays"
+    },
+    "services": {
+      "badge": "Notre Expertise",
+      "title": "Solutions Aériennes Spécialisées",
+      "description": "Nous ne faisons pas que piloter des drones ; nous capturons des données et de l'art. Choisissez le service qui correspond aux besoins de votre projet.",
+      "viewAllServices": "Voir Tous les Services",
+      "customProject": {
+        "title": "Projet Personnalisé ?",
+        "description": "Vous avez une vision spécifique ? Nos pilotes sont prêts pour tous les défis."
+      }
+    },
+    "fleet": {
+      "title": "Notre Flotte"
+    },
+    "cta": {
+      "title": "Prêt à voler ?",
+      "description": "Obtenez un devis pour votre projet dans les 24 heures. Nos pilotes sont licenciés, assurés et prêts à se déployer dans le monde entier."
+    }
+  },
+  "booking": {
+    "title": "Nouvelle Demande de Mission",
+    "subtitle": "Configurez vos exigences d'opération de drone ci-dessous.",
+    "progress": {
+      "status": "Configuration en cours",
+      "step": "Étape {current} sur {total}",
+      "steps": {
+        "profile": "Profil",
+        "location": "Localisation",
+        "equipment": "Équipement",
+        "billing": "Facturation"
+      }
+    },
+    "profile": {
+      "title": "Profil de Mission",
+      "realEstate": "Immobilier",
+      "weddingEvents": "Mariage et Événements",
+      "industrialSurvey": "Arpentage Industriel"
+    },
+    "location": {
+      "title": "Zone de Vol et Horaire",
+      "targetLocation": "Localisation Cible",
+      "missionDate": "Date de Mission",
+      "startTime": "Heure de Début",
+      "forecast": "Prévisions : Ciel Dégagé (22°C)"
+    },
+    "equipment": {
+      "title": "Sélection de Drone",
+      "aiRecommended": "Recommandé par l'IA",
+      "bestPerformance": "MEILLEURES PERFORMANCES",
+      "description": "Parfait pour les prises de vue cinématographiques de mariage avec enregistrement Apple ProRes 5.1K et détection d'obstacles omnidirectionnelle.",
+      "selected": "Sélectionné",
+      "viewAlternatives": "Voir {count} Drones Alternatifs"
+    },
+    "billing": {
+      "title": "Paiement Sécurisé",
+      "moduleLocked": "Module Verrouillé"
+    },
+    "summary": {
+      "title": "Estimation de Mission",
+      "operatorFee": "Frais d'Opérateur (4h)",
+      "equipmentRental": "Location d'Équipement",
+      "insurance": "Assurance",
+      "platformDiscount": "Réduction de Plateforme",
+      "totalCost": "Coût Total",
+      "currency": "USD (Estimé)",
+      "payReserve": "Payer et Réserver l'Opérateur",
+      "security": "Protégé par un chiffrement SSL 256 bits"
+    },
+    "operator": {
+      "role": "Expert en Drones"
+    },
+    "stats": {
+      "flightTime": "Temps de Vol",
+      "resolution": "Résolution",
+      "speed": "Vitesse",
+      "agility": "Agilité",
+      "payload": "Charge Utile"
+    }
+  },
+  "contact": {
+    "hero": {
+      "title": "Prêt à Capturer le Ciel ?",
+      "titleAccent": "Parlons-en.",
+      "description": "Remplissez le formulaire ci-dessous pour obtenir un devis détaillé pour votre prochain projet d'imagerie aérienne."
+    },
+    "info": {
+      "title": "Informations de Contact",
+      "directLine": "Ligne Directe",
+      "emailInquiry": "Demande par Email",
+      "baseOfOps": "Base d'Opérations",
+      "serviceRadius": "Rayon de Service : 100mi"
+    },
+    "form": {
+      "title": "Demander un Devis",
+      "subtitle": "Les détails nous aident à voler plus sûrement et plus intelligemment. Parlez-nous de votre mission.",
+      "yourName": "Votre Nom",
+      "namePlaceholder": "Jean Dupont",
+      "companyName": "Nom de l'Entreprise",
+      "companyPlaceholder": "Sky Corp (Optionnel)",
+      "email": "Adresse Email",
+      "emailPlaceholder": "jean@exemple.com",
+      "projectType": "Type de Projet",
+      "projectDate": "Date du Projet",
+      "location": "Localisation",
+      "locationPlaceholder": "Portland, OR",
+      "description": "Description du Projet",
+      "descriptionPlaceholder": "Parlez-nous de votre vision...",
+      "submit": "Soumettre la Demande"
+    },
+    "faq": {
+      "title": "Questions Fréquemment Posées",
+      "questions": {
+        "weather": {
+          "q": "Volez-vous par mauvais temps ?",
+          "a": "Non. Pour la sécurité et l'intégrité de l'équipement, nous ne volons pas sous forte pluie, neige ou vents forts (au-dessus de 32 km/h). Nous pouvons reprogrammer gratuitement si les conditions sont dangereuses."
+        },
+        "licensed": {
+          "q": "Êtes-vous licenciés et assurés ?",
+          "a": "Oui. Tous les pilotes détiennent des certificats FAA Part 107 valides. Nous avons une assurance responsabilité de 1M$ pour toutes les opérations commerciales."
+        },
+        "turnaround": {
+          "q": "Quel est votre délai de traitement ?",
+          "a": "Images éditées dans les 24-48 heures. Les projets vidéo prennent généralement 3-5 jours ouvrables selon la complexité."
+        },
+        "present": {
+          "q": "Dois-je être présent ?",
+          "a": "Pas toujours, tant que nous avons accès et une liste de plans. Cependant, être sur place est recommandé pour la direction créative."
+        }
+      }
+    },
+    "projectTypes": {
+      "realEstatePhotography": "Photographie Immobilière",
+      "technicalInspection": "Inspection Technique",
+      "eventCoverage": "Couverture d'Événements",
+      "cinematography": "Cinématographie",
+      "other": "Autre"
+    }
+  },
+  "services": {
+    "events": {
+      "title": "Événements et Festivals",
+      "description": "Couverture cinématographique en direct pour les festivals à grande échelle, concerts et événements privés."
+    },
+    "realEstate": {
+      "title": "Immobilier",
+      "description": "Visites aériennes 4K et photographie pour les annonces résidentielles et commerciales haut de gamme."
+    },
+    "3dScans": {
+      "title": "Scans 3D",
+      "description": "Photogrammétrie haute précision, LIDAR et cartographie architecturale pour l'arpentage."
+    },
+    "fpv": {
+      "title": "FPV Sportif",
+      "description": "Suivi FPV haute vitesse pour les sports motorisés, le cyclisme et les plans d'action dynamiques."
+    },
+    "social": {
+      "title": "Réseaux Sociaux",
+      "description": "Contenu vertical 9:16 optimisé pour TikTok, Reels et campagnes sociales à fort engagement."
+    }
+  },
+  "fleet": {
+    "mavic3": {
+      "name": "Mavic 3 Cine",
+      "category": "CINÉMA",
+      "description": "Puissance compacte Apple ProRes 5.1K pour un cinéma polyvalent."
+    },
+    "fpvX8": {
+      "name": "FPV X8 Personnalisé",
+      "category": "VITESSE",
+      "description": "Rig FPV cinéma à forte capacité capable de transporter des caméras RED Komodo à 145 km/h."
+    },
+    "matrice300": {
+      "name": "Matrice 300 RTK",
+      "category": "ARPENTAGE",
+      "description": "La référence de l'industrie pour l'inspection, la cartographie et la photogrammétrie."
+    }
+  }
+}

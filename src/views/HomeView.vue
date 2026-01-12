@@ -1,15 +1,29 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { SERVICES, FLEET } from '../constants';
 
 const router = useRouter();
+const { t } = useI18n();
 
-const stats = [
-  { icon: 'flight', label: 'Hours Flown', value: '12,500+' },
-  { icon: 'assignment_turned_in', label: 'Projects', value: '950+' },
-  { icon: 'shield', label: 'Safety Rating', value: '100%' },
-  { icon: 'public', label: 'Countries', value: '24' }
-];
+const stats = computed(() => [
+  { icon: 'flight', label: t('home.stats.hoursFlown'), value: '12,500+' },
+  { icon: 'assignment_turned_in', label: t('home.stats.projects'), value: '950+' },
+  { icon: 'shield', label: t('home.stats.safetyRating'), value: '100%' },
+  { icon: 'public', label: t('home.stats.countries'), value: '24' }
+]);
+
+const getStatLabel = (label: string) => {
+  const labelMap: Record<string, string> = {
+    'Flight Time': 'booking.stats.flightTime',
+    'Resolution': 'booking.stats.resolution',
+    'Speed': 'booking.stats.speed',
+    'Agility': 'booking.stats.agility',
+    'Payload': 'booking.stats.payload'
+  };
+  return t(labelMap[label] || label);
+};
 
 const navigateToBooking = () => {
   router.push({ name: 'booking' });
@@ -17,6 +31,26 @@ const navigateToBooking = () => {
 
 const navigateToContact = () => {
   router.push({ name: 'contact' });
+};
+
+const getServiceKey = (id: string) => {
+  const keyMap: Record<string, string> = {
+    'events': 'events',
+    'real-estate': 'realEstate',
+    '3d-scans': '3dScans',
+    'fpv': 'fpv',
+    'social': 'social'
+  };
+  return keyMap[id] || id;
+};
+
+const getDroneKey = (id: string) => {
+  const keyMap: Record<string, string> = {
+    'mavic-3': 'mavic3',
+    'fpv-x8': 'fpvX8',
+    'matrice-300': 'matrice300'
+  };
+  return keyMap[id] || id;
 };
 </script>
 
@@ -35,21 +69,21 @@ const navigateToContact = () => {
             ></div>
             <div class="hero-content">
               <span class="hero-badge">
-                Available Globally
+                {{ t('home.hero.badge') }}
               </span>
               <h1 class="hero-title">
-                Elevate Your Perspective
+                {{ t('home.hero.title') }}
               </h1>
               <p class="hero-description">
-                Professional Drone Operators on Demand. From high-speed FPV to cinematic 8K, we capture the shots others can't.
+                {{ t('home.hero.description') }}
               </p>
               <div class="hero-buttons">
                 <button @click="navigateToBooking" class="hero-button-primary">
-                  Book a Pilot
+                  {{ t('common.bookPilot') }}
                 </button>
                 <button class="hero-button-secondary">
                   <span class="material-symbols-outlined hero-button-icon">play_circle</span>
-                  Watch Reel
+                  {{ t('common.watchReel') }}
                 </button>
               </div>
             </div>
@@ -79,16 +113,16 @@ const navigateToContact = () => {
         <div class="services-wrapper">
           <div class="services-header">
             <div class="services-header-content">
-              <span class="services-badge">Our Expertise</span>
+              <span class="services-badge">{{ t('home.services.badge') }}</span>
               <h2 class="services-title">
-                Specialized Aerial Solutions
+                {{ t('home.services.title') }}
               </h2>
               <p class="services-description">
-                We don't just fly drones; we capture data and art. Choose the service that fits your project needs.
+                {{ t('home.services.description') }}
               </p>
             </div>
             <button class="services-view-all">
-              View All Services <span class="material-symbols-outlined services-arrow">arrow_forward</span>
+              {{ t('home.services.viewAllServices') }} <span class="material-symbols-outlined services-arrow">arrow_forward</span>
             </button>
           </div>
           
@@ -105,13 +139,13 @@ const navigateToContact = () => {
                   <div class="service-icon-wrapper">
                     <span class="material-symbols-outlined service-icon">{{ service.icon }}</span>
                   </div>
-                  <h3 class="service-title">{{ service.title }}</h3>
+                  <h3 class="service-title">{{ t(`services.${getServiceKey(service.id)}.title`) }}</h3>
                 </div>
                 <p class="service-description">
-                  {{ service.description }}
+                  {{ t(`services.${getServiceKey(service.id)}.description`) }}
                 </p>
                 <button class="service-link">
-                  Learn more <span class="material-symbols-outlined service-link-icon">arrow_forward</span>
+                  {{ t('common.learnMore') }} <span class="material-symbols-outlined service-link-icon">arrow_forward</span>
                 </button>
               </div>
             </div>
@@ -121,12 +155,12 @@ const navigateToContact = () => {
               <div class="custom-project-icon-wrapper">
                 <span class="material-symbols-outlined custom-project-icon">add</span>
               </div>
-              <h3 class="custom-project-title">Custom Project?</h3>
+              <h3 class="custom-project-title">{{ t('home.services.customProject.title') }}</h3>
               <p class="custom-project-description">
-                Have a specific vision? Our pilots are ready for any challenge.
+                {{ t('home.services.customProject.description') }}
               </p>
               <button @click="navigateToContact" class="custom-project-button">
-                Contact Us
+                {{ t('common.contactUs') }}
               </button>
             </div>
           </div>
@@ -139,7 +173,7 @@ const navigateToContact = () => {
       <div class="fleet-container">
         <div class="fleet-wrapper">
           <div class="fleet-header">
-            <h2 class="fleet-title">Our Fleet</h2>
+            <h2 class="fleet-title">{{ t('home.fleet.title') }}</h2>
             <div class="fleet-controls">
               <button class="fleet-control-button">
                 <span class="material-symbols-outlined">arrow_back</span>
@@ -162,16 +196,16 @@ const navigateToContact = () => {
               </div>
               <div class="drone-content">
                 <div class="drone-header">
-                  <h3 class="drone-name">{{ drone.name }}</h3>
-                  <span class="drone-category">{{ drone.category }}</span>
+                  <h3 class="drone-name">{{ t(`fleet.${getDroneKey(drone.id)}.name`) }}</h3>
+                  <span class="drone-category">{{ t(`fleet.${getDroneKey(drone.id)}.category`) }}</span>
                 </div>
                 <p class="drone-description">
-                  {{ drone.description }}
+                  {{ t(`fleet.${getDroneKey(drone.id)}.description`) }}
                 </p>
                 <div class="drone-stats">
                   <div v-for="(stat, sIdx) in drone.stats" :key="sIdx" class="drone-stat">
                     <div class="drone-stat-header">
-                      <span class="drone-stat-label">{{ stat.label }}</span>
+                      <span class="drone-stat-label">{{ getStatLabel(stat.label) }}</span>
                       <span class="drone-stat-value">{{ stat.value }}</span>
                     </div>
                     <div class="drone-stat-bar">
@@ -196,16 +230,16 @@ const navigateToContact = () => {
         <div class="cta-gradient"></div>
         <div class="cta-content">
           <div class="cta-text">
-            <h2 class="cta-title">Ready to fly?</h2>
+            <h2 class="cta-title">{{ t('home.cta.title') }}</h2>
             <p class="cta-description">
-              Get a quote for your project within 24 hours. Our pilots are licensed, insured, and ready to deploy globally.
+              {{ t('home.cta.description') }}
             </p>
             <div class="cta-buttons">
               <button @click="navigateToBooking" class="cta-button-primary">
-                Get a Quote
+                {{ t('common.getQuote') }}
               </button>
               <button @click="navigateToContact" class="cta-button-secondary">
-                Contact Sales
+                {{ t('common.contactSales') }}
               </button>
             </div>
           </div>
