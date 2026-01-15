@@ -1,10 +1,44 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
+import { nextTick } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import LanguageSwitcher from './LanguageSwitcher.vue';
+import { VERSION } from '../constants';
 
 const route = useRoute();
+const router = useRouter();
 const { t } = useI18n();
+
+const scrollToSection = (sectionId: string) => {
+  const element = document.getElementById(sectionId);
+  if (element) {
+    // Account for sticky header height
+    const headerOffset = 80;
+    const elementPosition = element.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    });
+  }
+};
+
+const navigateToSection = async (sectionId: string) => {
+  if (route.name === 'home') {
+    // Already on home page, just scroll
+    scrollToSection(sectionId);
+  } else {
+    // Navigate to home first, then scroll after navigation completes
+    await router.push({ name: 'home' });
+    // Wait for DOM to update and component to mount
+    await nextTick();
+    // Small delay to ensure the section is rendered
+    setTimeout(() => {
+      scrollToSection(sectionId);
+    }, 100);
+  }
+};
 </script>
 
 <template>
@@ -22,9 +56,9 @@ const { t } = useI18n();
       </router-link>
       <div class="header-nav">
         <div class="nav-links">
-          <router-link to="/" :class="['nav-link', { 'nav-link-active': route.name === 'home' }]">{{ t('layout.nav.services') }}</router-link>
-          <router-link to="/" class="nav-link">{{ t('layout.nav.fleet') }}</router-link>
-          <router-link to="/" class="nav-link">{{ t('layout.nav.work') }}</router-link>
+          <a @click.prevent="navigateToSection('services')" :class="['nav-link', { 'nav-link-active': route.name === 'home' }]">{{ t('layout.nav.services') }}</a>
+          <a @click.prevent="navigateToSection('fleet')" class="nav-link">{{ t('layout.nav.fleet') }}</a>
+          <router-link v-if="VERSION.isCompany" to="/" class="nav-link">{{ t('layout.nav.work') }}</router-link>
           <router-link to="/contact" :class="['nav-link', { 'nav-link-active': route.name === 'contact' }]">{{ t('layout.nav.contact') }}</router-link>
         </div>
         <LanguageSwitcher />

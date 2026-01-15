@@ -25,3 +25,7 @@ export interface Drone {
   price?: number;
   imageUrl: string;
 }
+
+export interface Version {
+  isCompany: boolean;
+}

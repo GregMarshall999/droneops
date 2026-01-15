@@ -108,7 +108,7 @@ const getDroneKey = (id: string) => {
     </section>
 
     <!-- Services Grid -->
-    <section class="services-section">
+    <section class="services-section" id="services">
       <div class="services-container">
         <div class="services-wrapper">
           <div class="services-header">
@@ -169,7 +169,7 @@ const getDroneKey = (id: string) => {
     </section>
 
     <!-- Fleet Section -->
-    <section class="fleet-section">
+    <section class="fleet-section" id="fleet">
       <div class="fleet-container">
         <div class="fleet-wrapper">
           <div class="fleet-header">

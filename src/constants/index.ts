@@ -1,4 +1,4 @@
-import type { Service, Drone } from '../types';
+import type { Service, Drone, Version } from '../types';
 
 export const SERVICES: Service[] = [
   {
@@ -76,3 +76,7 @@ export const FLEET: Drone[] = [
     ]
   }
 ];
+
+export const VERSION: Version = {
+  isCompany: false
+}
