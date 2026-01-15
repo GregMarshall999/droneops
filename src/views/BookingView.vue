@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useBookingStore } from '../stores/booking';
-import { FLEET } from '../constants';
 
 const { t } = useI18n();
 const bookingStore = useBookingStore();

@@ -29,11 +29,12 @@ const navigateToSection = async (sectionId: string) => {
     // Already on home page, just scroll
     scrollToSection(sectionId);
   } else {
-    // Navigate to home first, then scroll after navigation completes
-    await router.push({ name: 'home' });
+    // Navigate to home with hash to indicate we want to scroll to a section
+    // This prevents the default scroll-to-top behavior
+    await router.push({ name: 'home', hash: `#${sectionId}` });
     // Wait for DOM to update and component to mount
     await nextTick();
-    // Small delay to ensure the section is rendered
+    // Small delay to ensure the section is rendered, then scroll
     setTimeout(() => {
       scrollToSection(sectionId);
     }, 100);
@@ -225,6 +226,7 @@ const navigateToSection = async (sectionId: string) => {
   color: var(--color-slate-900);
   text-decoration: none;
   transition: color var(--transition-base);
+  cursor: pointer;
 }
 
 .nav-link:hover {

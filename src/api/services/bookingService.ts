@@ -1,5 +1,4 @@
 import apiClient from '../axios';
-import type { Drone } from '../../types';
 
 export interface BookingRequest {
   profile: string;
