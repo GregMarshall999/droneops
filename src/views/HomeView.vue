@@ -2,16 +2,16 @@
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { SERVICES, FLEET } from '../constants';
+import { SERVICES, FLEET, VERSION } from '../constants';
 
 const router = useRouter();
 const { t } = useI18n();
 
 const stats = computed(() => [
-  { icon: 'flight', label: t('home.stats.hoursFlown'), value: '12,500+' },
-  { icon: 'assignment_turned_in', label: t('home.stats.projects'), value: '950+' },
+  { icon: 'flight', label: t('home.stats.hoursFlown'), value: '50+' },
+  //{ icon: 'assignment_turned_in', label: t('home.stats.projects'), value: '950+' },
   { icon: 'shield', label: t('home.stats.safetyRating'), value: '100%' },
-  { icon: 'public', label: t('home.stats.countries'), value: '24' }
+  { icon: 'public', label: t('home.stats.countries'), value: '2' }
 ]);
 
 const getStatLabel = (label: string) => {
@@ -46,9 +46,11 @@ const getServiceKey = (id: string) => {
 
 const getDroneKey = (id: string) => {
   const keyMap: Record<string, string> = {
-    'mavic-3': 'mavic3',
-    'fpv-x8': 'fpvX8',
-    'matrice-300': 'matrice300'
+    'avata-2': 'avata2',
+    'mavic': 'mavic',
+    'neo': 'neo',
+    'fpv': 'fpv',
+    'inspire': 'inspire'
   };
   return keyMap[id] || id;
 };
@@ -121,7 +123,7 @@ const getDroneKey = (id: string) => {
                 {{ t('home.services.description') }}
               </p>
             </div>
-            <button class="services-view-all">
+            <button v-if="VERSION.hasContent" class="services-view-all">
               {{ t('home.services.viewAllServices') }} <span class="material-symbols-outlined services-arrow">arrow_forward</span>
             </button>
           </div>
@@ -144,7 +146,7 @@ const getDroneKey = (id: string) => {
                 <p class="service-description">
                   {{ t(`services.${getServiceKey(service.id)}.description`) }}
                 </p>
-                <button class="service-link">
+                <button v-if="VERSION.hasContent" class="service-link">
                   {{ t('common.learnMore') }} <span class="material-symbols-outlined service-link-icon">arrow_forward</span>
                 </button>
               </div>
@@ -193,6 +195,9 @@ const getDroneKey = (id: string) => {
                   :src="drone.imageUrl" 
                 />
                 <div class="drone-image-overlay"></div>
+                <div v-if="drone.availableSoon" class="drone-available-soon">
+                  {{ t('fleet.availableSoon') }}
+                </div>
               </div>
               <div class="drone-content">
                 <div class="drone-header">
@@ -490,14 +495,15 @@ const getDroneKey = (id: string) => {
 .stats-grid {
   max-width: 1200px;
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 2rem;
 }
 
 @media (min-width: 768px) {
   .stats-grid {
-    grid-template-columns: repeat(4, 1fr);
+    justify-content: center;
   }
 }
 
@@ -507,11 +513,13 @@ const getDroneKey = (id: string) => {
   gap: 0.25rem;
   align-items: center;
   cursor: default;
+  min-width: 150px;
 }
 
 @media (min-width: 768px) {
   .stat-item {
     align-items: flex-start;
+    min-width: 200px;
   }
 }
 
@@ -1091,6 +1099,30 @@ const getDroneKey = (id: string) => {
 
 .drone-card:hover .drone-image-overlay {
   opacity: 1;
+}
+
+.drone-available-soon {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 20;
+  background-color: rgba(255, 193, 7, 0.95);
+  color: var(--color-slate-900);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-md);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  .drone-available-soon {
+    background-color: rgba(255, 193, 7, 0.9);
+    color: var(--color-slate-900);
+  }
 }
 
 .drone-content {

@@ -40,43 +40,73 @@ export const SERVICES: Service[] = [
 
 export const FLEET: Drone[] = [
   {
-    id: 'mavic-3',
-    name: 'Mavic 3 Cine',
+    id: 'avata-2',
+    name: 'DJI Avata 2',
+    category: 'GENERAL',
+    description: 'Versatile drone perfect for general use and everyday aerial photography.',
+    price: 350,
+    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBQo7HOeJvXhzE03-i-3-oE2N3u0Cm0lazM2FQuf3NmdSYEk_BPtGixQU41H_TTfGdU8TonrbOv4nja8SL2GcO_HBUyubUEzcCFOH2whExo0if0EaVpog3udPP0sFbXOlVUY6jqtQx-PtULwHMu5hsOKcEzhohBcXVbSRSq3miFbgSokl5DscVUY5I6LvCQSkTIN0CxNtK7TrAH0dY24qV-Bb4XcftP66hwSOYIVC7QvWlu04hugWLNWMLKsq0g07zrDhbebwS9Fnvo',
+    stats: [
+      { label: 'Flight Time', value: '23 mins', percentage: 70 },
+      { label: 'Resolution', value: '4K / 60fps', percentage: 75 }
+    ],
+    availableSoon: false
+  },
+  {
+    id: 'mavic',
+    name: 'DJI Mavic',
     category: 'CINEMA',
-    description: 'Compact 5.1K Apple ProRes powerhouse for versatile filmmaking.',
+    description: 'Industry-leading camera system for professional cinematography and high-end productions.',
     price: 450,
     imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBQo7HOeJvXhzE03-i-3-oE2N3u0Cm0lazM2FQuf3NmdSYEk_BPtGixQU41H_TTfGdU8TonrbOv4nja8SL2GcO_HBUyubUEzcCFOH2whExo0if0EaVpog3udPP0sFbXOlVUY6jqtQx-PtULwHMu5hsOKcEzhohBcXVbSRSq3miFbgSokl5DscVUY5I6LvCQSkTIN0CxNtK7TrAH0dY24qV-Bb4XcftP66hwSOYIVC7QvWlu04hugWLNWMLKsq0g07zrDhbebwS9Fnvo',
     stats: [
       { label: 'Flight Time', value: '46 mins', percentage: 85 },
       { label: 'Resolution', value: '5.1K / 50fps', percentage: 90 }
-    ]
+    ],
+    availableSoon: true
   },
   {
-    id: 'fpv-x8',
-    name: 'Custom FPV X8',
-    category: 'SPEED',
-    description: 'Heavy-lift cinema FPV rig capable of carrying RED Komodo cameras at 90mph.',
-    price: 600,
+    id: 'neo',
+    name: 'DJI Neo',
+    category: 'EVENTS',
+    description: 'Designed for low-altitude flights in events with pedestrians present, ensuring safety and compliance.',
+    price: 400,
     imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA0PRnGQ-gXV8mdK9ZdZ_wVtt51tTn5b3CZvN_O9Jeomd0zsGLav9p38Hk4yNr-FCmopzEUPZhe72-I8joJIMjjybFPuntZq-HqbEkmas7F6kDMXpkg-qfzSYnf8Oe6IyhIT-Vg3-Sx7tLZZxF4hNg6kG4Twgz4C-OMzjGP9osQp-EAuHG4HGmYFgw-kHSJNKnAlJIWDm7jbfLqyoiyiLHQ4aC4LIUBe0mF6Yp5NgpTEwH8mGEUgJ0uqDz67y_AlW9-V99lw7BsZKCU',
     stats: [
-      { label: 'Speed', value: '100 mph', percentage: 98 },
-      { label: 'Agility', value: 'Extreme', percentage: 100 }
-    ]
+      { label: 'Flight Time', value: '28 mins', percentage: 75 },
+      { label: 'Agility', value: 'High', percentage: 85 }
+    ],
+    availableSoon: true
   },
   {
-    id: 'matrice-300',
-    name: 'Matrice 300 RTK',
-    category: 'SURVEY',
-    description: 'The industry standard for inspection, mapping, and photogrammetry.',
+    id: 'fpv',
+    name: 'DJI FPV',
+    category: 'SPEED',
+    description: 'High-speed FPV drone optimized for dynamic FPV content creation and immersive flight experiences.',
+    price: 500,
+    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA0PRnGQ-gXV8mdK9ZdZ_wVtt51tTn5b3CZvN_O9Jeomd0zsGLav9p38Hk4yNr-FCmopzEUPZhe72-I8joJIMjjybFPuntZq-HqbEkmas7F6kDMXpkg-qfzSYnf8Oe6IyhIT-Vg3-Sx7tLZZxF4hNg6kG4Twgz4C-OMzjGP9osQp-EAuHG4HGmYFgw-kHSJNKnAlJIWDm7jbfLqyoiyiLHQ4aC4LIUBe0mF6Yp5NgpTEwH8mGEUgJ0uqDz67y_AlW9-V99lw7BsZKCU',
+    stats: [
+      { label: 'Speed', value: '87 mph', percentage: 95 },
+      { label: 'Agility', value: 'Extreme', percentage: 100 }
+    ],
+    availableSoon: true
+  },
+  {
+    id: 'inspire',
+    name: 'DJI Inspire',
+    category: 'PHOTOGRAPHY',
+    description: 'Professional aerial photography specialist with advanced camera systems for commercial and artistic projects.',
     price: 850,
     imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAGZ9PH8EgfTsUeVi5Tc0-TLHvpIbQlUWnjicnzLUKGSS64lSWniSIPO6pC6jE8_Yflv9_Ejq6fRGy2QfZTnzNcH-dKfiQ4PhP4h46DMpjAuvv5JeVJzBuYX9NK1vPxTa2wpw7ZDnmzrIJ88U5wFo0lAG2pQgxqzhU-p4XxtAnxJheWKkTl-z1vzXXTkBrFWIvKegHIe5PTQzFzNYve5Jpy8H_zy7Pi0K_ZWmnAiDApZygIN187llg0_txNyN3qR-fg_AeRSIAe2O1S',
     stats: [
-      { label: 'Flight Time', value: '55 mins', percentage: 95 },
-      { label: 'Payload', value: '2.7 kg', percentage: 80 }
-    ]
+      { label: 'Flight Time', value: '27 mins', percentage: 80 },
+      { label: 'Resolution', value: '6K / 30fps', percentage: 95 }
+    ],
+    availableSoon: true
   }
 ];
 
 export const VERSION: Version = {
-  isCompany: false
+  isCompany: false,
+  hasContent: false
 }

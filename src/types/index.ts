@@ -15,7 +15,7 @@ export interface Service {
 export interface Drone {
   id: string;
   name: string;
-  category: 'CINEMA' | 'SPEED' | 'SURVEY';
+  category: 'CINEMA' | 'SPEED' | 'SURVEY' | 'GENERAL' | 'EVENTS' | 'PHOTOGRAPHY';
   description: string;
   stats: {
     label: string;
@@ -24,8 +24,10 @@ export interface Drone {
   }[];
   price?: number;
   imageUrl: string;
+  availableSoon?: boolean;
 }
 
 export interface Version {
   isCompany: boolean;
+  hasContent: boolean;
 }

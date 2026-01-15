@@ -7,7 +7,7 @@
     "contactUs": "Contact Us",
     "watchReel": "Watch Reel",
     "getQuote": "Get a Quote",
-    "contactSales": "Contact Sales",
+    "contactSales": "Contact Us",
     "selected": "Selected",
     "perDay": "per day"
   },
@@ -38,12 +38,12 @@
   },
   "home": {
     "hero": {
-      "badge": "Available Globally",
+      "badge": "Now Available",
       "title": "Elevate Your Perspective",
-      "description": "Professional Drone Operators on Demand. From high-speed FPV to cinematic 8K, we capture the shots others can't."
+      "description": "Professional Drone Operator on Demand. From high-speed FPV to cinematic 4K, capturing shots others can't."
     },
     "stats": {
-      "hoursFlown": "Hours Flown",
+      "hoursFlown": "Flights",
       "projects": "Projects",
       "safetyRating": "Safety Rating",
       "countries": "Countries"
@@ -208,20 +208,31 @@
     }
   },
   "fleet": {
-    "mavic3": {
-      "name": "Mavic 3 Cine",
+    "avata2": {
+      "name": "DJI Avata 2",
+      "category": "GENERAL",
+      "description": "Versatile drone perfect for general use and everyday aerial photography."
+    },
+    "mavic": {
+      "name": "DJI Mavic",
       "category": "CINEMA",
-      "description": "Compact 5.1K Apple ProRes powerhouse for versatile filmmaking."
+      "description": "Industry-leading camera system for professional cinematography and high-end productions."
     },
-    "fpvX8": {
-      "name": "Custom FPV X8",
+    "neo": {
+      "name": "DJI Neo",
+      "category": "EVENTS",
+      "description": "Designed for low-altitude flights in events with pedestrians present, ensuring safety and compliance."
+    },
+    "fpv": {
+      "name": "DJI FPV",
       "category": "SPEED",
-      "description": "Heavy-lift cinema FPV rig capable of carrying RED Komodo cameras at 90mph."
+      "description": "High-speed FPV drone optimized for dynamic FPV content creation and immersive flight experiences."
     },
-    "matrice300": {
-      "name": "Matrice 300 RTK",
-      "category": "SURVEY",
-      "description": "The industry standard for inspection, mapping, and photogrammetry."
-    }
+    "inspire": {
+      "name": "DJI Inspire",
+      "category": "PHOTOGRAPHY",
+      "description": "Professional aerial photography specialist with advanced camera systems for commercial and artistic projects."
+    },
+    "availableSoon": "Available Soon"
   }
 }

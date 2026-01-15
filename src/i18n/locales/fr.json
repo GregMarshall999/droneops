@@ -7,7 +7,7 @@
     "contactUs": "Nous Contacter",
     "watchReel": "Voir la Bande-annonce",
     "getQuote": "Obtenir un Devis",
-    "contactSales": "Contacter les Ventes",
+    "contactSales": "Nous Contacter",
     "selected": "Sélectionné",
     "perDay": "par jour"
   },
@@ -38,12 +38,12 @@
   },
   "home": {
     "hero": {
-      "badge": "Disponible Mondialement",
+      "badge": "Maintenant Disponible",
       "title": "Élevez Votre Perspective",
-      "description": "Opérateurs de Drones Professionnels à la Demande. Du FPV haute vitesse au 8K cinématique, nous capturons les plans que d'autres ne peuvent pas."
+      "description": "Opérateur de Drones Professionnel à la Demande. Du FPV haute vitesse au 4K cinématique, capturant les plans que d'autres ne peuvent pas."
     },
     "stats": {
-      "hoursFlown": "Heures de Vol",
+      "hoursFlown": "Vols",
       "projects": "Projets",
       "safetyRating": "Note de Sécurité",
       "countries": "Pays"
@@ -208,20 +208,31 @@
     }
   },
   "fleet": {
-    "mavic3": {
-      "name": "Mavic 3 Cine",
+    "avata2": {
+      "name": "DJI Avata 2",
+      "category": "GÉNÉRAL",
+      "description": "Drone polyvalent parfait pour un usage général et la photographie aérienne quotidienne."
+    },
+    "mavic": {
+      "name": "DJI Mavic",
       "category": "CINÉMA",
-      "description": "Puissance compacte Apple ProRes 5.1K pour un cinéma polyvalent."
+      "description": "Système de caméra de pointe pour la cinématographie professionnelle et les productions haut de gamme."
     },
-    "fpvX8": {
-      "name": "FPV X8 Personnalisé",
+    "neo": {
+      "name": "DJI Neo",
+      "category": "ÉVÉNEMENTS",
+      "description": "Conçu pour les vols à basse altitude lors d'événements avec présence de piétons, garantissant sécurité et conformité."
+    },
+    "fpv": {
+      "name": "DJI FPV",
       "category": "VITESSE",
-      "description": "Rig FPV cinéma à forte capacité capable de transporter des caméras RED Komodo à 145 km/h."
+      "description": "Drone FPV haute vitesse optimisé pour la création de contenu FPV dynamique et des expériences de vol immersives."
     },
-    "matrice300": {
-      "name": "Matrice 300 RTK",
-      "category": "ARPENTAGE",
-      "description": "La référence de l'industrie pour l'inspection, la cartographie et la photogrammétrie."
-    }
+    "inspire": {
+      "name": "DJI Inspire",
+      "category": "PHOTOGRAPHIE",
+      "description": "Spécialiste de la photographie aérienne professionnelle avec des systèmes de caméra avancés pour projets commerciaux et artistiques."
+    },
+    "availableSoon": "Bientôt Disponible"
   }
 }
