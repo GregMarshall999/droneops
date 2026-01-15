@@ -1,11 +1,50 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { SERVICES, FLEET, VERSION } from '../constants';
 
 const router = useRouter();
 const { t } = useI18n();
+
+// Carousel state - find Avata 2 index and center it
+const avata2Index = FLEET.findIndex(drone => drone.id === 'avata-2');
+// Start with Avata 2 centered (index 0), so we show items 0, 1, 2
+const currentCarouselIndex = ref(0);
+
+const maxCarouselIndex = FLEET.length - 3;
+
+const goToPrevious = () => {
+  if (currentCarouselIndex.value === 0) {
+    // Loop to the end
+    currentCarouselIndex.value = maxCarouselIndex;
+  } else {
+    currentCarouselIndex.value--;
+  }
+};
+
+const goToNext = () => {
+  if (currentCarouselIndex.value >= maxCarouselIndex) {
+    // Loop to the beginning
+    currentCarouselIndex.value = 0;
+  } else {
+    currentCarouselIndex.value++;
+  }
+};
+
+// Calculate transform to center the current index
+const carouselTransform = computed(() => {
+  if (currentCarouselIndex.value === 0) {
+    return 'translateX(0)';
+  }
+  // Shift by currentCarouselIndex items
+  // Each item wrapper is calc((100% - 4rem) / 3) wide
+  // Plus 2rem gap after each item (except the last)
+  // Simplified: use percentage for item width and rem for gap
+  const itemWidthPercent = 100 / 3;
+  const gapRem = 2;
+  return `translateX(calc(-${currentCarouselIndex.value} * ${itemWidthPercent}% - ${currentCarouselIndex.value * gapRem}rem))`;
+});
 
 const stats = computed(() => [
   { icon: 'flight', label: t('home.stats.hoursFlown'), value: '50+' },
@@ -177,44 +216,57 @@ const getDroneKey = (id: string) => {
           <div class="fleet-header">
             <h2 class="fleet-title">{{ t('home.fleet.title') }}</h2>
             <div class="fleet-controls">
-              <button class="fleet-control-button">
+              <button 
+                @click="goToPrevious" 
+                class="fleet-control-button"
+              >
                 <span class="material-symbols-outlined">arrow_back</span>
               </button>
-              <button class="fleet-control-button">
+              <button 
+                @click="goToNext" 
+                class="fleet-control-button"
+              >
                 <span class="material-symbols-outlined">arrow_forward</span>
               </button>
             </div>
           </div>
           
-          <div class="fleet-grid">
-            <div v-for="drone in FLEET" :key="drone.id" class="drone-card">
-              <div class="drone-image-wrapper">
-                <img 
-                  :alt="drone.name" 
-                  class="drone-image" 
-                  :src="drone.imageUrl" 
-                />
-                <div class="drone-image-overlay"></div>
-                <div v-if="drone.availableSoon" class="drone-available-soon">
-                  {{ t('fleet.availableSoon') }}
-                </div>
-              </div>
-              <div class="drone-content">
-                <div class="drone-header">
-                  <h3 class="drone-name">{{ t(`fleet.${getDroneKey(drone.id)}.name`) }}</h3>
-                  <span class="drone-category">{{ t(`fleet.${getDroneKey(drone.id)}.category`) }}</span>
-                </div>
-                <p class="drone-description">
-                  {{ t(`fleet.${getDroneKey(drone.id)}.description`) }}
-                </p>
-                <div class="drone-stats">
-                  <div v-for="(stat, sIdx) in drone.stats" :key="sIdx" class="drone-stat">
-                    <div class="drone-stat-header">
-                      <span class="drone-stat-label">{{ getStatLabel(stat.label) }}</span>
-                      <span class="drone-stat-value">{{ stat.value }}</span>
+          <div class="fleet-carousel-wrapper">
+            <div 
+              class="fleet-carousel" 
+              :style="{ transform: carouselTransform }"
+            >
+              <div v-for="drone in FLEET" :key="drone.id" class="drone-card-wrapper">
+                <div class="drone-card">
+                  <div class="drone-image-wrapper">
+                    <img 
+                      :alt="drone.name" 
+                      class="drone-image" 
+                      :src="drone.imageUrl" 
+                    />
+                    <div class="drone-image-overlay"></div>
+                    <div v-if="drone.availableSoon" class="drone-available-soon">
+                      {{ t('fleet.availableSoon') }}
                     </div>
-                    <div class="drone-stat-bar">
-                      <div class="drone-stat-bar-fill" :style="{ width: `${stat.percentage}%` }"></div>
+                  </div>
+                  <div class="drone-content">
+                    <div class="drone-header">
+                      <h3 class="drone-name">{{ t(`fleet.${getDroneKey(drone.id)}.name`) }}</h3>
+                      <span class="drone-category">{{ t(`fleet.${getDroneKey(drone.id)}.category`) }}</span>
+                    </div>
+                    <p class="drone-description">
+                      {{ t(`fleet.${getDroneKey(drone.id)}.description`) }}
+                    </p>
+                    <div class="drone-stats">
+                      <div v-for="(stat, sIdx) in drone.stats" :key="sIdx" class="drone-stat">
+                        <div class="drone-stat-header">
+                          <span class="drone-stat-label">{{ getStatLabel(stat.label) }}</span>
+                          <span class="drone-stat-value">{{ stat.value }}</span>
+                        </div>
+                        <div class="drone-stat-bar">
+                          <div class="drone-stat-bar-fill" :style="{ width: `${stat.percentage}%` }"></div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1016,24 +1068,39 @@ const getDroneKey = (id: string) => {
     border-color: var(--color-dark-border-alt);
     color: var(--color-white);
   }
-}
-
-.fleet-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-  padding: 0 1rem;
-}
-
-@media (min-width: 768px) {
-  .fleet-grid {
-    grid-template-columns: repeat(2, 1fr);
+  
+  .fleet-control-button-disabled:hover {
+    color: var(--color-white);
+    border-color: var(--color-dark-border-alt);
   }
 }
 
-@media (min-width: 1024px) {
-  .fleet-grid {
-    grid-template-columns: repeat(3, 1fr);
+.fleet-carousel-wrapper {
+  overflow: hidden;
+  padding: 0 1rem;
+  position: relative;
+}
+
+.fleet-carousel {
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  gap: 2rem;
+  will-change: transform;
+}
+
+.drone-card-wrapper {
+  flex: 0 0 calc((100% - 4rem) / 3);
+  min-width: 0;
+  padding: 0;
+}
+
+@media (max-width: 1023px) {
+  .drone-card-wrapper {
+    flex: 0 0 100%;
+  }
+  
+  .fleet-carousel {
+    gap: 1rem;
   }
 }
 
