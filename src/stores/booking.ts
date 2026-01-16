@@ -7,8 +7,8 @@ export const useBookingStore = defineStore('booking', () => {
   const selectedDrone = ref<Drone>(FLEET[0]);
   const selectedProfile = ref<string | null>(null);
   const location = ref<string>('');
-  const missionDate = ref<string>('2023-10-24');
-  const startTime = ref<string>('01:00 PM');
+  const missionDate = ref<string>('');
+  const startTime = ref<string>('');
   const currentStep = ref<number>(3);
 
   const setSelectedDrone = (drone: Drone) => {

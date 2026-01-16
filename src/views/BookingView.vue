@@ -38,7 +38,18 @@ const profiles = computed(() => {
   });
 });
 
-const timeSlots = ['09:00 AM', '01:00 PM', '04:00 PM'];
+const timeSlots = [
+  '09:00 AM',
+  '10:00 AM',
+  '11:00 AM',
+  '12:00 PM',
+  '01:00 PM',
+  '02:00 PM',
+  '03:00 PM',
+  '04:00 PM',
+  '05:00 PM',
+  '06:00 PM'
+];
 
 const selectProfile = (profile: typeof profiles.value[0]) => {
   selectedProfileId.value = profile.id;
@@ -310,10 +321,6 @@ const getDroneKey = (id: string) => {
                     {{ time }}
                   </button>
                 </div>
-              </div>
-              <div class="weather-info">
-                <span class="material-symbols-outlined weather-icon">cloud_done</span>
-                <span>{{ t('booking.location.forecast') }}</span>
               </div>
             </div>
           </div>
@@ -878,6 +885,12 @@ const getDroneKey = (id: string) => {
   gap: 0.75rem;
 }
 
+@media (min-width: 768px) {
+  .time-slots {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
 .time-slot {
   padding: 0.75rem 0.5rem;
   font-size: 0.875rem;
@@ -899,24 +912,6 @@ const getDroneKey = (id: string) => {
   background-color: var(--color-primary);
   color: var(--color-white);
   box-shadow: 0 0 0 4px rgba(25, 127, 230, 0.2);
-}
-
-.weather-info {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 0.875rem;
-  color: var(--color-text-secondary);
-  margin-top: 0.5rem;
-  background-color: rgba(25, 127, 230, 0.05);
-  padding: 0.75rem;
-  border-radius: var(--radius-xl);
-  border: 1px solid rgba(25, 127, 230, 0.1);
-}
-
-.weather-icon {
-  color: var(--color-primary);
-  font-size: 1.25rem;
 }
 
 .drone-selection-card {
