@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet';
+// @ts-ignore - Leaflet types are available but may not be recognized
+import * as L from 'leaflet';
 
 interface ContactFormData {
   name: string;
@@ -56,6 +59,18 @@ const handleSubmit = () => {
   // Form submission will be handled by API service
   console.log('Form submitted:', formData.value);
 };
+
+// Map configuration - France (Paris coordinates)
+const mapCenter = [48.8566, 2.3522]; // Paris, France
+const mapZoom = 6; // Zoom level to show France
+
+// Fix Leaflet default icon issue
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+});
 </script>
 
 <template>
@@ -107,14 +122,20 @@ const handleSubmit = () => {
             </div>
           </div>
 
-          <!-- Map Placeholder -->
+          <!-- Map -->
           <div class="contact-map">
-            <div class="contact-map-overlay"></div>
-            <img 
-              class="contact-map-image"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtnILhmVYX9l3HU8EvjnQ6TziVkvrSDEMMoe3KAxhg4BXoRHiUuzZy2Uu011Ew6QEOQY0Rlz9GolcVuhL3LvhTEUxr4KVZ0FaehEr5KWxxAmX7W-BmsizUwA8lk4lcFz_yyjBfKDJkGP07x--GqVnXQiGTnNQyuE_Bq0PDZVuMM7u_nPY5v7VQiA7dvQjUaSkcYDiUApj-nrSIuEV0CMoEWdbaU8kIdH1kE5ZoL2ERibOWLO8D4M3ZhVfAE_eu4xtqGbqAZMnY1DP8"
-              alt="Portland Map"
-            />
+            <LMap
+              :zoom="mapZoom"
+              :center="mapCenter"
+              :options="{ zoomControl: false }"
+              class="contact-map-container"
+            >
+              <LTileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              />
+              <LMarker :lat-lng="mapCenter" />
+            </LMap>
             <div class="contact-map-badge">
               {{ t('contact.info.serviceRadius') }}
             </div>
@@ -476,30 +497,46 @@ const handleSubmit = () => {
   box-shadow: var(--shadow-2xl);
 }
 
-.contact-map-overlay {
-  position: absolute;
-  inset: 0;
-  background-color: rgba(15, 23, 42, 0.3);
-  z-index: 10;
-  transition: background-color var(--transition-base);
-}
-
-.contact-map:hover .contact-map-overlay {
-  background-color: transparent;
-}
-
-.contact-map-image {
+.contact-map-container {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  opacity: 0.8;
-  transition: all 0.7s;
-  transform: scale(1.1);
+  z-index: 0;
 }
 
-.contact-map:hover .contact-map-image {
-  opacity: 1;
-  transform: scale(1);
+/* Dark theme for Leaflet map */
+.contact-map-container :deep(.leaflet-container) {
+  background-color: var(--color-background-dark);
+}
+
+.contact-map-container :deep(.leaflet-tile-pane) {
+  filter: brightness(0.7) contrast(1.1);
+}
+
+.contact-map-container :deep(.leaflet-control-zoom) {
+  border: none;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.contact-map-container :deep(.leaflet-control-zoom a) {
+  background-color: var(--color-surface-dark);
+  color: var(--color-white);
+  border: 1px solid rgba(36, 58, 71, 0.5);
+}
+
+.contact-map-container :deep(.leaflet-control-zoom a:hover) {
+  background-color: var(--color-surface-highlight);
+  border-color: var(--color-primary);
+}
+
+.contact-map-container :deep(.leaflet-popup-content-wrapper) {
+  background-color: var(--color-surface-dark);
+  color: var(--color-white);
+  border-radius: var(--radius-lg);
+}
+
+.contact-map-container :deep(.leaflet-popup-tip) {
+  background-color: var(--color-surface-dark);
 }
 
 .contact-map-badge {
