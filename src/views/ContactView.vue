@@ -2,6 +2,16 @@
 import { ref, computed, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+interface ContactFormData {
+  name: string;
+  company: string;
+  email: string;
+  projectType: string;
+  projectDate: string;
+  location: string;
+  description: string;
+}
+
 const { t } = useI18n();
 
 const contactInfo = computed(() => [
@@ -25,7 +35,7 @@ const projectTypes = computed(() => [
   t('contact.projectTypes.other')
 ]);
 
-const formData = ref({
+const formData = ref<ContactFormData>({
   name: '',
   company: '',
   email: '',
@@ -38,7 +48,7 @@ const formData = ref({
 // Initialize projectType when projectTypes are available
 watchEffect(() => {
   if (projectTypes.value.length > 0 && !formData.value.projectType) {
-    formData.value.projectType = projectTypes.value[0];
+    formData.value.projectType = projectTypes.value[0] || '';
   }
 });
 
@@ -132,7 +142,7 @@ const handleSubmit = () => {
             <form @submit.prevent="handleSubmit" class="contact-form">
               <div class="form-row">
                 <div class="form-field">
-                  <label class="form-label">{{ t('contact.form.yourName') }}</label>
+                  <label class="form-label" for="name">{{ t('contact.form.yourName') }}</label>
                   <input 
                     v-model="formData.name"
                     class="form-input"
@@ -141,7 +151,7 @@ const handleSubmit = () => {
                   />
                 </div>
                 <div class="form-field">
-                  <label class="form-label">{{ t('contact.form.companyName') }}</label>
+                  <label class="form-label" for="company">{{ t('contact.form.companyName') }}</label>
                   <input 
                     v-model="formData.company"
                     class="form-input"
@@ -153,7 +163,7 @@ const handleSubmit = () => {
 
               <div class="form-row">
                 <div class="form-field">
-                  <label class="form-label">{{ t('contact.form.email') }}</label>
+                  <label class="form-label" for="email">{{ t('contact.form.email') }}</label>
                   <input 
                     v-model="formData.email"
                     class="form-input"
@@ -162,7 +172,7 @@ const handleSubmit = () => {
                   />
                 </div>
                 <div class="form-field">
-                  <label class="form-label">{{ t('contact.form.projectType') }}</label>
+                  <label class="form-label" for="projectType">{{ t('contact.form.projectType') }}</label>
                   <div class="select-wrapper">
                     <select 
                       v-model="formData.projectType"
@@ -177,7 +187,7 @@ const handleSubmit = () => {
 
               <div class="form-row">
                 <div class="form-field">
-                  <label class="form-label">{{ t('contact.form.projectDate') }}</label>
+                  <label class="form-label" for="projectDate">{{ t('contact.form.projectDate') }}</label>
                   <input 
                     v-model="formData.projectDate"
                     class="form-input"
@@ -185,7 +195,7 @@ const handleSubmit = () => {
                   />
                 </div>
                 <div class="form-field">
-                  <label class="form-label">{{ t('contact.form.location') }}</label>
+                  <label class="form-label" for="location">{{ t('contact.form.location') }}</label>
                   <div class="input-wrapper-location">
                     <input 
                       v-model="formData.location"
@@ -199,7 +209,7 @@ const handleSubmit = () => {
               </div>
 
               <div class="form-field form-field-full">
-                <label class="form-label">{{ t('contact.form.description') }}</label>
+                <label class="form-label" for="description">{{ t('contact.form.description') }}</label>
                 <textarea 
                   v-model="formData.description"
                   class="form-textarea"
