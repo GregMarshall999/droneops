@@ -137,7 +137,7 @@
       "directLine": "Direct Line",
       "emailInquiry": "Email Inquiry",
       "baseOfOps": "Base of Ops",
-      "serviceRadius": "Service Radius: 100mi"
+      "serviceRadius": "Service Radius: 500mi"
     },
     "form": {
       "title": "Request a Quote",

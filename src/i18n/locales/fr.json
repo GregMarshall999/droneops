@@ -137,7 +137,7 @@
       "directLine": "Ligne Directe",
       "emailInquiry": "Demande par Email",
       "baseOfOps": "Base d'Opérations",
-      "serviceRadius": "Rayon de Service : 100mi"
+      "serviceRadius": "Rayon de Service : 1000km"
     },
     "form": {
       "title": "Demander un Devis",

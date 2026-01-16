@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet';
+import { LMap, LTileLayer, LMarker, LCircle } from '@vue-leaflet/vue-leaflet';
 // @ts-ignore - Leaflet types are available but may not be recognized
 import * as L from 'leaflet';
 
@@ -62,7 +62,47 @@ const handleSubmit = () => {
 
 // Map configuration - France (Paris coordinates)
 const mapCenter = [48.8566, 2.3522]; // Paris, France
-const mapZoom = 6; // Zoom level to show France
+const mapZoom = ref(6); // Initial zoom level, will be adjusted to fit circle
+// 500 miles in meters (1 mile = 1609.34 meters)
+const serviceRadiusMeters = 500 * 1609.34; // Approximately 804,670 meters
+
+// Map reference
+const mapRef = ref<InstanceType<typeof LMap> | null>(null);
+
+// Calculate bounds to fit the circle
+const calculateCircleBounds = () => {
+  const center = L.latLng(mapCenter[0], mapCenter[1]);
+  // Convert radius from meters to degrees
+  // Latitude: 1 degree ≈ 111,320 meters (constant)
+  // Longitude: varies by latitude, 1 degree ≈ 111,320 * cos(latitude) meters
+  const latRadius = serviceRadiusMeters / 111320;
+  const lngRadius = serviceRadiusMeters / (111320 * Math.cos(center.lat * Math.PI / 180));
+  
+  return L.latLngBounds(
+    [center.lat - latRadius, center.lng - lngRadius],
+    [center.lat + latRadius, center.lng + lngRadius]
+  );
+};
+
+// Fit map to circle bounds when map is ready
+const onMapReady = () => {
+  if (mapRef.value?.leafletObject) {
+    const bounds = calculateCircleBounds();
+    mapRef.value.leafletObject.fitBounds(bounds, {
+      padding: [20, 20], // Add some padding around the circle
+      maxZoom: 10 // Limit max zoom to prevent too close view
+    });
+  }
+};
+
+// Circle styling options
+const circleOptions = {
+  color: '#197FE6', // Primary color
+  fillColor: '#197FE6',
+  fillOpacity: 0.1,
+  weight: 2,
+  opacity: 0.6
+};
 
 // Fix Leaflet default icon issue
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -125,14 +165,21 @@ L.Icon.Default.mergeOptions({
           <!-- Map -->
           <div class="contact-map">
             <LMap
+              ref="mapRef"
               :zoom="mapZoom"
               :center="mapCenter"
               :options="{ zoomControl: false }"
               class="contact-map-container"
+              @ready="onMapReady"
             >
               <LTileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              />
+              <LCircle
+                :lat-lng="mapCenter"
+                :radius="serviceRadiusMeters"
+                :options="circleOptions"
               />
               <LMarker :lat-lng="mapCenter" />
             </LMap>
