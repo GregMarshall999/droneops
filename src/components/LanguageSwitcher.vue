@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useI18nStore } from '../stores/i18n';
 
@@ -10,7 +11,9 @@ const languages = [
   { code: 'fr', label: 'FR', flag: '🇫🇷' }
 ];
 
-const currentLanguage = languages.find(lang => lang.code === locale.value) || languages[0];
+const currentLanguage = computed(() => {
+  return languages.find(lang => lang.code === locale.value) || languages[0];
+});
 
 const switchLanguage = (langCode: 'en' | 'fr') => {
   i18nStore.setLocale(langCode);
@@ -18,7 +21,7 @@ const switchLanguage = (langCode: 'en' | 'fr') => {
 </script>
 
 <template>
-  <div class="language-switcher">
+  <div class="language-switcher" v-if="currentLanguage">
     <div class="language-dropdown">
       <button class="language-button" type="button">
         <span class="language-flag">{{ currentLanguage.flag }}</span>
@@ -30,12 +33,12 @@ const switchLanguage = (langCode: 'en' | 'fr') => {
           v-for="lang in languages"
           :key="lang.code"
           @click="switchLanguage(lang.code as 'en' | 'fr')"
-          :class="['language-option', { 'language-option-active': lang.code === locale }]"
+          :class="['language-option', { 'language-option-active': lang.code === locale.value }]"
           type="button"
         >
           <span class="language-option-flag">{{ lang.flag }}</span>
           <span class="language-option-label">{{ lang.label }}</span>
-          <span v-if="lang.code === locale" class="material-symbols-outlined language-option-check">check</span>
+          <span v-if="lang.code === locale.value" class="material-symbols-outlined language-option-check">check</span>
         </button>
       </div>
     </div>
