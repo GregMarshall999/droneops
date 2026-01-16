@@ -147,7 +147,7 @@
       "companyName": "Nom de l'Entreprise",
       "companyPlaceholder": "Sky Corp (Optionnel)",
       "email": "Adresse Email",
-      "emailPlaceholder": "jean@exemple.com",
+      "emailPlaceholder": "jean{'@'}exemple.com",
       "projectType": "Type de Projet",
       "projectDate": "Date du Projet",
       "location": "Localisation",
