@@ -2,6 +2,7 @@
 import { ref, computed, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { LMap, LTileLayer, LMarker, LCircle } from '@vue-leaflet/vue-leaflet';
+import axios from 'axios';
 // @ts-ignore - Leaflet types are available but may not be recognized
 import * as L from 'leaflet';
 
@@ -55,9 +56,71 @@ watchEffect(() => {
   }
 });
 
-const handleSubmit = () => {
-  // Form submission will be handled by API service
-  console.log('Form submitted:', formData.value);
+const isLoading = ref(false);
+const submitError = ref<string | null>(null);
+const submitSuccess = ref(false);
+
+const handleSubmit = async () => {
+  // Reset states
+  submitError.value = null;
+  submitSuccess.value = false;
+  isLoading.value = true;
+
+  try {
+    // Prepare form data for API
+    const payload = {
+      name: formData.value.name.trim(),
+      email: formData.value.email.trim(),
+      projectType: formData.value.projectType,
+      description: formData.value.description.trim(),
+      ...(formData.value.company.trim() && { company: formData.value.company.trim() }),
+      ...(formData.value.projectDate && { projectDate: formData.value.projectDate }),
+      ...(formData.value.location.trim() && { location: formData.value.location.trim() })
+    };
+
+    // Submit to webhook
+    await axios.post('https://n8n.greg-labs.com/webhook-test/contact', payload, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    // Success
+    submitSuccess.value = true;
+    
+    // Reset form after successful submission
+    formData.value = {
+      name: '',
+      company: '',
+      email: '',
+      projectType: projectTypes.value[0] || '',
+      projectDate: '',
+      location: '',
+      description: ''
+    };
+
+    // Clear success message after 5 seconds
+    setTimeout(() => {
+      submitSuccess.value = false;
+    }, 5000);
+  } catch (error: any) {
+    // Handle errors
+    if (error.response?.data?.message) {
+      submitError.value = error.response.data.message;
+    } else if (error.response?.data?.errors) {
+      // Handle validation errors
+      const errors = error.response.data.errors;
+      submitError.value = Array.isArray(errors) 
+        ? errors.map((e: any) => e.msg || e).join(', ')
+        : String(errors);
+    } else if (error.message) {
+      submitError.value = error.message;
+    } else {
+      submitError.value = 'Failed to submit contact form. Please try again later.';
+    }
+  } finally {
+    isLoading.value = false;
+  }
 };
 
 // Map configuration - France (Paris coordinates)
@@ -285,9 +348,23 @@ L.Icon.Default.mergeOptions({
                 ></textarea>
               </div>
 
-              <button type="submit" class="form-submit">
-                <span class="form-submit-text">{{ t('contact.form.submit') }}</span>
-                <span class="material-symbols-outlined form-submit-icon">send</span>
+              <!-- Success Message -->
+              <div v-if="submitSuccess" class="form-message form-message-success">
+                <span class="material-symbols-outlined form-message-icon">check_circle</span>
+                <span>{{ t('contact.form.successMessage') || 'Thank you! Your message has been sent successfully.' }}</span>
+              </div>
+
+              <!-- Error Message -->
+              <div v-if="submitError" class="form-message form-message-error">
+                <span class="material-symbols-outlined form-message-icon">error</span>
+                <span>{{ submitError }}</span>
+              </div>
+
+              <button type="submit" class="form-submit" :disabled="isLoading">
+                <span v-if="!isLoading" class="form-submit-text">{{ t('contact.form.submit') }}</span>
+                <span v-else class="form-submit-text">{{ t('contact.form.submitting') || 'Submitting...' }}</span>
+                <span v-if="!isLoading" class="material-symbols-outlined form-submit-icon">send</span>
+                <span v-else class="material-symbols-outlined form-submit-icon form-submit-icon-spinning">hourglass_empty</span>
               </button>
             </form>
           </div>
@@ -837,6 +914,58 @@ L.Icon.Default.mergeOptions({
 .form-submit-icon {
   font-size: 1.5rem;
   font-weight: 300;
+}
+
+.form-submit-icon-spinning {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.form-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.form-submit:disabled:hover {
+  background-color: var(--color-primary);
+  transform: none;
+}
+
+.form-message {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: var(--radius-lg);
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
+}
+
+.form-message-success {
+  background-color: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #4ade80;
+}
+
+.form-message-error {
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+}
+
+.form-message-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
 }
 
 /* FAQ Section */
