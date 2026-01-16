@@ -1,26 +1,175 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useBookingStore } from '../stores/booking';
+import { SERVICES } from '../constants';
+import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet';
+// @ts-ignore - Leaflet types are available but may not be recognized
+import * as L from 'leaflet';
 
 const { t } = useI18n();
 const bookingStore = useBookingStore();
 
-const profiles = computed(() => [
-  { label: t('booking.profile.realEstate'), labelKey: 'realEstate', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAqHDSL1oR_Pt2CeucE6eNBKkf298PyYkVLk1to-jZEyenfAQ02pnte_SHHRE3K_o7tesckZUtyxXx9NiV3_WQGi-6SDIinOl0uX1UMLICMdf6cX8P9mAWNe03HGBOGaUcZHRdjbhDcdL2HAXt90elEvaoItNGI25Ku_NaDjpjd_OevWtRusjM6vnFul1C0EhTIIaR5OfVtSkMeIrrhxa7CczKM3xRclru1nI6Z2Hk2JdX1JOj-OZiUlJzX-8t9lJZ0-mXRlZEL75Vf', active: false },
-  { label: t('booking.profile.weddingEvents'), labelKey: 'weddingEvents', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBcKdxBw3GKgBaLtrn0gXPvp2P4pozeXvrJ8DUT7qH5JnafJLV9rx5ISmMTu4gYCYzhSOqfQ8otzD40x0Cw2H6TnytnAG3xMfKyTVylrM6awwFCOHlETD6_AqsupDG80WkgAQKFKtLc-S-Gpan3mujxjKOowhjW6slxGHSbw8Kln7CZ3TmEZ8ICUnVWl2Z1LRlUsjM3N4EuwdvfA1t5znd89L-8gI2ndpoGmKHFLpzbhG8_poWG6EUI573qBwrpEyd0vbWqMVZYN7pU', active: true },
-  { label: t('booking.profile.industrialSurvey'), labelKey: 'industrialSurvey', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAnFiSx3dwEDvogC5IUsH-YdACwhFkFtOx9zm_dZFYF8ExNeiGg0mEFRhNKdGN19wVMJbF_Af_KSInV20nBWeDsQ1W4tcDjv-sHJKhnrVlfJULVEP96azLiW8fCVJczW2zY3Btx2qiCjLaJz6QtLekUteaRv6P2yYXCE05aNG-U48mzo-rtao3vsdvhhE8erOxeOemUs_faauQe2n4IMnGNHudZwn_-gr58YS2PGXGgoU9arLxNVXemXeIotT6Rj4PYWiQNMv0r9l6C', active: false }
-]);
+// Map service IDs to service keys for i18n
+const getServiceKey = (id: string) => {
+  const keyMap: Record<string, string> = {
+    'events': 'events',
+    'real-estate': 'realEstate',
+    '3d-scans': '3dScans',
+    'fpv': 'fpv',
+    'social': 'social'
+  };
+  return keyMap[id] || id;
+};
+
+// Convert SERVICES to profiles with active state
+const selectedProfileId = ref<string | null>(null);
+
+const profiles = computed(() => {
+  return SERVICES.map(service => {
+    const serviceKey = getServiceKey(service.id);
+    return {
+      id: service.id,
+      label: t(`services.${serviceKey}.title`),
+      labelKey: serviceKey,
+      img: service.imageUrl,
+      active: selectedProfileId.value === service.id
+    };
+  });
+});
 
 const timeSlots = ['09:00 AM', '01:00 PM', '04:00 PM'];
 
 const selectProfile = (profile: typeof profiles.value[0]) => {
+  selectedProfileId.value = profile.id;
   bookingStore.setSelectedProfile(profile.label);
-  profiles.value.forEach(p => p.active = p.labelKey === profile.labelKey);
 };
 
 const selectTime = (time: string) => {
   bookingStore.setStartTime(time);
+};
+
+// Map configuration
+const mapCenter = ref<[number, number]>([48.8566, 2.3522]); // Paris, France default
+const mapZoom = ref(13); // Zoom level for location selection
+const mapRef = ref<InstanceType<typeof LMap> | null>(null);
+const markerPosition = ref<[number, number] | null>(null);
+const isUpdatingFromMap = ref(false); // Flag to prevent circular updates
+
+// Fix Leaflet default icon issue
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+});
+
+// Geocode address to coordinates using Nominatim API
+const geocodeAddress = async (address: string) => {
+  if (!address.trim()) {
+    markerPosition.value = null;
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&limit=1`,
+      {
+        headers: {
+          'User-Agent': 'DroneOps Booking App' // Required by Nominatim
+        }
+      }
+    );
+    const data = await response.json();
+    
+    if (data && data.length > 0) {
+      const { lat, lon } = data[0];
+      const coords: [number, number] = [Number.parseFloat(lat), Number.parseFloat(lon)];
+      markerPosition.value = coords;
+      mapCenter.value = coords;
+      
+      if (mapRef.value?.leafletObject) {
+        mapRef.value.leafletObject.setView(coords, mapZoom.value);
+      }
+    }
+  } catch (error) {
+    console.error('Geocoding error:', error);
+  }
+};
+
+// Reverse geocode coordinates to address
+const reverseGeocode = async (lat: number, lng: number) => {
+  try {
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
+      {
+        headers: {
+          'User-Agent': 'DroneOps Booking App' // Required by Nominatim
+        }
+      }
+    );
+    const data = await response.json();
+    
+    if (data && data.address) {
+      const address = data.display_name || 
+        `${data.address.road || ''} ${data.address.house_number || ''}, ${data.address.city || data.address.town || data.address.village || ''}`.trim();
+      
+      if (address) {
+        isUpdatingFromMap.value = true;
+        bookingStore.location = address;
+        // Reset flag after a short delay
+        setTimeout(() => {
+          isUpdatingFromMap.value = false;
+        }, 100);
+      }
+    }
+  } catch (error) {
+    console.error('Reverse geocoding error:', error);
+  }
+};
+
+// Watch location input and geocode when it changes
+let geocodeTimeout: ReturnType<typeof setTimeout> | null = null;
+watch(() => bookingStore.location, (newLocation) => {
+  // Don't geocode if update is coming from map click
+  if (isUpdatingFromMap.value) {
+    return;
+  }
+
+  // Debounce geocoding to avoid too many API calls
+  if (geocodeTimeout) {
+    clearTimeout(geocodeTimeout);
+  }
+  
+  geocodeTimeout = setTimeout(() => {
+    if (newLocation) {
+      geocodeAddress(newLocation);
+    } else {
+      markerPosition.value = null;
+    }
+  }, 500); // Wait 500ms after user stops typing
+});
+
+// Handle map click to set location
+const onMapClick = async (event: any) => {
+  const { lat, lng } = event.latlng;
+  markerPosition.value = [lat, lng];
+  mapCenter.value = [lat, lng];
+
+  // Reverse geocode to update the location input
+  await reverseGeocode(lat, lng);
+  
+  // Update map view
+  if (mapRef.value?.leafletObject) {
+    mapRef.value.leafletObject.setView([lat, lng], mapZoom.value);
+  }
+};
+
+// Fit map to marker when map is ready
+const onMapReady = () => {
+  if (mapRef.value?.leafletObject && markerPosition.value) {
+    mapRef.value.leafletObject.setView(markerPosition.value, mapZoom.value);
+  }
 };
 
 const getStatLabel = (label: string) => {
@@ -82,8 +231,8 @@ const getDroneKey = (id: string) => {
           </div>
           <div class="profile-grid">
             <div 
-              v-for="(p, i) in profiles" 
-              :key="i" 
+              v-for="p in profiles" 
+              :key="p.id" 
               @click="selectProfile(p)"
               :class="['profile-card', { 'profile-card-active': p.active }]"
             >
@@ -116,10 +265,24 @@ const getDroneKey = (id: string) => {
                 </div>
               </div>
               <div class="map-container">
-                <div class="map-overlay">
-                  <span class="material-symbols-outlined map-icon">location_on</span>
-                </div>
-                <img class="map-image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLxjNCNxIp8Zr2CGxtzTMeEkDbWe2yd2kvpWoNtCj7KIKBrVvdyVqjkLD5tpOcEZ7kFU8mQ_60O8CQ4zDDPGKHXzqJ0jKadTWffYTTgFZ2R7km1tfJpM1UuNA-nFxxxQZe_yLTZC4h3Dc7ejsIX52n-bxAypKaOzkaXJvlV69ppJuNtKohKYA1E8cu4q8bgTqS0VCBv6YTV_ZJoE7LiSlOklNFP78lWZNpPMN-EbyHgXTuWIaPd_88OfSoJW5Cs01qFKiFHOszMo0P" alt="Map View" />
+                <LMap
+                  ref="mapRef"
+                  :zoom="mapZoom"
+                  :center="mapCenter"
+                  :options="{ zoomControl: true }"
+                  class="booking-map-container"
+                  @click="onMapClick"
+                  @ready="onMapReady"
+                >
+                  <LTileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  />
+                  <LMarker 
+                    v-if="markerPosition" 
+                    :lat-lng="markerPosition" 
+                  />
+                </LMap>
               </div>
             </div>
             
@@ -667,44 +830,46 @@ const getDroneKey = (id: string) => {
   box-shadow: var(--shadow-2xl);
 }
 
-.map-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.map-icon {
-  font-size: 3rem;
-  color: var(--color-primary);
-  filter: drop-shadow(0 25px 50px -12px rgba(0, 0, 0, 0.25));
-  animation: bounce 1s infinite;
-}
-
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-25%);
-  }
-}
-
-.map-image {
-  height: 100%;
+.booking-map-container {
   width: 100%;
-  object-fit: cover;
-  opacity: 0.6;
-  transition: opacity 0.7s, transform 0.7s;
-  transform: scale(1.1);
+  height: 100%;
+  z-index: 0;
 }
 
-.map-container:hover .map-image {
-  opacity: 1;
-  transform: scale(1);
+/* Dark theme for Leaflet map */
+.booking-map-container :deep(.leaflet-container) {
+  background-color: var(--color-background-dark);
+}
+
+.booking-map-container :deep(.leaflet-tile-pane) {
+  filter: brightness(0.7) contrast(1.1);
+}
+
+.booking-map-container :deep(.leaflet-control-zoom) {
+  border: none;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.booking-map-container :deep(.leaflet-control-zoom a) {
+  background-color: var(--color-surface-dark);
+  color: var(--color-white);
+  border: 1px solid rgba(36, 58, 71, 0.5);
+}
+
+.booking-map-container :deep(.leaflet-control-zoom a:hover) {
+  background-color: var(--color-surface-highlight);
+  border-color: var(--color-primary);
+}
+
+.booking-map-container :deep(.leaflet-popup-content-wrapper) {
+  background-color: var(--color-surface-dark);
+  color: var(--color-white);
+  border-radius: var(--radius-lg);
+}
+
+.booking-map-container :deep(.leaflet-popup-tip) {
+  background-color: var(--color-surface-dark);
 }
 
 .time-slots {
@@ -1071,7 +1236,6 @@ const getDroneKey = (id: string) => {
   padding: 2.5rem;
   box-shadow: var(--shadow-2xl);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  position: relative;
   overflow: hidden;
 }
 
