@@ -252,14 +252,24 @@ L.Icon.Default.mergeOptions({
           </div>
 
           <div class="contact-social">
-            <button class="contact-social-button">
+            <a 
+              href="https://www.instagram.com/gremmarshall?igsh=MXdjMnhvZHJ3b2UxaQ==" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="contact-social-button"
+            >
               <span class="material-symbols-outlined contact-social-icon">photo_camera</span>
               <span class="contact-social-text">Instagram</span>
-            </button>
-            <button class="contact-social-button">
+            </a>
+            <a 
+              href="https://www.linkedin.com/in/gregorymarshall999" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="contact-social-button"
+            >
               <span class="material-symbols-outlined contact-social-icon">work</span>
               <span class="contact-social-text">LinkedIn</span>
-            </button>
+            </a>
           </div>
         </div>
 
@@ -696,10 +706,31 @@ L.Icon.Default.mergeOptions({
   cursor: pointer;
   transition: all var(--transition-base);
   box-shadow: var(--shadow-lg);
+  /* Remove default link styles */
+  text-decoration: none;
+  color: inherit;
+  outline: none;
 }
 
 .contact-social-button:hover {
   background-color: var(--color-surface-highlight);
+  text-decoration: none;
+  color: inherit;
+}
+
+.contact-social-button:visited {
+  color: inherit;
+  text-decoration: none;
+}
+
+.contact-social-button:focus {
+  outline: none;
+  text-decoration: none;
+}
+
+.contact-social-button:active {
+  color: inherit;
+  text-decoration: none;
 }
 
 .contact-social-icon {
