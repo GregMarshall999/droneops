@@ -161,11 +161,11 @@
       "questions": {
         "weather": {
           "q": "Volez-vous par mauvais temps ?",
-          "a": "Non. Pour la sécurité et l'intégrité de l'équipement, nous ne volons pas sous forte pluie, neige ou vents forts (au-dessus de 32 km/h). Nous pouvons reprogrammer gratuitement si les conditions sont dangereuses."
+          "a": "Ça dépend. Pour la sécurité et l'intégrité de l'équipement, nous évitons les conditions extrêmes. Les vents forts (au-dessus de 20 km/h) nous clouent au sol, nos drones ne sont pas (encore) des rafales. Nous pouvons reprogrammer gratuitement si les conditions sont dangereuses."
         },
         "licensed": {
-          "q": "Êtes-vous licenciés et assurés ?",
-          "a": "Oui. Tous les pilotes détiennent des certificats FAA Part 107 valides. Nous avons une assurance responsabilité de 1M$ pour toutes les opérations commerciales."
+          "q": "Êtes-vous licenciés ?",
+          "a": "Oui. Les réglementations actuelles requièrent des certificats A1/A3 pour nos opérations. Si votre projet requiert un niveau de certification plus élevé, nous pouvons vous aider avec le processus d'autorisation."
         },
         "turnaround": {
           "q": "Quel est votre délai de traitement ?",

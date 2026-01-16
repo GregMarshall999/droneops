@@ -161,11 +161,11 @@
       "questions": {
         "weather": {
           "q": "Do you fly in bad weather?",
-          "a": "No. For safety and equipment integrity, we do not fly in heavy rain, snow, or high winds (above 20mph). We can reschedule for free if conditions are unsafe."
+          "a": "It depends. For safety and equipment integrity, we avoid extreme weather conditions. High winds (above 20mph) are a no go, our drones aren't the thunderbirds (yet). We can reschedule for free if conditions are unsafe."
         },
         "licensed": {
-          "q": "Are you licensed and insured?",
-          "a": "Yes. All pilots hold valid FAA Part 107 certificates. We carry $1M liability insurance for all commercial operations."
+          "q": "Are you licensed?",
+          "a": "Yes. Current regulations require A1/A3 certificates for our operations. If your project requires a higher level of certification, we can help you with the authorisation process."
         },
         "turnaround": {
           "q": "What is your turnaround time?",
