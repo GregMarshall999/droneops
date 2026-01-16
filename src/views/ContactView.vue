@@ -5,9 +5,9 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
 const contactInfo = computed(() => [
-  { icon: 'call', label: t('contact.info.directLine'), value: '+1 (555) 012-3456' },
-  { icon: 'mail', label: t('contact.info.emailInquiry'), value: 'pilot@droneops.com' },
-  { icon: 'location_on', label: t('contact.info.baseOfOps'), value: 'Portland, OR (Serving PNW)' }
+  { icon: 'call', label: t('contact.info.directLine'), value: '+33 06 51 14 72 19' },
+  { icon: 'mail', label: t('contact.info.emailInquiry'), value: 'gregory.marshall999@gmail.com' },
+  { icon: 'location_on', label: t('contact.info.baseOfOps'), value: 'France' }
 ]);
 
 const faqs = computed(() => [
