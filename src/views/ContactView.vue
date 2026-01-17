@@ -79,7 +79,7 @@ const handleSubmit = async () => {
     };
 
     // Submit to webhook
-    await axios.post('https://n8n.greg-labs.com/webhook-test/contact', payload, {
+    await axios.post(import.meta.env.VITE_CONTACT_SERVICE, payload, {
       headers: {
         'Content-Type': 'application/json'
       }
