@@ -4,7 +4,7 @@ import { FLEET } from '../constants';
 import type { Drone } from '../types';
 
 export const useBookingStore = defineStore('booking', () => {
-  const selectedDrone = ref<Drone>(FLEET[0]);
+  const selectedDrone = ref<Drone | null>(null);
   const selectedProfile = ref<string | null>(null);
   const location = ref<string>('');
   const missionDate = ref<string>('');
@@ -37,7 +37,7 @@ export const useBookingStore = defineStore('booking', () => {
 
   const totalCost = computed(() => {
     const operatorFee = 320.00;
-    const equipmentRental = selectedDrone.value.price || 0;
+    const equipmentRental = selectedDrone.value?.price || 0;
     const insurance = 85.00;
     const discount = 50.00;
     return operatorFee + equipmentRental + insurance - discount;

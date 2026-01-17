@@ -2,7 +2,7 @@
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useBookingStore } from '../stores/booking';
-import { SERVICES } from '../constants';
+import { SERVICES, FLEET } from '../constants';
 import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet';
 // @ts-ignore - Leaflet types are available but may not be recognized
 import * as L from 'leaflet';
@@ -59,6 +59,29 @@ const selectProfile = (profile: typeof profiles.value[0]) => {
 const selectTime = (time: string) => {
   bookingStore.setStartTime(time);
 };
+
+// Drone selection
+const drones = computed(() => {
+  return FLEET.map(drone => ({
+    ...drone,
+    active: bookingStore.selectedDrone?.id === drone.id
+  }));
+});
+
+const selectDrone = (drone: typeof drones.value[0]) => {
+  bookingStore.setSelectedDrone(drone);
+};
+
+// Collapsible alternatives menu
+const showAlternatives = ref(false);
+
+const toggleAlternatives = () => {
+  showAlternatives.value = !showAlternatives.value;
+};
+
+const alternativesCount = computed(() => {
+  return FLEET.length - 1; // All drones except the selected one
+});
 
 // Map configuration
 const mapCenter = ref<[number, number]>([48.8566, 2.3522]); // Paris, France default
@@ -334,16 +357,16 @@ const getDroneKey = (id: string) => {
             <h2 class="step-title">{{ t('booking.equipment.title') }}</h2>
           </div>
           
-          <div class="drone-selection-card">
+          <!-- Selected Drone Details -->
+          <div v-if="bookingStore.selectedDrone" class="drone-selection-card">
             <div class="drone-selection-badge">
-              <span class="material-symbols-outlined">auto_awesome</span> {{ t('booking.equipment.aiRecommended') }}
+              <span class="material-symbols-outlined">auto_awesome</span> {{ t('booking.equipment.bestPerformance') }}
             </div>
             <div class="drone-selection-image-wrapper">
               <img class="drone-selection-image" :src="bookingStore.selectedDrone.imageUrl" :alt="bookingStore.selectedDrone.name" />
               <div class="drone-selection-gradient"></div>
             </div>
             <div class="drone-selection-content">
-              <div class="drone-selection-badge-text">{{ t('booking.equipment.bestPerformance') }}</div>
               <div class="drone-selection-info">
                 <div class="drone-selection-header">
                   <h3 class="drone-selection-name">{{ t(`fleet.${getDroneKey(bookingStore.selectedDrone.id)}.name`) }}</h3>
@@ -352,7 +375,7 @@ const getDroneKey = (id: string) => {
                     <p class="drone-price-label">{{ t('common.perDay') }}</p>
                   </div>
                 </div>
-                <p class="drone-selection-description">{{ t('booking.equipment.description') }}</p>
+                <p class="drone-selection-description">{{ t(`fleet.${getDroneKey(bookingStore.selectedDrone.id)}.description`) }}</p>
               </div>
               <div class="drone-selection-stats">
                 <span 
@@ -375,10 +398,52 @@ const getDroneKey = (id: string) => {
             </div>
           </div>
 
-          <button class="alternatives-button">
-            <span class="alternatives-text">{{ t('booking.equipment.viewAlternatives', { count: 2 }) }}</span>
-            <span class="material-symbols-outlined alternatives-icon">expand_more</span>
-          </button>
+          <!-- Drone Selection Grid or Collapsible Menu -->
+          <div v-if="!bookingStore.selectedDrone" class="drone-grid">
+            <div 
+              v-for="drone in drones" 
+              :key="drone.id" 
+              @click="selectDrone(drone)"
+              :class="['drone-card', { 'drone-card-active': drone.active }]"
+            >
+              <div v-if="drone.active" class="drone-card-badge">{{ t('common.selected') }}</div>
+              <div v-if="drone.availableSoon" class="drone-card-available-soon">{{ t('fleet.availableSoon') }}</div>
+              <div class="drone-card-gradient"></div>
+              <img class="drone-card-image" :src="drone.imageUrl" :alt="drone.name" />
+              <div class="drone-card-content">
+                <h3 class="drone-card-name">{{ t(`fleet.${getDroneKey(drone.id)}.name`) }}</h3>
+                <p class="drone-card-category">{{ t(`fleet.${getDroneKey(drone.id)}.category`) }}</p>
+                <p class="drone-card-price">€{{ drone.price }}<span class="drone-card-price-label">/{{ t('common.perDay') }}</span></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Collapsible Alternatives Menu (shown when drone is selected) -->
+          <div v-if="bookingStore.selectedDrone">
+            <button class="alternatives-button" @click="toggleAlternatives">
+              <span class="alternatives-text">{{ t('booking.equipment.viewAlternatives', { count: alternativesCount }) }}</span>
+              <span class="material-symbols-outlined alternatives-icon" :class="{ 'alternatives-icon-expanded': showAlternatives }">expand_more</span>
+            </button>
+            
+            <div v-if="showAlternatives" class="drone-grid">
+              <div 
+                v-for="drone in drones" 
+                :key="drone.id" 
+                @click="selectDrone(drone)"
+                :class="['drone-card', { 'drone-card-active': drone.active }]"
+              >
+                <div v-if="drone.active" class="drone-card-badge">{{ t('common.selected') }}</div>
+                <div v-if="drone.availableSoon" class="drone-card-available-soon">{{ t('fleet.availableSoon') }}</div>
+                <div class="drone-card-gradient"></div>
+                <img class="drone-card-image" :src="drone.imageUrl" :alt="drone.name" />
+                <div class="drone-card-content">
+                  <h3 class="drone-card-name">{{ t(`fleet.${getDroneKey(drone.id)}.name`) }}</h3>
+                  <p class="drone-card-category">{{ t(`fleet.${getDroneKey(drone.id)}.category`) }}</p>
+                  <p class="drone-card-price">€{{ drone.price }}<span class="drone-card-price-label">/{{ t('common.perDay') }}</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
 
         <!-- Step 4: Billing Preview -->
@@ -413,7 +478,7 @@ const getDroneKey = (id: string) => {
             </div>
             <div class="summary-item">
               <span class="summary-item-label">{{ t('booking.summary.equipmentRental') }}</span>
-              <span class="summary-item-value">€{{ bookingStore.selectedDrone.price?.toFixed(2) || '0.00' }}</span>
+              <span class="summary-item-value">€{{ bookingStore.selectedDrone?.price?.toFixed(2) || '0.00' }}</span>
             </div>
             <div class="summary-item">
               <span class="summary-item-label">{{ t('booking.summary.insurance') }}</span>
@@ -915,6 +980,147 @@ const getDroneKey = (id: string) => {
   box-shadow: 0 0 0 4px rgba(25, 127, 230, 0.2);
 }
 
+.drone-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.drone-grid:has(+ .alternatives-button) {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.alternatives-button + .drone-grid {
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .drone-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.drone-card {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: var(--radius-2xl);
+  border: 2px solid transparent;
+  transition: all 0.3s;
+  filter: grayscale(100%);
+  background-color: rgba(36, 58, 71, 0.3);
+}
+
+.drone-card:hover {
+  border-color: rgba(25, 127, 230, 0.5);
+  filter: grayscale(0);
+}
+
+.drone-card-active {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(25, 127, 230, 0.2), 0 25px 50px -12px rgba(25, 127, 230, 0.3);
+  transform: scale(1.05);
+  filter: grayscale(0);
+}
+
+.drone-card-badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 20;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  font-size: 0.625rem;
+  font-weight: 900;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  box-shadow: var(--shadow-lg);
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.drone-card-available-soon {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 20;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  color: var(--color-white);
+  font-size: 0.625rem;
+  font-weight: 900;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  box-shadow: var(--shadow-lg);
+}
+
+.drone-card-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.2), transparent);
+  z-index: 10;
+}
+
+.drone-card-image {
+  height: 12rem;
+  width: 100%;
+  object-fit: cover;
+  transition: transform 0.7s;
+}
+
+.drone-card:hover .drone-card-image {
+  transform: scale(1.1);
+}
+
+.drone-card-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.drone-card-name {
+  font-size: 1rem;
+  font-weight: 900;
+  color: var(--color-white);
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+.drone-card-category {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.drone-card-price {
+  font-size: 1.125rem;
+  font-weight: 900;
+  color: var(--color-primary);
+  margin: 0.25rem 0 0 0;
+}
+
+.drone-card-price-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
 .drone-selection-card {
   position: relative;
   display: flex;
@@ -1188,6 +1394,14 @@ const getDroneKey = (id: string) => {
 
 .alternatives-button:hover .alternatives-icon {
   transform: translateY(0.25rem);
+}
+
+.alternatives-icon-expanded {
+  transform: rotate(180deg);
+}
+
+.alternatives-button:hover .alternatives-icon-expanded {
+  transform: rotate(180deg) translateY(0.25rem);
 }
 
 .billing-placeholder {
