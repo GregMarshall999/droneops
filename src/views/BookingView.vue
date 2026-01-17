@@ -1,11 +1,18 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch, onMounted, onUnmounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useBookingStore } from '../stores/booking';
 import { SERVICES, FLEET, VERSION } from '../constants';
-import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet';
-// @ts-ignore - Leaflet types are available but may not be recognized
-import * as L from 'leaflet';
+import { Map as OlMap, View } from 'ol';
+import TileLayer from 'ol/layer/Tile';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import OSM from 'ol/source/OSM';
+import { Feature } from 'ol';
+import { Point } from 'ol/geom';
+import { fromLonLat, toLonLat } from 'ol/proj';
+import { Icon, Style } from 'ol/style';
+import type { MapBrowserEvent } from 'ol';
 
 const { t } = useI18n();
 const bookingStore = useBookingStore();
@@ -135,24 +142,72 @@ const getStepClass = (step: number) => {
 };
 
 // Map configuration
-const mapCenter = ref<[number, number]>([48.8566, 2.3522]); // Paris, France default
+const mapCenter = ref<[number, number]>([48.8566, 2.3522]); // Paris, France default [lat, lng]
 const mapZoom = ref(13); // Zoom level for location selection
-const mapRef = ref<InstanceType<typeof LMap> | null>(null);
+const mapRef = ref<OlMap | null>(null);
+const mapElement = ref<HTMLElement | null>(null);
 const markerPosition = ref<[number, number] | null>(null);
 const isUpdatingFromMap = ref(false); // Flag to prevent circular updates
 
-// Fix Leaflet default icon issue
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+// Vector source for markers
+const vectorSource = new VectorSource();
+const vectorLayer = new VectorLayer({
+  source: vectorSource
 });
+
+// Initialize map
+const initMap = () => {
+  if (!mapElement.value) return;
+
+  const view = new View({
+    center: fromLonLat([mapCenter.value[1], mapCenter.value[0]]), // OpenLayers uses [lng, lat]
+    zoom: mapZoom.value
+  });
+
+  const map = new OlMap({
+    target: mapElement.value,
+    layers: [
+      new TileLayer({
+        source: new OSM()
+      }),
+      vectorLayer
+    ],
+    view: view
+  });
+
+  map.on('click', (event: MapBrowserEvent<MouseEvent>) => {
+    const coords = toLonLat(event.coordinate);
+    const [lng, lat] = coords;
+    onMapClick({ lat, lng });
+  });
+
+  mapRef.value = map;
+};
+
+// Update marker position on map
+const updateMarker = (coords: [number, number] | null) => {
+  vectorSource.clear();
+  if (!coords || !mapRef.value) return;
+
+  const point = new Point(fromLonLat([coords[1], coords[0]]));
+  const feature = new Feature(point);
+  
+  feature.setStyle(new Style({
+    image: new Icon({
+      anchor: [0.5, 1],
+      src: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
+      scale: 1
+    })
+  }));
+
+  vectorSource.addFeature(feature);
+};
 
 // Geocode address to coordinates using Nominatim API
 const geocodeAddress = async (address: string) => {
   if (!address.trim()) {
     markerPosition.value = null;
+    updateMarker(null);
     return;
   }
 
@@ -173,8 +228,11 @@ const geocodeAddress = async (address: string) => {
       markerPosition.value = coords;
       mapCenter.value = coords;
       
-      if (mapRef.value?.leafletObject) {
-        mapRef.value.leafletObject.setView(coords, mapZoom.value);
+      if (mapRef.value) {
+        const view = mapRef.value.getView();
+        view.setCenter(fromLonLat([lon, lat]));
+        view.setZoom(mapZoom.value);
+        updateMarker(coords);
       }
     }
   } catch (error) {
@@ -231,29 +289,41 @@ watch(() => bookingStore.location, (newLocation) => {
       geocodeAddress(newLocation);
     } else {
       markerPosition.value = null;
+      updateMarker(null);
     }
   }, 500); // Wait 500ms after user stops typing
 });
 
+// Initialize map when component is mounted
+onMounted(() => {
+  initMap();
+  if (markerPosition.value) {
+    updateMarker(markerPosition.value);
+  }
+});
+
+onUnmounted(() => {
+  if (mapRef.value) {
+    mapRef.value.setTarget(undefined);
+    mapRef.value = null;
+  }
+});
+
 // Handle map click to set location
-const onMapClick = async (event: any) => {
-  const { lat, lng } = event.latlng;
+const onMapClick = async (event: { lat: number; lng: number }) => {
+  const { lat, lng } = event;
   markerPosition.value = [lat, lng];
   mapCenter.value = [lat, lng];
+  updateMarker([lat, lng]);
 
   // Reverse geocode to update the location input
   await reverseGeocode(lat, lng);
   
   // Update map view
-  if (mapRef.value?.leafletObject) {
-    mapRef.value.leafletObject.setView([lat, lng], mapZoom.value);
-  }
-};
-
-// Fit map to marker when map is ready
-const onMapReady = () => {
-  if (mapRef.value?.leafletObject && markerPosition.value) {
-    mapRef.value.leafletObject.setView(markerPosition.value, mapZoom.value);
+  if (mapRef.value) {
+    const view = mapRef.value.getView();
+    view.setCenter(fromLonLat([lng, lat]));
+    view.setZoom(mapZoom.value);
   }
 };
 
@@ -351,24 +421,7 @@ const getDroneKey = (id: string) => {
                 </div>
               </div>
               <div class="map-container">
-                <LMap
-                  ref="mapRef"
-                  :zoom="mapZoom"
-                  :center="mapCenter"
-                  :options="{ zoomControl: true }"
-                  class="booking-map-container"
-                  @click="onMapClick"
-                  @ready="onMapReady"
-                >
-                  <LTileLayer
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                  />
-                  <LMarker 
-                    v-if="markerPosition" 
-                    :lat-lng="markerPosition" 
-                  />
-                </LMap>
+                <div ref="mapElement" class="booking-map-container"></div>
               </div>
             </div>
             
@@ -972,40 +1025,37 @@ const getDroneKey = (id: string) => {
   z-index: 0;
 }
 
-/* Dark theme for Leaflet map */
-.booking-map-container :deep(.leaflet-container) {
+/* Dark theme for OpenLayers map */
+.booking-map-container {
+  width: 100%;
+  height: 100%;
   background-color: var(--color-background-dark);
 }
 
-.booking-map-container :deep(.leaflet-tile-pane) {
+.booking-map-container :deep(.ol-viewport) {
   filter: brightness(0.7) contrast(1.1);
 }
 
-.booking-map-container :deep(.leaflet-control-zoom) {
+.booking-map-container :deep(.ol-zoom) {
+  top: 0.5rem;
+  left: 0.5rem;
+  background-color: var(--color-surface-dark);
   border: none;
   border-radius: var(--radius-lg);
   overflow: hidden;
 }
 
-.booking-map-container :deep(.leaflet-control-zoom a) {
+.booking-map-container :deep(.ol-zoom button) {
   background-color: var(--color-surface-dark);
   color: var(--color-white);
   border: 1px solid rgba(36, 58, 71, 0.5);
+  width: 2rem;
+  height: 2rem;
 }
 
-.booking-map-container :deep(.leaflet-control-zoom a:hover) {
+.booking-map-container :deep(.ol-zoom button:hover) {
   background-color: var(--color-surface-highlight);
   border-color: var(--color-primary);
-}
-
-.booking-map-container :deep(.leaflet-popup-content-wrapper) {
-  background-color: var(--color-surface-dark);
-  color: var(--color-white);
-  border-radius: var(--radius-lg);
-}
-
-.booking-map-container :deep(.leaflet-popup-tip) {
-  background-color: var(--color-surface-dark);
 }
 
 .time-slots {

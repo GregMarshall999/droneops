@@ -1,10 +1,15 @@
 <script setup lang="ts">
-import { ref, computed, watchEffect } from 'vue';
+import { ref, computed, watchEffect, onMounted, onUnmounted } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { LMap, LTileLayer, LMarker, LCircle } from '@vue-leaflet/vue-leaflet';
 import axios from 'axios';
-// @ts-ignore - Leaflet types are available but may not be recognized
-import * as L from 'leaflet';
+import { Map as OlMap, View , Feature } from 'ol';
+import TileLayer from 'ol/layer/Tile';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import OSM from 'ol/source/OSM';
+import { Point, Circle } from 'ol/geom';
+import { fromLonLat } from 'ol/proj';
+import { Icon, Style, Fill, Stroke } from 'ol/style';
 
 interface ContactFormData {
   name: string;
@@ -124,55 +129,100 @@ const handleSubmit = async () => {
 };
 
 // Map configuration - France (Paris coordinates)
-const mapCenter = [48.8566, 2.3522]; // Paris, France
+const mapCenter = [48.8566, 2.3522]; // Paris, France [lat, lng]
 const mapZoom = ref(6); // Initial zoom level, will be adjusted to fit circle
 // 500 miles in meters (1 mile = 1609.34 meters)
 const serviceRadiusMeters = 500 * 1609.34; // Approximately 804,670 meters
 
 // Map reference
-const mapRef = ref<InstanceType<typeof LMap> | null>(null);
+const mapRef = ref<OlMap | null>(null);
+const mapElement = ref<HTMLElement | null>(null);
 
-// Calculate bounds to fit the circle
-const calculateCircleBounds = () => {
-  const center = L.latLng(mapCenter[0], mapCenter[1]);
-  // Convert radius from meters to degrees
-  // Latitude: 1 degree ≈ 111,320 meters (constant)
-  // Longitude: varies by latitude, 1 degree ≈ 111,320 * cos(latitude) meters
-  const latRadius = serviceRadiusMeters / 111320;
-  const lngRadius = serviceRadiusMeters / (111320 * Math.cos(center.lat * Math.PI / 180));
-  
-  return L.latLngBounds(
-    [center.lat - latRadius, center.lng - lngRadius],
-    [center.lat + latRadius, center.lng + lngRadius]
+// Vector sources
+const vectorSource = new VectorSource();
+const circleSource = new VectorSource();
+
+// Initialize map
+const initMap = () => {
+  if (!mapElement.value) return;
+
+  // Create circle feature
+  const circleGeometry = new Circle(
+    fromLonLat([mapCenter[1]!, mapCenter[0]!]), // OpenLayers uses [lng, lat]
+    serviceRadiusMeters
   );
-};
+  
+  const circleFeature = new Feature(circleGeometry);
+  circleFeature.setStyle(new Style({
+    fill: new Fill({
+      color: 'rgba(25, 127, 230, 0.1)'
+    }),
+    stroke: new Stroke({
+      color: '#197FE6',
+      width: 2
+    })
+  }));
+  
+  circleSource.addFeature(circleFeature);
 
-// Fit map to circle bounds when map is ready
-const onMapReady = () => {
-  if (mapRef.value?.leafletObject) {
-    const bounds = calculateCircleBounds();
-    mapRef.value.leafletObject.fitBounds(bounds, {
-      padding: [20, 20], // Add some padding around the circle
-      maxZoom: 10 // Limit max zoom to prevent too close view
+  // Create marker feature
+  const markerPoint = new Point(fromLonLat([mapCenter[1]!, mapCenter[0]!]));
+  const markerFeature = new Feature(markerPoint);
+  markerFeature.setStyle(new Style({
+    image: new Icon({
+      anchor: [0.5, 1],
+      src: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
+      scale: 1
+    })
+  }));
+  
+  vectorSource.addFeature(markerFeature);
+
+  // Calculate extent to fit circle
+  const extent = circleGeometry.getExtent();
+  
+  const view = new View({
+    center: fromLonLat([mapCenter[1]!, mapCenter[0]!]),
+    zoom: mapZoom.value
+  });
+
+  const map = new OlMap({
+    target: mapElement.value,
+    layers: [
+      new TileLayer({
+        source: new OSM()
+      }),
+      new VectorLayer({
+        source: circleSource
+      }),
+      new VectorLayer({
+        source: vectorSource
+      })
+    ],
+    view: view
+  });
+
+  // Fit view to circle extent
+  setTimeout(() => {
+    view.fit(extent, {
+      padding: [20, 20, 20, 20],
+      maxZoom: 10
     });
+  }, 100);
+
+  mapRef.value = map;
+};
+
+// Initialize map on mount
+onMounted(() => {
+  initMap();
+});
+
+onUnmounted(() => {
+  if (mapRef.value) {
+    mapRef.value.setTarget(undefined);
+    mapRef.value = null;
   }
-};
-
-// Circle styling options
-const circleOptions = {
-  color: '#197FE6', // Primary color
-  fillColor: '#197FE6',
-  fillOpacity: 0.1,
-  weight: 2,
-  opacity: 0.6
-};
-
-// Fix Leaflet default icon issue
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
 });
 </script>
 
@@ -227,25 +277,7 @@ L.Icon.Default.mergeOptions({
 
           <!-- Map -->
           <div class="contact-map">
-            <LMap
-              ref="mapRef"
-              :zoom="mapZoom"
-              :center="mapCenter"
-              :options="{ zoomControl: false }"
-              class="contact-map-container"
-              @ready="onMapReady"
-            >
-              <LTileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              />
-              <LCircle
-                :lat-lng="mapCenter"
-                :radius="serviceRadiusMeters"
-                :options="circleOptions"
-              />
-              <LMarker :lat-lng="mapCenter" />
-            </LMap>
+            <div ref="mapElement" class="contact-map-container"></div>
             <div class="contact-map-badge">
               {{ t('contact.info.serviceRadius') }}
             </div>
@@ -637,40 +669,37 @@ L.Icon.Default.mergeOptions({
   z-index: 0;
 }
 
-/* Dark theme for Leaflet map */
-.contact-map-container :deep(.leaflet-container) {
+/* Dark theme for OpenLayers map */
+.contact-map-container {
+  width: 100%;
+  height: 100%;
   background-color: var(--color-background-dark);
 }
 
-.contact-map-container :deep(.leaflet-tile-pane) {
+.contact-map-container :deep(.ol-viewport) {
   filter: brightness(0.7) contrast(1.1);
 }
 
-.contact-map-container :deep(.leaflet-control-zoom) {
+.contact-map-container :deep(.ol-zoom) {
+  top: 0.5rem;
+  left: 0.5rem;
+  background-color: var(--color-surface-dark);
   border: none;
   border-radius: var(--radius-lg);
   overflow: hidden;
 }
 
-.contact-map-container :deep(.leaflet-control-zoom a) {
+.contact-map-container :deep(.ol-zoom button) {
   background-color: var(--color-surface-dark);
   color: var(--color-white);
   border: 1px solid rgba(36, 58, 71, 0.5);
+  width: 2rem;
+  height: 2rem;
 }
 
-.contact-map-container :deep(.leaflet-control-zoom a:hover) {
+.contact-map-container :deep(.ol-zoom button:hover) {
   background-color: var(--color-surface-highlight);
   border-color: var(--color-primary);
-}
-
-.contact-map-container :deep(.leaflet-popup-content-wrapper) {
-  background-color: var(--color-surface-dark);
-  color: var(--color-white);
-  border-radius: var(--radius-lg);
-}
-
-.contact-map-container :deep(.leaflet-popup-tip) {
-  background-color: var(--color-surface-dark);
 }
 
 .contact-map-badge {
