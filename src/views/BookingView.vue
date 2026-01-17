@@ -2,7 +2,7 @@
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useBookingStore } from '../stores/booking';
-import { SERVICES, FLEET } from '../constants';
+import { SERVICES, FLEET, VERSION } from '../constants';
 import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet';
 // @ts-ignore - Leaflet types are available but may not be recognized
 import * as L from 'leaflet';
@@ -82,6 +82,57 @@ const toggleAlternatives = () => {
 const alternativesCount = computed(() => {
   return FLEET.length - 1; // All drones except the selected one
 });
+
+// Progress tracking
+const totalSteps = 4;
+
+const isStepComplete = (step: number): boolean => {
+  switch (step) {
+    case 1: // Profile
+      return selectedProfileId.value !== null;
+    case 2: // Location
+      return !!(bookingStore.location && bookingStore.missionDate && bookingStore.startTime);
+    case 3: // Equipment
+      return bookingStore.selectedDrone !== null;
+    case 4: // Billing
+      return false; // Always disabled/locked
+    default:
+      return false;
+  }
+};
+
+const currentStep = computed(() => {
+  if (isStepComplete(1) && isStepComplete(2) && isStepComplete(3)) {
+    return 4; // All steps complete, on billing (though it's locked)
+  }
+  if (isStepComplete(1) && isStepComplete(2)) {
+    return 3; // On equipment
+  }
+  if (isStepComplete(1)) {
+    return 2; // On location
+  }
+  return 1; // On profile
+});
+
+const progressPercentage = computed(() => {
+  const completedSteps = [
+    isStepComplete(1),
+    isStepComplete(2),
+    isStepComplete(3),
+    isStepComplete(4)
+  ].filter(Boolean).length;
+  return (completedSteps / totalSteps) * 100;
+});
+
+const getStepClass = (step: number) => {
+  if (isStepComplete(step)) {
+    return 'progress-step-complete';
+  }
+  if (currentStep.value === step) {
+    return 'progress-step-active';
+  }
+  return '';
+};
 
 // Map configuration
 const mapCenter = ref<[number, number]>([48.8566, 2.3522]); // Paris, France default
@@ -243,16 +294,16 @@ const getDroneKey = (id: string) => {
           <div class="progress-section">
             <div class="progress-header">
               <p class="progress-status">{{ t('booking.progress.status') }}</p>
-              <p class="progress-step">{{ t('booking.progress.step', { current: 3, total: 5 }) }}</p>
+              <p class="progress-step">{{ t('booking.progress.step', { current: currentStep, total: totalSteps }) }}</p>
             </div>
             <div class="progress-bar">
-              <div class="progress-bar-fill" style="width: 60%"></div>
+              <div class="progress-bar-fill" :style="{ width: `${progressPercentage}%` }"></div>
             </div>
             <div class="progress-steps">
-              <span class="progress-step-item progress-step-complete">{{ t('booking.progress.steps.profile') }}</span>
-              <span class="progress-step-item progress-step-complete">{{ t('booking.progress.steps.location') }}</span>
-              <span class="progress-step-item progress-step-active">{{ t('booking.progress.steps.equipment') }}</span>
-              <span class="progress-step-item">{{ t('booking.progress.steps.billing') }}</span>
+              <span :class="['progress-step-item', getStepClass(1)]">{{ t('booking.progress.steps.profile') }}</span>
+              <span :class="['progress-step-item', getStepClass(2)]">{{ t('booking.progress.steps.location') }}</span>
+              <span :class="['progress-step-item', getStepClass(3)]">{{ t('booking.progress.steps.equipment') }}</span>
+              <span :class="['progress-step-item', getStepClass(4)]">{{ t('booking.progress.steps.billing') }}</span>
             </div>
           </div>
         </div>
@@ -260,9 +311,9 @@ const getDroneKey = (id: string) => {
         <!-- Step 1: Profile -->
         <section class="booking-step">
           <div class="step-header">
-            <span class="step-number step-number-complete">1</span>
+            <span :class="['step-number', isStepComplete(1) ? 'step-number-complete' : 'step-number-active']">1</span>
             <h2 class="step-title">{{ t('booking.profile.title') }}</h2>
-            <span class="material-symbols-outlined step-check">check_circle</span>
+            <span :class="['material-symbols-outlined step-check', { 'step-check-complete': isStepComplete(1) }]">check_circle</span>
           </div>
           <div class="profile-grid">
             <div 
@@ -282,9 +333,9 @@ const getDroneKey = (id: string) => {
         <!-- Step 2: Location -->
         <section class="booking-step">
           <div class="step-header">
-            <span class="step-number step-number-complete">2</span>
+            <span :class="['step-number', isStepComplete(2) ? 'step-number-complete' : 'step-number-active']">2</span>
             <h2 class="step-title">{{ t('booking.location.title') }}</h2>
-            <span class="material-symbols-outlined step-check">check_circle</span>
+            <span :class="['material-symbols-outlined step-check', { 'step-check-complete': isStepComplete(2) }]">check_circle</span>
           </div>
           <div class="location-grid">
             <div class="location-section">
@@ -353,8 +404,9 @@ const getDroneKey = (id: string) => {
         <!-- Step 3: Equipment -->
         <section class="booking-step">
           <div class="step-header">
-            <span class="step-number step-number-active">3</span>
+            <span :class="['step-number', isStepComplete(3) ? 'step-number-complete' : 'step-number-active']">3</span>
             <h2 class="step-title">{{ t('booking.equipment.title') }}</h2>
+            <span :class="['material-symbols-outlined step-check', { 'step-check-complete': isStepComplete(3) }]">check_circle</span>
           </div>
           
           <!-- Selected Drone Details -->
@@ -449,8 +501,9 @@ const getDroneKey = (id: string) => {
         <!-- Step 4: Billing Preview -->
         <section class="booking-step booking-step-disabled">
           <div class="step-header">
-            <span class="step-number step-number-disabled">4</span>
+            <span :class="['step-number', isStepComplete(4) ? 'step-number-complete' : 'step-number-disabled']">4</span>
             <h2 class="step-title step-title-disabled">{{ t('booking.billing.title') }}</h2>
+            <span :class="['material-symbols-outlined step-check', { 'step-check-complete': isStepComplete(4) }]">check_circle</span>
           </div>
           <div class="billing-placeholder">
              <div class="billing-locked">
@@ -501,10 +554,15 @@ const getDroneKey = (id: string) => {
             <span class="summary-total-amount">€{{ bookingStore.totalCost.toFixed(2) }}</span>
           </div>
 
-          <button class="summary-button">
-            {{ t('booking.summary.payReserve') }}
-            <span class="material-symbols-outlined summary-button-icon">arrow_forward</span>
-          </button>
+          <div class="summary-button-wrapper">
+            <button class="summary-button" disabled>
+              {{ t('booking.summary.payReserve') }}
+              <span class="material-symbols-outlined summary-button-icon">arrow_forward</span>
+            </button>
+            <div class="summary-button-overlay">
+              <div class="coming-soon-badge">{{ t('common.comingSoon') }}</div>
+            </div>
+          </div>
           
           <p class="summary-security">
             {{ t('booking.summary.security') }}
@@ -512,7 +570,7 @@ const getDroneKey = (id: string) => {
         </div>
 
         <!-- Operator Card -->
-        <div class="operator-card">
+        <div class="operator-card" v-if="VERSION.isCompany">
           <div class="operator-avatar-wrapper">
             <img class="operator-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8LSI_BSq-qiFSeRdTgjvPDSeuOkR56rJ_QZskcT8M2Pe5f7JtRExRnrZUcPOxwu3GT476adSZ8j262sr496l9EpjPj8LRrvgyjZQwCZIsstum0lXukjE0wxLpMG8W8_cXVXIRuiH-fR3FmDLUMcK3Gi89f12EVpdQCtJJGckD3CfIR4woPSmEB526vrzP12yXwBDRI2alxTVKUJPtwnplaFRPYW4x9NzIGS6hl6VImeH3DiF7YM-df4f31rYmFdI9kOhE4qOl5rA4" alt="Operator" />
             <div class="operator-status"></div>
@@ -740,9 +798,14 @@ const getDroneKey = (id: string) => {
 }
 
 .step-check {
-  color: #10b981;
+  color: var(--color-text-secondary);
   margin-left: auto;
   font-size: 1.875rem;
+  transition: color var(--transition-base);
+}
+
+.step-check-complete {
+  color: #10b981;
 }
 
 .profile-grid {
@@ -1553,6 +1616,11 @@ const getDroneKey = (id: string) => {
   color: var(--color-white);
 }
 
+.summary-button-wrapper {
+  position: relative;
+  width: 100%;
+}
+
 .summary-button {
   width: 100%;
   background-color: var(--color-primary);
@@ -1570,13 +1638,47 @@ const getDroneKey = (id: string) => {
   gap: 0.75rem;
 }
 
-.summary-button:hover {
+.summary-button:hover:not(:disabled) {
   background-color: #1566c4;
   transform: scale(1.05);
 }
 
-.summary-button:active {
+.summary-button:active:not(:disabled) {
   transform: scale(0.95);
+}
+
+.summary-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  filter: blur(2px);
+}
+
+.summary-button-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1.5rem;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.coming-soon-badge {
+  background-color: rgba(17, 26, 34, 0.95);
+  backdrop-filter: blur(8px);
+  color: var(--color-white);
+  font-size: 0.875rem;
+  font-weight: 900;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-xl);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(25, 127, 230, 0.3);
 }
 
 .summary-button-icon {

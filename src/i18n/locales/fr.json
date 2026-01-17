@@ -9,7 +9,8 @@
     "getQuote": "Obtenir un Devis",
     "contactSales": "Nous Contacter",
     "selected": "Sélectionné",
-    "perDay": "par jour"
+    "perDay": "par jour",
+    "comingSoon": "Bientôt Disponible"
   },
   "layout": {
     "nav": {

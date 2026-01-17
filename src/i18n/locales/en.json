@@ -9,7 +9,8 @@
     "getQuote": "Get a Quote",
     "contactSales": "Contact Us",
     "selected": "Selected",
-    "perDay": "per day"
+    "perDay": "per day",
+    "comingSoon": "Coming Soon"
   },
   "layout": {
     "nav": {
