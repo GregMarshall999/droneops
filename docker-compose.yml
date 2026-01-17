@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  droneops:
+    build: .
+    container_name: droneops
+    restart: always
+    networks:
+      - docker_web
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.droneops.rule=Host(`droneops.greg-labs.com`)
+      - traefik.http.routers.droneops.entrypoints=websecure
+      - traefik.http.routers.droneops.tls.certresolver=le
+      - traefik.http.services.droneops.loadbalancer.server.port=8502
+
+networks:
+  docker_web:
+    external: true
