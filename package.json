@@ -14,7 +14,6 @@
     "type-check": "vue-tsc --build"
   },
   "dependencies": {
-    "@vue-leaflet/vue-leaflet": "^0.11.0",
     "axios": "^1.7.9",
     "leaflet": "^1.9.4",
     "pinia": "^3.0.4",
