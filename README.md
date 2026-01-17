@@ -47,8 +47,6 @@ npm run build
 npm run test:unit
 ```
 
-### Run End-to-End Tests with [Nightwatch](https://nightwatchjs.org/)
-
 ```sh
 # When using CI, the project must be built first.
 npm run build
