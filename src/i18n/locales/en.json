@@ -111,7 +111,7 @@
       "insurance": "Insurance",
       "platformDiscount": "Platform Discount",
       "totalCost": "Total Cost",
-      "currency": "USD (Estimated)",
+            "currency": "EUR (Estimated)",
       "payReserve": "Pay & Reserve Operator",
       "security": "Protected by 256-bit SSL encryption"
     },

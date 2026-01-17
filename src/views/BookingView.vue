@@ -196,6 +196,7 @@ const getStatLabel = (label: string) => {
 
 const getDroneKey = (id: string) => {
   const keyMap: Record<string, string> = {
+    'avata-2': 'avata2',
     'mavic-3': 'mavic3',
     'fpv-x8': 'fpvX8',
     'matrice-300': 'matrice300'
@@ -347,7 +348,7 @@ const getDroneKey = (id: string) => {
                 <div class="drone-selection-header">
                   <h3 class="drone-selection-name">{{ t(`fleet.${getDroneKey(bookingStore.selectedDrone.id)}.name`) }}</h3>
                   <div class="drone-selection-price">
-                    <p class="drone-price">${{ bookingStore.selectedDrone.price }}</p>
+                    <p class="drone-price">€{{ bookingStore.selectedDrone.price }}</p>
                     <p class="drone-price-label">{{ t('common.perDay') }}</p>
                   </div>
                 </div>
@@ -408,22 +409,22 @@ const getDroneKey = (id: string) => {
           <div class="summary-items">
             <div class="summary-item">
               <span class="summary-item-label">{{ t('booking.summary.operatorFee') }}</span>
-              <span class="summary-item-value">$320.00</span>
+              <span class="summary-item-value">€320.00</span>
             </div>
             <div class="summary-item">
               <span class="summary-item-label">{{ t('booking.summary.equipmentRental') }}</span>
-              <span class="summary-item-value">${{ bookingStore.selectedDrone.price?.toFixed(2) || '0.00' }}</span>
+              <span class="summary-item-value">€{{ bookingStore.selectedDrone.price?.toFixed(2) || '0.00' }}</span>
             </div>
             <div class="summary-item">
               <span class="summary-item-label">{{ t('booking.summary.insurance') }}</span>
-              <span class="summary-item-value">$85.00</span>
+              <span class="summary-item-value">€85.00</span>
             </div>
             <div class="summary-item summary-item-discount">
               <span class="summary-item-label">
                 <span class="material-symbols-outlined">confirmation_number</span>
                 {{ t('booking.summary.platformDiscount') }}
               </span>
-              <span class="summary-item-value">-$50.00</span>
+              <span class="summary-item-value">-€50.00</span>
             </div>
           </div>
 
@@ -432,7 +433,7 @@ const getDroneKey = (id: string) => {
               <span class="summary-total-text">{{ t('booking.summary.totalCost') }}</span>
               <span class="summary-total-currency">{{ t('booking.summary.currency') }}</span>
             </div>
-            <span class="summary-total-amount">${{ bookingStore.totalCost.toFixed(2) }}</span>
+            <span class="summary-total-amount">€{{ bookingStore.totalCost.toFixed(2) }}</span>
           </div>
 
           <button class="summary-button">
